@@ -1,43 +1,48 @@
-# Astro Starter Kit: Minimal
+# Route One V2 — Multi-Page Funnel
 
-```sh
-npm create astro@latest -- --template minimal
+A clean, multi-page intent-based engagement funnel for Route One Advisory.
+
+## Architecture
+
+**5 main pages:**
+- `/` — The Hook (headline + CTA)
+- `/quiz` — 6-question diagnostic quiz
+- `/results` — Personalized results page
+- `/solution` — The Route One model explained
+- `/talk` — Team + cost comparison + CTA
+
+**Supporting pages:**
+- `/partner` — For referral partners
+- `/not-ready` — Soft exit with lead capture
+
+## Why Multi-Page?
+
+V1 used scroll-locking CSS patterns that broke across browsers, especially in WhatsApp WebView (our primary distribution channel). V2 uses natural browser navigation — each page is self-contained, no scroll hacks needed.
+
+## Tech Stack
+
+- **Astro 5** — Static pages with React islands
+- **React 19** — Quiz component only
+- **Tailwind CSS 4** — Utility-first styling
+- **Vercel** — Hosting
+
+## Development
+
+```bash
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Build
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm run build
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Deploy
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Push to GitHub, connect to Vercel. Done.
 
-Any static assets, like images, can be placed in the `public/` directory.
+---
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Built by Raize The Vibe • February 2026
