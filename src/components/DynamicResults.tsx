@@ -220,7 +220,7 @@ export default function DynamicResults({
       {/* CTA */}
       <section className="text-center">
         <a
-          href="/solution"
+          href={`/solution?industry=${industry}`}
           className="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
         >
           See How We Solve This
@@ -229,7 +229,7 @@ export default function DynamicResults({
           </svg>
         </a>
         <p className="text-ro-text-dim text-sm mt-4">
-          3 minutes. Real stories. No pitch.
+          3 minutes. Real stories from {industryInsights[industry] ? 'your industry' : 'companies like yours'}.
         </p>
       </section>
     </div>
