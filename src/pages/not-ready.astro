@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Not Ready Yet — Route One Advisory">
+  <main class="min-h-dvh flex flex-col items-center justify-center px-6 py-16">
+    <div class="max-w-xl mx-auto text-center">
+      
+      <h1 class="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-4 fade-up">
+        Not ready yet?<br />
+        <span class="text-ro-gold">No pressure.</span>
+      </h1>
+      
+      <p class="text-lg text-ro-text-dim mb-8 fade-up fade-up-delay-1">
+        Not every company needs a full finance team today. That's okay. But you might want to know when you do.
+      </p>
+      
+      <!-- Lead Magnet Offer -->
+      <div class="bg-ro-card border border-ro-card-border rounded-xl p-6 mb-8 fade-up fade-up-delay-2">
+        <h3 class="text-xl font-semibold text-ro-text-bright mb-3">
+          Get the checklist:
+        </h3>
+        <p class="text-ro-gold font-medium mb-4">
+          "5 Signs You've Outgrown DIY Bookkeeping"
+        </p>
+        <p class="text-ro-text-dim text-sm mb-6">
+          A quick reference to know when it's time to level up your finance operations.
+        </p>
+        
+        <form class="space-y-3">
+          <input
+            type="email"
+            placeholder="Your email"
+            required
+            class="w-full px-4 py-3 bg-ro-darker border border-ro-card-border rounded-lg text-ro-text-bright placeholder:text-ro-text-dim focus:outline-none focus:ring-2 focus:ring-ro-gold focus:border-transparent"
+          />
+          <button
+            type="submit"
+            class="w-full bg-ro-green hover:bg-ro-green-light text-white font-semibold py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-card"
+          >
+            Send Me the Checklist
+          </button>
+        </form>
+      </div>
+      
+      <!-- Gentle Reminder -->
+      <p class="text-ro-text-dim text-sm fade-up fade-up-delay-3">
+        Most of our clients wish they'd started 6 months earlier.<br />
+        When you're ready, we'll be here.
+      </p>
+      
+      <!-- Back Link -->
+      <div class="mt-8 fade-up fade-up-delay-4">
+        <a 
+          href="/"
+          class="text-ro-text-dim hover:text-ro-gold transition-colors text-sm"
+        >
+          ← Back to home
+        </a>
+      </div>
+      
+    </div>
+  </main>
+</Layout>

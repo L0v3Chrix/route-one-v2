@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+  <main class="min-h-dvh flex flex-col items-center justify-center px-6 py-12">
+    <div class="max-w-2xl mx-auto text-center">
+      <!-- Logo / Brand -->
+      <p class="text-ro-gold text-sm font-medium tracking-widest uppercase mb-8 fade-up">
+        Route One Advisory
+      </p>
+      
+      <!-- Headline -->
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-ro-text-bright leading-tight mb-6 fade-up fade-up-delay-1">
+        Most companies don't have a profit problem.<br />
+        <span class="text-ro-gold">They have a visibility problem.</span>
+      </h1>
+      
+      <!-- Subhead -->
+      <p class="text-lg sm:text-xl text-ro-text-dim max-w-xl mx-auto mb-10 fade-up fade-up-delay-2">
+        We built a 90-second diagnostic that shows you exactly where the money is hiding.
+      </p>
+      
+      <!-- CTA -->
+      <div class="fade-up fade-up-delay-3">
+        <a 
+          href="/quiz"
+          class="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
+        >
+          Find Out
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+      </div>
+      
+      <!-- Trust signal -->
+      <p class="text-ro-text-dim text-sm mt-6 fade-up fade-up-delay-4">
+        No pitch. Just a diagnostic.
+      </p>
+    </div>
+    
+    <!-- Partner path (subtle) -->
+    <div class="absolute bottom-8 left-0 right-0 text-center fade-up fade-up-delay-4">
+      <a 
+        href="/partner" 
+        class="text-ro-text-dim text-sm hover:text-ro-gold transition-colors"
+      >
+        I'm a potential referral partner →
+      </a>
+    </div>
+  </main>
+</Layout>
