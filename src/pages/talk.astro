@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SavingsCalculator from '../components/SavingsCalculator';
 ---
 
 <Layout title="Let's Talk — Route One Advisory">
@@ -65,22 +66,22 @@ import Layout from '../layouts/Layout.astro';
         <!-- Credential Badges -->
         <div class="flex flex-wrap justify-center gap-4 mb-16 fade-up fade-up-delay-4">
           <div class="px-4 py-2 bg-ro-card border border-ro-card-border rounded-full text-sm text-ro-text-dim">
-            $300M+ in exits advised
+            <span class="text-ro-gold font-semibold">$300M+</span> in exits advised
           </div>
           <div class="px-4 py-2 bg-ro-card border border-ro-card-border rounded-full text-sm text-ro-text-dim">
-            $400M+ budgets managed
+            <span class="text-ro-gold font-semibold">$400M+</span> budgets managed
           </div>
           <div class="px-4 py-2 bg-ro-card border border-ro-card-border rounded-full text-sm text-ro-text-dim">
-            $175M+ capital raised
+            <span class="text-ro-gold font-semibold">$175M+</span> capital raised
           </div>
         </div>
       </div>
     </section>
     
-    <!-- Section: The Math -->
+    <!-- Section: The Math (Dynamic Calculator) -->
     <section class="px-6 py-16 md:py-24 bg-ro-darker">
       <div class="max-w-3xl mx-auto">
-        <div class="text-center mb-12">
+        <div class="text-center mb-8">
           <p class="text-ro-green text-sm font-medium tracking-widest uppercase mb-4 fade-up">
             The Math
           </p>
@@ -92,74 +93,7 @@ import Layout from '../layouts/Layout.astro';
           </p>
         </div>
         
-        <!-- Simple Comparison -->
-        <div class="bg-ro-card border border-ro-card-border rounded-xl p-6 md:p-8 fade-up fade-up-delay-3">
-          <div class="grid md:grid-cols-2 gap-8">
-            
-            <!-- Typical Setup -->
-            <div>
-              <h3 class="text-lg font-semibold text-ro-text-bright mb-4">Typical In-House Setup</h3>
-              <div class="space-y-3 text-sm">
-                <div class="flex justify-between">
-                  <span class="text-ro-text-dim">Bookkeeper</span>
-                  <span class="text-ro-text">$55K/yr</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-ro-text-dim">Part-time Controller</span>
-                  <span class="text-ro-text">$80K/yr</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-ro-text-dim">Your time (hidden cost)</span>
-                  <span class="text-ro-text">$50K+/yr</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-ro-text-dim">Errors, rework, delays</span>
-                  <span class="text-ro-text">???</span>
-                </div>
-                <div class="border-t border-ro-card-border pt-3 flex justify-between font-semibold">
-                  <span class="text-ro-text-bright">Total</span>
-                  <span class="text-red-400">$185K+/yr</span>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Route One -->
-            <div>
-              <h3 class="text-lg font-semibold text-ro-text-bright mb-4">Route One Full Department</h3>
-              <div class="space-y-3 text-sm">
-                <div class="flex justify-between">
-                  <span class="text-ro-text-dim">Controller</span>
-                  <span class="text-ro-green">✓</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-ro-text-dim">Accounting Manager</span>
-                  <span class="text-ro-green">✓</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-ro-text-dim">Sr. Accountant</span>
-                  <span class="text-ro-green">✓</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-ro-text-dim">Staff + Clerk</span>
-                  <span class="text-ro-green">✓</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-ro-text-dim">US-based management</span>
-                  <span class="text-ro-green">✓</span>
-                </div>
-                <div class="border-t border-ro-card-border pt-3 flex justify-between font-semibold">
-                  <span class="text-ro-text-bright">Starting at</span>
-                  <span class="text-ro-green">$21.6K/mo</span>
-                </div>
-              </div>
-            </div>
-            
-          </div>
-          
-          <p class="mt-6 text-ro-text-dim text-sm text-center">
-            "We structure our fees around your cash flow — not the other way around."
-          </p>
-        </div>
+        <SavingsCalculator client:visible />
       </div>
     </section>
     

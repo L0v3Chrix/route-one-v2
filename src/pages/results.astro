@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import DynamicResults from '../components/DynamicResults';
 
 // Get URL params
 const url = new URL(Astro.request.url);
@@ -12,169 +13,23 @@ const opportunity = url.searchParams.get('opportunity') || '';
 const time = url.searchParams.get('time') || '';
 const entities = url.searchParams.get('entities') || '';
 const painLevel = url.searchParams.get('pain') || 'medium';
-const caseStudy = url.searchParams.get('caseStudy') || 'production';
-
-// Score interpretation
-function getScoreLabel(score: number): string {
-  if (score >= 70) return 'Solid Foundation';
-  if (score >= 50) return 'Room for Improvement';
-  if (score >= 30) return 'Significant Gaps';
-  return 'Urgent Attention Needed';
-}
-
-function getScoreColor(score: number): string {
-  if (score >= 70) return 'text-green-400';
-  if (score >= 50) return 'text-yellow-400';
-  if (score >= 30) return 'text-orange-400';
-  return 'text-red-400';
-}
-
-// Generate insights based on answers
-function getInsights(): string[] {
-  const insights: string[] = [];
-  
-  if (books === '6months' || books === 'never') {
-    insights.push("Your books are significantly behind — this creates a visibility blindspot that compounds daily.");
-  } else if (books === 'quarter') {
-    insights.push("Being a quarter behind on your books means decisions are based on outdated information.");
-  }
-  
-  if (frustration === 'trust') {
-    insights.push("Not trusting your numbers is a red flag that usually signals deeper structural issues.");
-  } else if (frustration === 'myself') {
-    insights.push("Every hour you spend on bookkeeping is an hour not spent growing the business.");
-  } else if (frustration === 'reports') {
-    insights.push("Lack of visibility is usually a symptom, not the root cause.");
-  }
-  
-  if (opportunity === 'yes') {
-    insights.push("You've already lost money to this problem — the question is how much more you'll lose.");
-  } else if (opportunity === 'worried') {
-    insights.push("That worry is your instinct telling you something. It's usually right.");
-  }
-  
-  if (time === 'half-day' || time === 'second-job') {
-    insights.push("You're paying yourself bookkeeper wages when you should be running the business.");
-  }
-  
-  if (entities === '4-6' || entities === '7+') {
-    insights.push("Multi-entity complexity without consolidated visibility is a recipe for hidden problems.");
-  }
-  
-  return insights.slice(0, 4); // Max 4 insights
-}
-
-// Industry-specific messaging
-const industryMessages: Record<string, string> = {
-  entertainment: "Companies in entertainment & media often think margin compression is just the market. Usually, it's a leakage problem.",
-  professional: "Professional services firms typically leave 15-20% on the table through unbilled time and poor financial visibility.",
-  ecommerce: "E-commerce businesses growing fast often have cash flow timing issues that are invisible until it's too late.",
-  multi: "Multi-entity operators almost always have consolidation gaps that hide the true financial picture.",
-  other: "Companies at your stage typically discover 3-5 margin leaks when they get real visibility.",
-};
-
-const insights = getInsights();
-const industryMessage = industryMessages[industry] || industryMessages.other;
 ---
 
 <Layout title="Your Results — Route One Advisory">
   <main class="min-h-dvh px-6 py-12">
     <div class="max-w-3xl mx-auto">
-      
-      <!-- Header -->
-      <div class="text-center mb-12 fade-up">
-        <p class="text-ro-gold text-sm font-medium tracking-widest uppercase mb-4">
-          Your Financial Operations Diagnostic
-        </p>
-        <h1 class="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-4">
-          Here's what we found, {firstName}.
-        </h1>
-      </div>
-      
-      <!-- Score Card -->
-      <div class="bg-ro-card border border-ro-card-border rounded-xl p-8 mb-8 fade-up fade-up-delay-1">
-        <div class="text-center">
-          <p class="text-ro-text-dim text-sm uppercase tracking-wider mb-2">
-            Financial Operations Maturity
-          </p>
-          <div class={`text-6xl font-bold mb-2 ${getScoreColor(score)}`}>
-            {score}
-          </div>
-          <p class="text-ro-text-dim">out of 100</p>
-          <p class={`text-lg font-medium mt-4 ${getScoreColor(score)}`}>
-            {getScoreLabel(score)}
-          </p>
-        </div>
-        
-        <!-- Score bar -->
-        <div class="mt-8">
-          <div class="h-3 bg-ro-darker rounded-full overflow-hidden">
-            <div 
-              class="h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 rounded-full transition-all duration-1000"
-              style={`width: ${score}%`}
-            />
-          </div>
-          <div class="flex justify-between mt-2 text-xs text-ro-text-dim">
-            <span>Critical</span>
-            <span>Needs Work</span>
-            <span>Solid</span>
-            <span>Strong</span>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Insights -->
-      {insights.length > 0 && (
-        <div class="mb-8 fade-up fade-up-delay-2">
-          <h2 class="text-xl font-semibold text-ro-text-bright mb-4">
-            Based on your answers:
-          </h2>
-          <div class="space-y-3">
-            {insights.map((insight, i) => (
-              <div class="flex items-start gap-3 bg-ro-card/50 border border-ro-card-border rounded-lg p-4">
-                <div class="w-6 h-6 rounded-full bg-ro-gold/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span class="text-ro-gold text-sm font-bold">{i + 1}</span>
-                </div>
-                <p class="text-ro-text">{insight}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      
-      <!-- Industry Context -->
-      <div class="bg-ro-card/30 border border-ro-card-border rounded-lg p-6 mb-8 fade-up fade-up-delay-3">
-        <p class="text-ro-text-dim italic">
-          "{industryMessage}"
-        </p>
-      </div>
-      
-      <!-- The Pattern -->
-      <div class="text-center mb-12 fade-up fade-up-delay-4">
-        <p class="text-ro-text text-lg mb-6">
-          The pattern we see: Companies in your situation typically leave 
-          <span class="text-ro-gold font-semibold"> $200K–$3M+ </span> 
-          on the table annually. Not because they're doing anything wrong — because they can't see clearly.
-        </p>
-      </div>
-      
-      <!-- CTA -->
-      <div class="text-center fade-up fade-up-delay-4">
-        <a 
-          href="/solution"
-          class="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
-        >
-          See How We Solve This
-          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </a>
-        
-        <p class="text-ro-text-dim text-sm mt-4">
-          Takes 3 minutes to read. No pitch.
-        </p>
-      </div>
-      
+      <DynamicResults 
+        client:load
+        firstName={firstName}
+        score={score}
+        industry={industry}
+        books={books}
+        frustration={frustration}
+        opportunity={opportunity}
+        time={time}
+        entities={entities}
+        painLevel={painLevel}
+      />
     </div>
   </main>
 </Layout>
