@@ -12,7 +12,7 @@ const industry = url.searchParams.get('industry') || 'other';
   description="See how companies in your industry solved their financial operations challenges with a managed finance department."
 >
   <main>
-    <DynamicSolution client:visible industry={industry} />
+    <DynamicSolution client:load industry={industry} />
   </main>
 </Layout>
 
