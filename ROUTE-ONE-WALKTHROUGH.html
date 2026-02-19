@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Route One Advisory — Project Walkthrough & Sales Intelligence</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0A0F0F;
+    --bg-card: #132828;
+    --bg-card-hover: #1A3F3F;
+    --bg-elevated: #1F3F3F;
+    --green: #0F383C;
+    --green-light: #1A4F54;
+    --green-glow: rgba(15, 56, 60, 0.4);
+    --gold: #C9985A;
+    --gold-light: #D4AD6E;
+    --gold-dim: rgba(201, 152, 90, 0.15);
+    --gold-glow: rgba(201, 152, 90, 0.25);
+    --text: #E5EBE8;
+    --text-dim: #8A9B93;
+    --text-bright: #F5F9F7;
+    --secondary: #A7BCB2;
+    --border: rgba(255,255,255,0.06);
+    --border-gold: rgba(201, 152, 90, 0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10, 15, 15, 0.95);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 0.75rem; letter-spacing: 0.04em; color: var(--text-dim); text-decoration: none; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 50% 30%, var(--green-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 70%, var(--gold-glow) 0%, transparent 40%);
+    opacity: 0.5; animation: heroGlow 8s ease-in-out infinite alternate;
+  }
+  @keyframes heroGlow { 0% { transform: translate(0, 0); } 100% { transform: translate(2%, -2%); } }
+
+  .hero-tag {
+    position: relative;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--border-gold); border-radius: 100px;
+    margin-bottom: 2rem;
+  }
+  .hero h1 {
+    position: relative;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800; line-height: 1.15;
+    color: var(--text-bright);
+    max-width: 900px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    position: relative;
+    font-size: 1.15rem; color: var(--text-dim);
+    max-width: 700px; line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .live-link {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: var(--gold);
+    color: var(--bg);
+    font-weight: 600; font-size: 0.9rem;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .live-link:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  /* ── SECTIONS ── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+  .section-header { margin-bottom: 3rem; }
+  .section-num {
+    font-size: 0.7rem; letter-spacing: 0.15em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 0.75rem; font-weight: 600;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 800; color: var(--text-bright);
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .section-subtitle {
+    font-size: 1.05rem; color: var(--text-dim);
+    max-width: 700px; line-height: 1.8;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    max-width: 1100px; margin: 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+  }
+
+  /* ── CARDS ── */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s;
+  }
+  .card:hover { background: var(--bg-card-hover); border-color: var(--border-gold); }
+  .card-icon {
+    width: 48px; height: 48px;
+    background: var(--gold-dim);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.25rem;
+    font-size: 1.5rem;
+  }
+  .card h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.75rem; }
+  .card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 3rem 0;
+  }
+  .flow-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 180px;
+    text-align: center;
+    position: relative;
+  }
+  .flow-step::after {
+    content: '→';
+    position: absolute;
+    right: -1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 1.2rem;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-step-num {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .flow-step h4 { font-size: 0.95rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.5rem; }
+  .flow-step p { font-size: 0.75rem; color: var(--text-dim); }
+
+  /* ── DATA TABLES ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.9rem;
+  }
+  .data-table th, .data-table td {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table th {
+    background: var(--bg-card);
+    color: var(--gold);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .data-table td { color: var(--text); }
+  .data-table tr:hover td { background: var(--bg-card); }
+
+  /* ── CASE STUDY CARDS ── */
+  .case-study {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .case-study::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--green-light));
+  }
+  .case-study-industry {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .case-study h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 0.5rem;
+  }
+  .case-study-challenge {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .metric {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+  }
+  .metric-label { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.5rem; }
+  .metric-values { display: flex; align-items: center; gap: 0.75rem; }
+  .metric-before { font-size: 0.9rem; color: #EF4444; text-decoration: line-through; opacity: 0.7; }
+  .metric-arrow { color: var(--gold); }
+  .metric-after { font-size: 1rem; font-weight: 700; color: #10B981; }
+  .case-study-quote {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-bright);
+    padding: 1.5rem;
+    background: var(--bg);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    margin-top: 1.5rem;
+  }
+  .case-study-quote cite {
+    display: block;
+    margin-top: 0.75rem;
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* ── INSIGHT BOXES ── */
+  .insight-box {
+    background: var(--gold-dim);
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+  }
+  .insight-box-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .insight-box p {
+    font-size: 1rem;
+    color: var(--text-bright);
+    line-height: 1.7;
+  }
+
+  /* ── LINKS SECTION ── */
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  .link-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: block;
+  }
+  .link-card:hover {
+    border-color: var(--gold);
+    background: var(--bg-card-hover);
+    transform: translateY(-3px);
+  }
+  .link-card-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .link-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 0.5rem;
+  }
+  .link-card p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .flow-container { flex-direction: column; align-items: center; }
+    .flow-step::after { display: none; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-brand">Route One Advisory</div>
+  <div class="nav-links">
+    <a href="#what-we-built">What We Built</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#sales-intelligence">Sales Intelligence</a>
+    <a href="#links">Live Links</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="hero-tag">Project Walkthrough</span>
+  <h1>The Route One <span>Diagnostic Funnel</span></h1>
+  <p class="hero-sub">
+    A complete diagnostic quiz funnel that qualifies leads, calculates maturity scores,
+    personalizes results by industry, and captures rich attribution data — all delivered
+    through WhatsApp in under 5 minutes.
+  </p>
+  <a href="https://route-one-v2.vercel.app" target="_blank" class="live-link">
+    View Live Funnel →
+  </a>
+</header>
+
+<div class="divider"></div>
+
+<!-- SECTION 1: WHAT WE BUILT -->
+<section class="section" id="what-we-built">
+  <div class="section-header">
+    <div class="section-num">01 — The Build</div>
+    <h2 class="section-title">What We Built & Why It Works</h2>
+    <p class="section-subtitle">
+      Route One closes 70–80% of prospects who understand the model. The challenge was getting them
+      to understand it. Decks don't get read. This funnel creates the "aha" moment in self-serve.
+    </p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3>Diagnostic Quiz Engine</h3>
+      <p>6 strategic questions that qualify leads and segment them into industry verticals (Entertainment, Professional Services, E-commerce, Multi-Entity) with tier-based urgency scoring.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Maturity Score Algorithm</h3>
+      <p>Calculates a 0-100 Financial Operations Maturity Score based on quiz responses. Displayed as an animated gauge that creates the "mirror moment" recognition.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎭</div>
+      <h3>Industry-Specific Personalization</h3>
+      <p>5 complete content variants (case studies, pain points, messaging) that make every prospect feel like the funnel was built specifically for their situation.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>Inaction Calculator</h3>
+      <p>Interactive cost calculator that shows the price of doing nothing — with sliders that let prospects input their own numbers and see personalized projections.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <h3>Full Attribution Pipeline</h3>
+      <p>Captures UTM params, click IDs (gclid, fbclid), bridge responses, and session data. All routed to Google Sheets with email notifications on each lead.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📱</div>
+      <h3>WhatsApp-Native Design</h3>
+      <p>Built for WhatsApp's in-app browser — progressive enhancement ensures all content visible without JavaScript. No fixed positioning that breaks in WebView.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 2: HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="section-header">
+    <div class="section-num">02 — The Flow</div>
+    <h2 class="section-title">The Emotional Architecture</h2>
+    <p class="section-subtitle">
+      The funnel follows NEPQ (Neuro-Emotional Persuasion Questioning) principles — dialogue, not declaration.
+      Each stage builds on the last to create self-persuasion through recognition.
+    </p>
+  </div>
+
+  <div class="flow-container">
+    <div class="flow-step">
+      <div class="flow-step-num">Step 1</div>
+      <h4>Hero</h4>
+      <p>Pattern interrupt + curiosity hook</p>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Step 2</div>
+      <h4>Quiz</h4>
+      <p>Self-disclosure + micro-investment</p>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Step 3</div>
+      <h4>Results</h4>
+      <p>Recognition + "someone sees me"</p>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Step 4</div>
+      <h4>Solution</h4>
+      <p>Relief + reframing + proof</p>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Step 5</div>
+      <h4>Talk</h4>
+      <p>Trust + confidence + action</p>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <div class="insight-box-title">The NEPQ Principle</div>
+    <p>
+      The most persuasive way to sell is to get others to persuade themselves. The quiz doesn't collect data — it creates recognition.
+      The prospect answers questions about their situation, sees their answers reflected back, and thinks "this company sees my exact problem."
+      That's the close. The rest is logistics.
+    </p>
+  </div>
+
+  <h3 style="color: var(--text-bright); margin: 3rem 0 1.5rem; font-size: 1.2rem;">Page-by-Page Breakdown</h3>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Page</th>
+        <th>Purpose</th>
+        <th>Key Elements</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>/</strong> (Hero)</td>
+        <td>Hook and gate the experience</td>
+        <td>Pull-back copy ("not for everyone"), single CTA to quiz, return visitor detection</td>
+      </tr>
+      <tr>
+        <td><strong>/quiz</strong></td>
+        <td>Qualify and segment</td>
+        <td>6 questions + email gate, localStorage persistence, immediate Sheets submission</td>
+      </tr>
+      <tr>
+        <td><strong>/results</strong></td>
+        <td>Mirror and amplify</td>
+        <td>Maturity gauge, personalized pain narrative, inaction calculator, SectionBridge prompt</td>
+      </tr>
+      <tr>
+        <td><strong>/solution</strong></td>
+        <td>Reframe and prove</td>
+        <td>Misdiagnosis story, "The Model" explainer, industry case study with metrics</td>
+      </tr>
+      <tr>
+        <td><strong>/talk</strong></td>
+        <td>Convert</td>
+        <td>Team profiles, calendar embed, WhatsApp CTA, proof-near-CTA badges</td>
+      </tr>
+      <tr>
+        <td><strong>/not-ready</strong></td>
+        <td>Soft exit capture</td>
+        <td>Lead magnet offer, email capture, nurture into funnel later</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 3: SALES INTELLIGENCE -->
+<section class="section" id="sales-intelligence">
+  <div class="section-header">
+    <div class="section-num">03 — Sales Intelligence</div>
+    <h2 class="section-title">Actionable Data We Uncovered</h2>
+    <p class="section-subtitle">
+      While building the funnel, we synthesized Route One's client patterns into 5 industry verticals
+      with specific pain points, case studies, and messaging that resonates. This is the research
+      that powers the personalization.
+    </p>
+  </div>
+
+  <!-- CASE STUDY: Entertainment -->
+  <div class="case-study">
+    <div class="case-study-industry">Entertainment & Media</div>
+    <h3>Project Apex VFX</h3>
+    <p class="case-study-challenge">
+      EBITDA compressed from 22% to 4%, leadership considering major layoffs. Studio was convinced the business was dying.
+    </p>
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-label">Reported EBITDA</div>
+        <div class="metric-values">
+          <span class="metric-before">$0.6M</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">$4.0M (adjusted)</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Valuation Impact</div>
+        <div class="metric-values">
+          <span class="metric-before">$9M</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">$36M (optimized)</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Hidden Margin</div>
+        <div class="metric-values">
+          <span class="metric-before">Unknown</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">$3.4M identified</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Pricing Leakage</div>
+        <div class="metric-values">
+          <span class="metric-before">49% discount rate</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">$789K annual impact</span>
+        </div>
+      </div>
+    </div>
+    <div class="insight-box" style="margin: 0;">
+      <div class="insight-box-title">Key Discovery</div>
+      <p>Every 1% discount they gave was costing them $300K annually. They were throwing around 5% discounts like it was nothing.</p>
+    </div>
+    <blockquote class="case-study-quote">
+      "We thought we needed to cut. They showed us we needed to see."
+      <cite>— Studio Principal, VFX Studio</cite>
+    </blockquote>
+  </div>
+
+  <!-- CASE STUDY: E-commerce -->
+  <div class="case-study">
+    <div class="case-study-industry">E-commerce & DTC</div>
+    <h3>DTC Apparel Brand</h3>
+    <p class="case-study-challenge">
+      Scaling from $6M to $50M+ with no visibility into true profitability. Every growth push felt like a crisis.
+    </p>
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-label">Revenue Scale</div>
+        <div class="metric-values">
+          <span class="metric-before">$6M</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">$50M+</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Finance Ops Cost</div>
+        <div class="metric-values">
+          <span class="metric-before">100%</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">50% (half the cost)</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Cash Flow Visibility</div>
+        <div class="metric-values">
+          <span class="metric-before">30 days</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">180 days forward</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Decision Confidence</div>
+        <div class="metric-values">
+          <span class="metric-before">Guessing</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">Data-driven</span>
+        </div>
+      </div>
+    </div>
+    <div class="insight-box" style="margin: 0;">
+      <div class="insight-box-title">Key Discovery</div>
+      <p>They cut financial operations cost by 50% while scaling 8x. The constraint was never money — it was sight.</p>
+    </div>
+    <blockquote class="case-study-quote">
+      "We were afraid to grow because we couldn't see where the money was going. Now we can see everything."
+      <cite>— Founder, DTC Brand</cite>
+    </blockquote>
+  </div>
+
+  <!-- CASE STUDY: Professional Services -->
+  <div class="case-study">
+    <div class="case-study-industry">Professional Services</div>
+    <h3>Regional CPA Practice</h3>
+    <p class="case-study-challenge">
+      Managing 20+ entities and 100+ accounts with no consolidated view. Profits weren't keeping pace with revenue.
+    </p>
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-label">Hands-on Time</div>
+        <div class="metric-values">
+          <span class="metric-before">100%</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">20-30% (70-80% reduction)</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Partner Admin Time</div>
+        <div class="metric-values">
+          <span class="metric-before">15+ hrs/week</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">2-3 hrs/week</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Accounts Reconciled</div>
+        <div class="metric-values">
+          <span class="metric-before">100+ (manual)</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">100+ (automated)</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Practice Growth</div>
+        <div class="metric-values">
+          <span class="metric-before">Flat</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">30% YoY</span>
+        </div>
+      </div>
+    </div>
+    <div class="insight-box" style="margin: 0;">
+      <div class="insight-box-title">Key Discovery</div>
+      <p>They reduced hands-on bookkeeping time by 70-80% while actually improving accuracy. The practice grew 30% the following year by focusing on profitable work.</p>
+    </div>
+    <blockquote class="case-study-quote">
+      "We finally know which clients make us money and which ones cost us."
+      <cite>— Managing Partner, CPA Practice</cite>
+    </blockquote>
+  </div>
+
+  <!-- CASE STUDY: Multi-Entity -->
+  <div class="case-study">
+    <div class="case-study-industry">Multi-Entity Operations</div>
+    <h3>Multi-Business Portfolio</h3>
+    <p class="case-study-challenge">
+      5+ entities (restaurants, production, real estate, grip company, retail) with no consolidated financial picture. Cash always tight despite "profitable" businesses.
+    </p>
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-label">Entities</div>
+        <div class="metric-values">
+          <span class="metric-before">5+ (siloed)</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">5+ (consolidated)</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Intercompany Visibility</div>
+        <div class="metric-values">
+          <span class="metric-before">None</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">Real-time</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Hidden Subsidies Found</div>
+        <div class="metric-values">
+          <span class="metric-before">Unknown</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">$400K+ annually</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Decision Quality</div>
+        <div class="metric-values">
+          <span class="metric-before">Entity-by-entity</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">Portfolio-wide</span>
+        </div>
+      </div>
+    </div>
+    <div class="insight-box" style="margin: 0;">
+      <div class="insight-box-title">Key Discovery</div>
+      <p>Hidden intercompany subsidies were masking a $400K annual loss in what they thought was their strongest business.</p>
+    </div>
+    <blockquote class="case-study-quote">
+      "I thought I knew my businesses. I was wrong."
+      <cite>— Portfolio Operator, Multi-Entity Holdings</cite>
+    </blockquote>
+  </div>
+
+  <!-- CASE STUDY: Production Company -->
+  <div class="case-study">
+    <div class="case-study-industry">Growth Companies</div>
+    <h3>$70M Production Company</h3>
+    <p class="case-study-challenge">
+      Spending $15K/month on a controller who was drowning. Balls dropping. Reports late. Founder doing bookkeeping at midnight.
+    </p>
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-label">EBITDA</div>
+        <div class="metric-values">
+          <span class="metric-before">-5%</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">+8%</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Liabilities Reduced</div>
+        <div class="metric-values">
+          <span class="metric-before">Baseline</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">$12M reduction</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Founder Time on Finance</div>
+        <div class="metric-values">
+          <span class="metric-before">10+ hrs/week</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">0 hrs/week</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Team Coverage</div>
+        <div class="metric-values">
+          <span class="metric-before">1 controller</span>
+          <span class="metric-arrow">→</span>
+          <span class="metric-after">Full 5-person dept</span>
+        </div>
+      </div>
+    </div>
+    <div class="insight-box" style="margin: 0;">
+      <div class="insight-box-title">Key Discovery</div>
+      <p>They went from -5% EBITDA to +8% EBITDA. $12M in liability reduction. And the founder stopped doing bookkeeping. Cost? Less than they were paying before.</p>
+    </div>
+    <blockquote class="case-study-quote">
+      "I got my nights back. And my margins."
+      <cite>— CEO, Production Company</cite>
+    </blockquote>
+  </div>
+
+  <h3 style="color: var(--text-bright); margin: 4rem 0 1.5rem; font-size: 1.2rem;">Industry Pain Pattern Matrix</h3>
+  <p style="color: var(--text-dim); margin-bottom: 2rem;">Each industry has specific pain points and hidden cost patterns. The funnel detects and amplifies these.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Industry</th>
+        <th>Primary Pain</th>
+        <th>Hidden Cost Pattern</th>
+        <th>Misdiagnosis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Entertainment</strong></td>
+        <td>EBITDA compression</td>
+        <td>Strategic investments coded as expenses</td>
+        <td>"Need to downscale" → Actually: leakage problem</td>
+      </tr>
+      <tr>
+        <td><strong>Professional Services</strong></td>
+        <td>Margin erosion</td>
+        <td>Low-value clients consuming high-value time</td>
+        <td>"Need more clients" → Actually: need visibility</td>
+      </tr>
+      <tr>
+        <td><strong>E-commerce</strong></td>
+        <td>Cash flow panic</td>
+        <td>Timing mismatch (inventory vs. revenue)</td>
+        <td>"Cash flow problem" → Actually: visibility problem</td>
+      </tr>
+      <tr>
+        <td><strong>Multi-Entity</strong></td>
+        <td>Perpetual tightness</td>
+        <td>Hidden intercompany subsidies</td>
+        <td>"Entity C is problem" → Actually: Entity A hiding losses</td>
+      </tr>
+      <tr>
+        <td><strong>Growth Companies</strong></td>
+        <td>Founder overwhelm</td>
+        <td>Infrastructure outpaced by growth</td>
+        <td>"Need a controller" → Actually: need a department</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 4: LIVE LINKS -->
+<section class="section" id="links">
+  <div class="section-header">
+    <div class="section-num">04 — Live Links</div>
+    <h2 class="section-title">Access Everything</h2>
+    <p class="section-subtitle">
+      All project artifacts, live deployments, and data infrastructure.
+    </p>
+  </div>
+
+  <div class="links-grid">
+    <a href="https://route-one-v2.vercel.app" target="_blank" class="link-card">
+      <div class="link-card-label">Live Funnel</div>
+      <h4>Production Deployment</h4>
+      <p>The complete diagnostic funnel, live on Vercel.</p>
+    </a>
+    <a href="https://route-one-v2.vercel.app/quiz" target="_blank" class="link-card">
+      <div class="link-card-label">Quiz Flow</div>
+      <h4>Start the Diagnostic</h4>
+      <p>The 6-question quiz that powers the personalization.</p>
+    </a>
+    <a href="https://route-one-v2.vercel.app/results?industry=entertainment" target="_blank" class="link-card">
+      <div class="link-card-label">Example Results</div>
+      <h4>Entertainment Industry Results</h4>
+      <p>See how results render for VFX/production companies.</p>
+    </a>
+    <a href="https://route-one-v2.vercel.app/solution?industry=ecommerce" target="_blank" class="link-card">
+      <div class="link-card-label">Example Solution</div>
+      <h4>E-commerce Industry Solution</h4>
+      <p>The case study and proof page for DTC brands.</p>
+    </a>
+    <a href="https://docs.google.com/spreadsheets/d/1Ox5PtQ5oIAxxbojT2M-_TEb3P4RfdOgBAcaT8LozISI" target="_blank" class="link-card">
+      <div class="link-card-label">Data Pipeline</div>
+      <h4>Google Sheets (Leads)</h4>
+      <p>All quiz completions, attribution data, and bridge responses.</p>
+    </a>
+    <a href="https://script.google.com/d/1or4fcJce5H-aAA191zNSLuvArhKBkvpMtoOyaoyot8lv7bkwoqN6_onH/edit" target="_blank" class="link-card">
+      <div class="link-card-label">Automation</div>
+      <h4>Apps Script (Webhook)</h4>
+      <p>The script that receives submissions and sends email notifications.</p>
+    </a>
+  </div>
+
+  <div style="margin-top: 3rem; padding: 2rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);">
+    <h4 style="color: var(--text-bright); margin-bottom: 1rem;">To Go Live: DNS Setup Needed</h4>
+    <p style="color: var(--text-dim); margin-bottom: 1rem;">
+      The funnel is ready for a custom domain. Once Dean provides the subdomain (e.g., <code style="background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px;">diagnostic.routeoneadvisory.com</code>),
+      we'll configure DNS and SSL.
+    </p>
+    <p style="color: var(--text-dim);">
+      <strong>DNS Record:</strong> CNAME → <code style="background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px;">cname.vercel-dns.com</code>
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FOOTER -->
+<footer style="padding: 4rem 2rem; text-align: center;">
+  <p style="color: var(--text-dim); font-size: 0.85rem;">
+    Built with care by <strong style="color: var(--gold);">Raize The Vibe</strong> — AI-powered marketing that moves calendars.
+  </p>
+  <p style="color: var(--text-dim); font-size: 0.75rem; margin-top: 1rem;">
+    February 2026
+  </p>
+</footer>
+
+</body>
+</html>
