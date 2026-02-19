@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import MaturityGauge from './MaturityGauge';
 import InactionCalculator from './InactionCalculator';
+import SectionBridge from './SectionBridge';
+import { getStoredSession, isSessionExpired, clearSession } from '../lib/session';
 
 interface DynamicResultsProps {
   firstName: string;
@@ -12,7 +14,42 @@ interface DynamicResultsProps {
   time: string;
   entities: string;
   painLevel: string;
+  industryLabel?: string;
 }
+
+// Check if IntersectionObserver is available (progressive enhancement)
+const hasIntersectionObserver = typeof window !== 'undefined' && 'IntersectionObserver' in window;
+
+// Narrative assembly for mirror moment
+const entityNarrative: Record<string, string> = {
+  '1': "You're running a single entity",
+  '2-3': "You're managing 2–3 entities",
+  '4-6': "You're juggling 4–6 entities — that's a lot of moving parts",
+  '7+': "You're operating 7+ entities — consolidation alone is a full-time job",
+};
+
+const booksNarrative: Record<string, string> = {
+  'current': "your books are current — that's better than most",
+  'quarter': "your books are a quarter behind — you're making decisions on stale data",
+  '6months': "your books haven't been closed in over six months — you've been flying blind",
+  'never': "your books have never been fully current — every number you've looked at is a guess",
+  'unsure': "you're not sure when your books were last current — and that uncertainty is the problem",
+};
+
+const frustrationNarrative: Record<string, string> = {
+  'reports': "you can't get clear reports when you need them",
+  'cost': "you're spending too much for what you're getting",
+  'trust': "you don't fully trust your numbers — and that changes every decision you make",
+  'systems': "your systems don't talk to each other",
+  'myself': "you're doing too much of the financial work yourself",
+  'start': "you don't even know where to start fixing this",
+};
+
+const opportunityNarrative: Record<string, string> = {
+  'yes': "You've already lost money to this — a denied loan, a missed deal, an investor who walked.",
+  'maybe': "You suspect this has cost you, even if you can't point to the exact moment.",
+  'worried': "You haven't lost an opportunity yet, but you feel it coming.",
+};
 
 export default function DynamicResults({
   firstName,
@@ -24,15 +61,151 @@ export default function DynamicResults({
   time,
   entities,
   painLevel,
+  industryLabel = 'your industry',
 }: DynamicResultsProps) {
-  const [showCalculator, setShowCalculator] = useState(false);
-  const [currentSection, setCurrentSection] = useState(0);
+  const [showTransition, setShowTransition] = useState(true);
+  const [animatedScore, setAnimatedScore] = useState(0);
+  
+  // Progressive reveal states - default to true (visible) for no-JS/WhatsApp safety
+  const [showPain, setShowPain] = useState(!hasIntersectionObserver);
+  const [showBridge, setShowBridge] = useState(!hasIntersectionObserver);
+  const [showCalculator, setShowCalculator] = useState(!hasIntersectionObserver);
+  const [showPattern, setShowPattern] = useState(!hasIntersectionObserver);
+  
+  // Refs for IntersectionObserver
+  const painRef = useRef<HTMLElement>(null);
+  const bridgeRef = useRef<HTMLElement>(null);
+  const calculatorRef = useRef<HTMLElement>(null);
+  const patternRef = useRef<HTMLElement>(null);
 
+  // Animate score count-up in transition
   useEffect(() => {
-    // Progressive reveal
-    const timer = setTimeout(() => setShowCalculator(true), 2000);
-    return () => clearTimeout(timer);
+    if (showTransition) {
+      const duration = 1500;
+      const steps = 30;
+      const increment = score / steps;
+      let current = 0;
+      
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= score) {
+          setAnimatedScore(score);
+          clearInterval(timer);
+        } else {
+          setAnimatedScore(Math.round(current));
+        }
+      }, duration / steps);
+
+      return () => clearInterval(timer);
+    }
+  }, [showTransition, score]);
+
+  // Handle "Show Me" click - start the progressive reveal cascade
+  const handleShowMe = useCallback(() => {
+    setShowTransition(false);
+    // Immediately show pain section when transition ends
+    setShowPain(true);
   }, []);
+
+  // IntersectionObserver for scroll-triggered reveals (progressive enhancement)
+  useEffect(() => {
+    if (!hasIntersectionObserver || showTransition) return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.1,
+    };
+
+    const observers: IntersectionObserver[] = [];
+
+    // Bridge appears after scrolling past pain
+    if (painRef.current && !showBridge) {
+      const painObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          // Trigger bridge when pain section is scrolled past (not intersecting from top)
+          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+            setShowBridge(true);
+          }
+        });
+      }, observerOptions);
+      painObserver.observe(painRef.current);
+      observers.push(painObserver);
+    }
+
+    // Calculator appears after bridge is visible or 2s delay
+    if (bridgeRef.current && showBridge && !showCalculator) {
+      const timer = setTimeout(() => setShowCalculator(true), 2000);
+      
+      const bridgeObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShowCalculator(true);
+          }
+        });
+      }, observerOptions);
+      bridgeObserver.observe(bridgeRef.current);
+      observers.push(bridgeObserver);
+
+      return () => {
+        clearTimeout(timer);
+        observers.forEach(o => o.disconnect());
+      };
+    }
+
+    // Pattern appears after calculator
+    if (calculatorRef.current && showCalculator && !showPattern) {
+      const calcObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShowPattern(true);
+          }
+        });
+      }, observerOptions);
+      calcObserver.observe(calculatorRef.current);
+      observers.push(calcObserver);
+    }
+
+    return () => observers.forEach(o => o.disconnect());
+  }, [showTransition, showPain, showBridge, showCalculator, showPattern]);
+
+  // Fallback: if bridge is shown but no scroll happens, show calculator after 2s
+  useEffect(() => {
+    if (showBridge && !showCalculator && hasIntersectionObserver) {
+      const timer = setTimeout(() => setShowCalculator(true), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showBridge, showCalculator]);
+
+  // Show pattern shortly after calculator
+  useEffect(() => {
+    if (showCalculator && !showPattern && hasIntersectionObserver) {
+      const timer = setTimeout(() => setShowPattern(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [showCalculator, showPattern]);
+
+  // Build personalized narrative
+  const buildNarrative = () => {
+    const parts = [];
+    
+    if (entityNarrative[entities]) {
+      parts.push(entityNarrative[entities]);
+    }
+    if (booksNarrative[books]) {
+      parts.push(booksNarrative[books]);
+    }
+    if (frustrationNarrative[frustration]) {
+      parts.push(frustrationNarrative[frustration]);
+    }
+
+    const mainNarrative = parts.join(', ') + '.';
+    const consequenceNarrative = opportunityNarrative[opportunity] || '';
+
+    return { mainNarrative, consequenceNarrative };
+  };
+
+  const { mainNarrative, consequenceNarrative } = buildNarrative();
 
   // Calculate dimension scores for radar
   const dimensions = [
@@ -128,10 +301,86 @@ export default function DynamicResults({
   const currentPain = painMessages[frustration] || painMessages.reports;
   const insights = industryInsights[industry] || industryInsights.other;
 
+  // Bridge configuration
+  const bridgeOptions = [
+    { label: 'Too familiar', value: 'too-familiar' },
+    { label: 'Getting there', value: 'getting-there' },
+    { label: 'Not really', value: 'not-really' },
+  ];
+
+  const bridgeFollowUp: Record<string, string> = {
+    'too-familiar': "That recognition is worth something. Keep going.",
+    'getting-there': "The earlier you see it, the less it costs.",
+    'not-really': "Good — but the calculator below might change your mind.",
+  };
+
+  // ============================================
+  // QUIZ TRANSITION (Mirror Moment)
+  // ============================================
+  if (showTransition) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-6">
+            Your Diagnostic Results
+          </p>
+          
+          <h1 className="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-8">
+            Here's what we found, {firstName}.
+          </h1>
+
+          {/* Personalized Narrative */}
+          <div className="bg-ro-card border border-ro-card-border rounded-xl p-6 md:p-8 mb-8">
+            <p className="text-lg text-ro-text leading-relaxed mb-4">
+              {mainNarrative}
+            </p>
+            {consequenceNarrative && (
+              <p className="text-ro-gold font-medium">
+                {consequenceNarrative}
+              </p>
+            )}
+          </div>
+
+          {/* Animated Score Display */}
+          <div className="mb-10">
+            <div className="text-6xl sm:text-7xl font-bold text-ro-gold mb-2">
+              {animatedScore}
+            </div>
+            <p className="text-ro-text-dim">
+              Financial Operations Maturity Score
+            </p>
+            <p className="text-sm text-ro-text-dim mt-1">
+              (out of 100 — higher is better)
+            </p>
+          </div>
+
+          {/* Mini Gauge Preview */}
+          <div className="bg-ro-darker rounded-xl p-6 mb-10">
+            <MaturityGauge score={score} dimensions={dimensions} />
+          </div>
+
+          {/* Reveal Button */}
+          <button
+            onClick={handleShowMe}
+            className="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
+          >
+            Show Me What This Means
+            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================================
+  // FULL DASHBOARD
+  // ============================================
   return (
     <div className="space-y-12">
-      {/* Section 1: Score & Dimensions */}
-      <section className="text-center">
+      {/* Section 1: Score & Dimensions - Always visible */}
+      <section className="text-center fade-up">
         <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-4">
           Your Financial Operations Diagnostic
         </p>
@@ -147,8 +396,13 @@ export default function DynamicResults({
         </div>
       </section>
 
-      {/* Section 2: Pain Amplification */}
-      <section className="bg-ro-darker rounded-xl p-6 md:p-8">
+      {/* Section 2: Pain Amplification - Progressive reveal on "Show Me" click */}
+      <section 
+        ref={painRef}
+        className={`bg-ro-darker rounded-xl p-6 md:p-8 fade-up transition-all duration-700 ${
+          showPain ? 'opacity-100 translate-y-0' : hasIntersectionObserver ? 'opacity-0 translate-y-4' : ''
+        }`}
+      >
         <div className="max-w-2xl mx-auto">
           <p className="text-red-400 text-sm font-medium tracking-widest uppercase mb-4">
             What This Means
@@ -156,13 +410,16 @@ export default function DynamicResults({
           <h2 className="text-2xl sm:text-3xl font-bold text-ro-text-bright mb-4">
             {currentPain.headline}
           </h2>
-          <p className="text-ro-text text-lg mb-6">
+          <p className="text-ro-text text-lg mb-4">
             {currentPain.detail}
+          </p>
+          <p className="text-ro-text-dim text-sm italic mt-4">
+            This isn't a sales pitch. It's a pattern we see in 80% of the companies we work with.
           </p>
 
           {/* Consequence callout */}
           {opportunity === 'yes' && (
-            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-6">
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-6 mt-6">
               <p className="text-red-400 font-medium">
                 You've already lost money to this problem.
               </p>
@@ -186,8 +443,28 @@ export default function DynamicResults({
         </div>
       </section>
 
-      {/* Section 3: Cost of Inaction Calculator */}
-      <section className={`transition-opacity duration-700 ${showCalculator ? 'opacity-100' : 'opacity-0'}`}>
+      {/* Bridge 1: Results - Appears after scrolling past pain */}
+      <section 
+        ref={bridgeRef}
+        className={`fade-up transition-all duration-700 ${
+          showBridge ? 'opacity-100 translate-y-0' : hasIntersectionObserver ? 'opacity-0 translate-y-4' : ''
+        }`}
+      >
+        <SectionBridge
+          prompt="Does this feel familiar?"
+          options={bridgeOptions}
+          followUp={bridgeFollowUp}
+          storageKey="results"
+        />
+      </section>
+
+      {/* Section 3: Cost of Inaction Calculator - Slides up after bridge */}
+      <section 
+        ref={calculatorRef}
+        className={`fade-up transition-all duration-700 ${
+          showCalculator ? 'opacity-100 translate-y-0' : hasIntersectionObserver ? 'opacity-0 translate-y-8' : ''
+        }`}
+      >
         <div className="text-center mb-6">
           <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-2">
             The Math
@@ -202,8 +479,13 @@ export default function DynamicResults({
         />
       </section>
 
-      {/* Section 4: The Pattern */}
-      <section className="text-center py-8">
+      {/* Section 4: The Pattern - Appears after calculator */}
+      <section 
+        ref={patternRef}
+        className={`text-center py-8 fade-up transition-all duration-700 ${
+          showPattern ? 'opacity-100 translate-y-0' : hasIntersectionObserver ? 'opacity-0 translate-y-4' : ''
+        }`}
+      >
         <div className="max-w-2xl mx-auto">
           <p className="text-xl text-ro-text mb-6">
             The pattern we see across 44 client engagements:
@@ -217,13 +499,25 @@ export default function DynamicResults({
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="text-center">
+      {/* CTA with Enhanced Transition Copy - Appears with pattern */}
+      <section 
+        className={`text-center fade-up transition-all duration-700 ${
+          showPattern ? 'opacity-100 translate-y-0' : hasIntersectionObserver ? 'opacity-0 translate-y-4' : ''
+        }`}
+      >
+        <div className="max-w-xl mx-auto mb-8">
+          <p className="text-lg text-ro-text mb-2">
+            Now you've seen the problem.
+          </p>
+          <p className="text-lg text-ro-text-bright font-medium">
+            Here's what other {industryLabel} companies did about it.
+          </p>
+        </div>
         <a
           href={`/solution?industry=${industry}`}
           className="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
         >
-          See How We Solve This
+          See How Companies Like Yours Solved This
           <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>

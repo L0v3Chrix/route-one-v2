@@ -1,6 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { QUIZ_QUESTIONS, createInitialState, type QuizState, INDUSTRY_LABELS } from '../lib/quizData';
 import { buildRoutingProfile, buildQueryString } from '../lib/quizRouting';
+import { submitToSheets } from '../lib/sheets';
+import { getUtm, getClickIds } from '../lib/utm';
+import { trackEvent } from '../lib/analytics';
 
 const STORAGE_KEY = 'ro_quiz_v2';
 
@@ -16,6 +19,7 @@ export default function Quiz() {
   const [state, setState] = useState<QuizState>(createInitialState);
   const [showMicroCopy, setShowMicroCopy] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasTrackedStart, setHasTrackedStart] = useState(false);
 
   const totalQuestions = QUIZ_QUESTIONS.length;
   const isOnQuestions = state.currentStep < totalQuestions;
@@ -23,19 +27,39 @@ export default function Quiz() {
   
   const currentQuestion = isOnQuestions ? QUIZ_QUESTIONS[state.currentStep] : null;
 
+  // Track quiz start on first render
+  useEffect(() => {
+    if (!hasTrackedStart) {
+      trackEvent('quiz_start');
+      setHasTrackedStart(true);
+    }
+  }, [hasTrackedStart]);
+
+  // Track when email gate is shown
+  useEffect(() => {
+    if (isOnEmailGate) {
+      trackEvent('quiz_email_view');
+    }
+  }, [isOnEmailGate]);
+
   // Handle answer selection
   const handleAnswer = useCallback((value: string, tag: string, microCopy?: string) => {
+    const questionId = QUIZ_QUESTIONS[state.currentStep]?.id;
+    
+    // Track the answer
+    trackEvent('quiz_answer', { question: questionId, answer: value });
+
     if (microCopy) {
       setShowMicroCopy(microCopy);
       // Delay before advancing
       setTimeout(() => {
         setShowMicroCopy(null);
         setState(prev => {
-          const questionId = QUIZ_QUESTIONS[prev.currentStep].id;
+          const qId = QUIZ_QUESTIONS[prev.currentStep].id;
           const newState = {
             ...prev,
             currentStep: prev.currentStep + 1,
-            answers: { ...prev.answers, [questionId]: value },
+            answers: { ...prev.answers, [qId]: value },
             tags: [...prev.tags, tag],
           };
           saveState(newState);
@@ -44,22 +68,24 @@ export default function Quiz() {
       }, 1500);
     } else {
       setState(prev => {
-        const questionId = QUIZ_QUESTIONS[prev.currentStep].id;
+        const qId = QUIZ_QUESTIONS[prev.currentStep].id;
         const newState = {
           ...prev,
           currentStep: prev.currentStep + 1,
-          answers: { ...prev.answers, [questionId]: value },
+          answers: { ...prev.answers, [qId]: value },
           tags: [...prev.tags, tag],
         };
         saveState(newState);
         return newState;
       });
     }
-  }, []);
+  }, [state.currentStep]);
 
   // Handle back navigation
   const handleBack = useCallback(() => {
     if (state.currentStep <= 0) return;
+    
+    trackEvent('quiz_back');
     
     setState(prev => {
       const prevQuestionId = QUIZ_QUESTIONS[prev.currentStep - 1]?.id;
@@ -94,8 +120,50 @@ export default function Quiz() {
     // Save final state
     saveState(state);
     
-    // Optional: Send to Google Sheets here
-    // await submitToSheets(state, profile);
+    // Get UTM and click ID attribution
+    const utm = getUtm();
+    const clicks = getClickIds();
+    
+    // Get bridge responses from localStorage
+    let bridgeResponses: Record<string, string> = {};
+    try {
+      bridgeResponses = JSON.parse(localStorage.getItem('ro_bridge_responses') || '{}');
+    } catch {
+      // localStorage may be unavailable or invalid
+    }
+    
+    // Submit to Google Sheets
+    await submitToSheets({
+      submissionType: 'quiz_complete',
+      firstName: state.contact.firstName,
+      email: state.contact.email,
+      company: state.contact.company,
+      industry: state.answers.industry,
+      entityCount: state.answers.entityCount,
+      booksStatus: state.answers.booksStatus,
+      frustration: state.answers.frustration,
+      opportunity: state.answers.opportunity,
+      personalTime: state.answers.personalTime,
+      tier: profile.tier,
+      painLevel: profile.painLevel,
+      urgency: profile.urgency,
+      maturityScore: profile.maturityScore,
+      caseStudyRoute: profile.caseStudyRoute,
+      industryLabel: INDUSTRY_LABELS[state.answers.industry] || 'your industry',
+      bridgeResponses,
+      utmSource: utm.utm_source,
+      utmMedium: utm.utm_medium,
+      utmCampaign: utm.utm_campaign,
+      utmContent: utm.utm_content,
+      gclid: clicks.gclid,
+      fbclid: clicks.fbclid,
+    });
+    
+    // Track completion
+    trackEvent('quiz_complete', { 
+      industry: state.answers.industry, 
+      score: profile.maturityScore 
+    });
     
     // Redirect to results
     window.location.href = `/results?${queryString}`;
@@ -103,10 +171,12 @@ export default function Quiz() {
 
   // Progress dots
   const renderProgress = () => (
-    <div className="flex items-center justify-center gap-2 mb-8">
+    <div className="flex items-center justify-center gap-2 mb-8" role="progressbar" aria-valuenow={state.currentStep + 1} aria-valuemin={1} aria-valuemax={totalQuestions + 1}>
       {Array.from({ length: totalQuestions }).map((_, i) => (
         <div
           key={i}
+          role="presentation"
+          aria-label={`Question ${i + 1} of ${totalQuestions}${i < state.currentStep ? ' (completed)' : i === state.currentStep ? ' (current)' : ''}`}
           className={`w-2.5 h-2.5 rounded-full transition-colors ${
             i < state.currentStep
               ? 'bg-ro-green'
@@ -116,8 +186,10 @@ export default function Quiz() {
           }`}
         />
       ))}
-      <div className="w-px h-4 bg-ro-card-border mx-1" />
+      <div className="w-px h-4 bg-ro-card-border mx-1" aria-hidden="true" />
       <div
+        role="presentation"
+        aria-label={`Contact information${isOnEmailGate ? ' (current)' : ''}`}
         className={`w-2.5 h-2.5 rounded-full ${
           isOnEmailGate ? 'bg-ro-gold' : 'bg-ro-card-border'
         }`}
@@ -146,7 +218,7 @@ export default function Quiz() {
               key={answer.value}
               onClick={() => handleAnswer(answer.value, answer.tag, answer.microCopy)}
               disabled={!!showMicroCopy}
-              className="w-full text-left px-5 py-4 bg-ro-card border border-ro-card-border rounded-lg hover:border-ro-green hover:bg-ro-card/80 transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold disabled:opacity-50"
+              className="w-full text-left px-5 py-4 min-h-[48px] bg-ro-card border border-ro-card-border rounded-lg hover:border-ro-green hover:bg-ro-card/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ro-dark disabled:opacity-50"
             >
               <span className="text-ro-text-bright">{answer.label}</span>
             </button>
@@ -165,7 +237,7 @@ export default function Quiz() {
           <div className="mt-8 text-center">
             <button
               onClick={handleBack}
-              className="text-ro-text-dim hover:text-ro-text transition-colors text-sm"
+              className="text-ro-text-dim hover:text-ro-text transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ro-dark"
             >
               ← Back
             </button>
@@ -190,7 +262,9 @@ export default function Quiz() {
         
         <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
           <div>
+            <label htmlFor="firstName" className="sr-only">First name</label>
             <input
+              id="firstName"
               type="text"
               placeholder="First name"
               required
@@ -200,7 +274,9 @@ export default function Quiz() {
             />
           </div>
           <div>
+            <label htmlFor="email" className="sr-only">Work email</label>
             <input
+              id="email"
               type="email"
               placeholder="Work email"
               required
@@ -210,7 +286,9 @@ export default function Quiz() {
             />
           </div>
           <div>
+            <label htmlFor="company" className="sr-only">Company name</label>
             <input
+              id="company"
               type="text"
               placeholder="Company name"
               required
@@ -232,7 +310,7 @@ export default function Quiz() {
         <div className="mt-8 text-center">
           <button
             onClick={handleBack}
-            className="text-ro-text-dim hover:text-ro-text transition-colors text-sm"
+            className="text-ro-text-dim hover:text-ro-text transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ro-dark"
           >
             ← Back
           </button>

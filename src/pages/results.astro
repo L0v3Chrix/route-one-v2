@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import DynamicResults from '../components/DynamicResults';
+import { INDUSTRY_LABELS } from '../lib/quizData';
 
 // Get URL params
 const url = new URL(Astro.request.url);
@@ -13,9 +14,20 @@ const opportunity = url.searchParams.get('opportunity') || '';
 const time = url.searchParams.get('time') || '';
 const entities = url.searchParams.get('entities') || '';
 const painLevel = url.searchParams.get('pain') || 'medium';
+
+// Get industry label for transition copy
+const industryLabel = INDUSTRY_LABELS[industry] || 'your industry';
+
+// Get canonical URL
+const canonicalUrl = new URL('/results', Astro.site || 'https://routeoneadvisory.com').href;
 ---
 
-<Layout title="Your Results — Route One Advisory">
+<Layout 
+  title="Your Results — Route One Advisory"
+  description="Your personalized financial operations diagnostic results. See where money is entering, exiting, and getting lost in your business."
+>
+  <link slot="head" rel="canonical" href={canonicalUrl} />
+  
   <main class="min-h-dvh px-6 py-12">
     <div class="max-w-3xl mx-auto">
       <DynamicResults 
@@ -29,7 +41,94 @@ const painLevel = url.searchParams.get('pain') || 'medium';
         time={time}
         entities={entities}
         painLevel={painLevel}
+        industryLabel={industryLabel}
       />
     </div>
   </main>
 </Layout>
+
+<script>
+  // Hydrate from localStorage if URL params are missing
+  import { hydrateFromSession, getStoredSession, isSessionExpired, clearSession } from '../lib/session';
+  import { buildRoutingProfile } from '../lib/quizRouting';
+  import { INDUSTRY_LABELS } from '../lib/quizData';
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // Check if we need to hydrate (no firstName in URL or generic)
+  if (!urlParams.has('firstName') || urlParams.get('firstName') === 'there') {
+    const session = getStoredSession();
+    
+    // Check for expired session
+    if (session?.savedAt && isSessionExpired(session.savedAt)) {
+      clearSession();
+      // Redirect to home if session expired and no URL params
+      window.location.href = '/';
+    } else if (session?.state?.answers && session?.state?.contact) {
+      // Rebuild the query string from session data
+      const { answers, contact, tags } = session.state;
+      
+      // Calculate score and routing profile manually
+      let score = 50;
+      
+      // Books status
+      if (tags?.includes('books:current')) score += 20;
+      else if (tags?.includes('books:behind')) score -= 10;
+      else if (tags?.includes('books:far-behind')) score -= 25;
+      else if (tags?.includes('books:never')) score -= 35;
+      else if (tags?.includes('books:unsure')) score -= 20;
+      
+      // Entity complexity
+      if (tags?.includes('entities:single')) score += 10;
+      else if (tags?.includes('entities:few')) score += 5;
+      else if (tags?.includes('entities:several')) score -= 10;
+      else if (tags?.includes('entities:many')) score -= 20;
+      
+      // Pain signals
+      if (tags?.includes('pain:trust')) score -= 15;
+      if (tags?.includes('pain:visibility')) score -= 10;
+      if (tags?.includes('pain:founder-time')) score -= 10;
+      if (tags?.includes('pain:overwhelm')) score -= 15;
+      
+      // Consequences
+      if (tags?.includes('consequence:direct')) score -= 15;
+      else if (tags?.includes('consequence:indirect')) score -= 5;
+      
+      // Time spent
+      if (tags?.includes('time:delegated')) score += 10;
+      else if (tags?.includes('time:significant')) score -= 10;
+      else if (tags?.includes('time:excessive')) score -= 20;
+      
+      score = Math.max(0, Math.min(100, score));
+      
+      // Build pain level
+      const highPainTags = ['books:far-behind', 'books:never', 'pain:trust', 'consequence:direct', 'time:excessive'];
+      const medPainTags = ['books:behind', 'books:unsure', 'pain:founder-time', 'consequence:indirect', 'time:significant'];
+      const highPainCount = tags?.filter((t: string) => highPainTags.includes(t)).length || 0;
+      const medPainCount = tags?.filter((t: string) => medPainTags.includes(t)).length || 0;
+      
+      let painLevel = 'low';
+      if (highPainCount >= 2) painLevel = 'high';
+      else if (highPainCount >= 1 || medPainCount >= 2) painLevel = 'medium';
+      
+      const newParams = new URLSearchParams({
+        firstName: contact.firstName || 'there',
+        industry: answers.industry || 'other',
+        entities: answers.entityCount || '',
+        books: answers.booksStatus || '',
+        frustration: answers.frustration || '',
+        opportunity: answers.opportunity || '',
+        time: answers.personalTime || '',
+        score: score.toString(),
+        pain: painLevel,
+      });
+      
+      // Update URL without reload (so component gets hydrated data)
+      const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+      window.history.replaceState({}, '', newUrl);
+      
+      // Reload to pick up new params
+      window.location.reload();
+    }
+  }
+</script>

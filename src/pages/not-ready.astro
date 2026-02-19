@@ -8,11 +8,11 @@ import Layout from '../layouts/Layout.astro';
       
       <h1 class="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-4 fade-up">
         Not ready yet?<br />
-        <span class="text-ro-gold">No pressure.</span>
+        <span class="text-ro-gold">That's okay.</span>
       </h1>
       
       <p class="text-lg text-ro-text-dim mb-8 fade-up fade-up-delay-1">
-        Not every company needs a full finance team today. That's okay. But you might want to know when you do.
+        Not every company needs a full finance team today. But you might want to know when you do.
       </p>
       
       <!-- Lead Magnet Offer -->
@@ -27,8 +27,10 @@ import Layout from '../layouts/Layout.astro';
           A quick reference to know when it's time to level up your finance operations.
         </p>
         
-        <form class="space-y-3">
+        <form id="exit-form" class="space-y-3">
+          <label for="exit-email" class="sr-only">Your email</label>
           <input
+            id="exit-email"
             type="email"
             placeholder="Your email"
             required
@@ -36,11 +38,18 @@ import Layout from '../layouts/Layout.astro';
           />
           <button
             type="submit"
+            id="exit-submit"
             class="w-full bg-ro-green hover:bg-ro-green-light text-white font-semibold py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-card"
           >
             Send Me the Checklist
           </button>
         </form>
+        
+        <!-- Success message (hidden by default) -->
+        <div id="exit-success" class="hidden text-center py-4">
+          <p class="text-ro-green font-medium mb-2">✓ You're on the list</p>
+          <p class="text-ro-text-dim text-sm">Check your email — we'll send the checklist shortly.</p>
+        </div>
       </div>
       
       <!-- Gentle Reminder -->
@@ -53,7 +62,7 @@ import Layout from '../layouts/Layout.astro';
       <div class="mt-8 fade-up fade-up-delay-4">
         <a 
           href="/"
-          class="text-ro-text-dim hover:text-ro-gold transition-colors text-sm"
+          class="text-ro-text-dim hover:text-ro-gold transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold"
         >
           ← Back to home
         </a>
@@ -62,3 +71,64 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </main>
 </Layout>
+
+<script>
+  import { submitToSheets } from '../lib/sheets';
+  import { getUtm, getClickIds } from '../lib/utm';
+  import { trackEvent } from '../lib/analytics';
+
+  const form = document.getElementById('exit-form') as HTMLFormElement;
+  const emailInput = document.getElementById('exit-email') as HTMLInputElement;
+  const submitBtn = document.getElementById('exit-submit') as HTMLButtonElement;
+  const successMsg = document.getElementById('exit-success') as HTMLDivElement;
+
+  if (form && emailInput && submitBtn && successMsg) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = emailInput.value.trim();
+      if (!email) return;
+      
+      // Disable form while submitting
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      
+      // Get attribution data
+      const utm = getUtm();
+      const clicks = getClickIds();
+      
+      // Submit to Sheets
+      await submitToSheets({
+        submissionType: 'exit_pdf',
+        firstName: '',
+        email,
+        company: '',
+        industry: '',
+        entityCount: '',
+        booksStatus: '',
+        frustration: '',
+        opportunity: '',
+        personalTime: '',
+        tier: '',
+        painLevel: '',
+        urgency: '',
+        maturityScore: 0,
+        caseStudyRoute: '',
+        industryLabel: '',
+        utmSource: utm.utm_source,
+        utmMedium: utm.utm_medium,
+        utmCampaign: utm.utm_campaign,
+        utmContent: utm.utm_content,
+        gclid: clicks.gclid,
+        fbclid: clicks.fbclid,
+      });
+      
+      // Track event
+      trackEvent('exit_pdf_request');
+      
+      // Show success, hide form
+      form.classList.add('hidden');
+      successMsg.classList.remove('hidden');
+    });
+  }
+</script>

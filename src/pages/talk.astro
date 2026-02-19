@@ -1,9 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import SavingsCalculator from '../components/SavingsCalculator';
+import SectionBridge from '../components/SectionBridge';
 ---
 
-<Layout title="Let's Talk — Route One Advisory">
+<Layout 
+  title="Let's Talk — Route One Advisory"
+  description="Book a 15-minute call with the Route One team. See what a managed finance department looks like for your business."
+>
   <main class="min-h-dvh">
     
     <!-- Section: The Team -->
@@ -77,23 +80,25 @@ import SavingsCalculator from '../components/SavingsCalculator';
         </div>
       </div>
     </section>
-    
-    <!-- Section: The Math (Dynamic Calculator) -->
-    <section class="px-6 py-16 md:py-24 bg-ro-darker">
-      <div class="max-w-3xl mx-auto">
-        <div class="text-center mb-8">
-          <p class="text-ro-green text-sm font-medium tracking-widest uppercase mb-4 fade-up">
-            The Math
-          </p>
-          <h2 class="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-4 fade-up fade-up-delay-1">
-            What does your current setup actually cost?
-          </h2>
-          <p class="text-lg text-ro-text-dim fade-up fade-up-delay-2">
-            Most founders undercount by 40% or more because they forget their own time.
-          </p>
-        </div>
-        
-        <SavingsCalculator client:visible />
+
+    <!-- Bridge 3: Talk -->
+    <section class="px-6 fade-up">
+      <div class="max-w-4xl mx-auto">
+        <SectionBridge 
+          client:visible
+          prompt="What would you do with that time back?"
+          options={[
+            { label: 'Focus on deals', value: 'focus-deals' },
+            { label: 'Actually take a vacation', value: 'vacation' },
+            { label: 'Grow the business', value: 'grow-business' },
+          ]}
+          followUp={{
+            'focus-deals': "That's where you should be.",
+            'vacation': "You've earned it.",
+            'grow-business': "Hard to do when you're closing the books.",
+          }}
+          storageKey="talk"
+        />
       </div>
     </section>
     
@@ -101,24 +106,38 @@ import SavingsCalculator from '../components/SavingsCalculator';
     <section class="px-6 py-16 md:py-24">
       <div class="max-w-2xl mx-auto text-center">
         <h2 class="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-4 fade-up">
-          Let's see what's hiding in your numbers.
+          You've seen the diagnostic. You've seen the proof. There's one step left.
         </h2>
         <p class="text-lg text-ro-text-dim mb-8 fade-up fade-up-delay-1">
-          15 minutes. No pitch. Just a diagnostic.
+          15 minutes with the team above. We'll show you what Route One looks like for your business.
         </p>
         
-        <!-- Calendar Placeholder -->
+        <!-- Calendar Embed -->
         <div class="bg-ro-card border border-ro-card-border rounded-xl p-8 mb-8 fade-up fade-up-delay-2">
           <p class="text-ro-text-dim mb-4">Book a time that works for you:</p>
           
-          <!-- Placeholder for calendar embed -->
-          <div class="bg-ro-darker rounded-lg p-8 text-center">
-            <p class="text-ro-text-dim mb-4">Calendar integration coming soon</p>
-            <a 
-              href="mailto:mitch@routeoneadvisory.com?subject=Route%20One%20Diagnostic%20Call&body=I%20just%20went%20through%20your%20funnel%20and%20would%20like%20to%20schedule%20a%20diagnostic%20call."
-              class="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white font-semibold px-6 py-3 rounded-lg transition-colors"
-            >
-              Email to Schedule →
+          <!-- Configurable calendar embed: Set data-calendar-url to embed calendar, leave empty for mailto fallback -->
+          <div id="calendar-embed" class="bg-ro-darker rounded-lg overflow-hidden" style="min-height: 500px;">
+            <div data-calendar-url="" id="calendar-container" class="p-8 text-center">
+              <!-- Mailto fallback (shown when no calendar URL is set) -->
+              <div id="calendar-fallback">
+                <p class="text-ro-text-dim mb-4">Ready to talk?</p>
+                <a 
+                  href="mailto:mitch@routeoneadvisory.com?subject=Route%20One%20Diagnostic%20Call&body=I%20just%20went%20through%20your%20funnel%20and%20would%20like%20to%20schedule%20a%20diagnostic%20call."
+                  class="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white font-semibold px-6 py-3 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ro-dark min-h-[48px]"
+                >
+                  Email to Schedule →
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- WhatsApp CTA -->
+          <div class="text-center mt-6">
+            <p class="text-ro-text-dim text-sm mb-2">Prefer a quick message?</p>
+            <a id="whatsapp-cta" href="#" target="_blank"
+               class="text-ro-green hover:text-ro-green-light transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold">
+              Message us on WhatsApp →
             </a>
           </div>
         </div>
@@ -127,7 +146,7 @@ import SavingsCalculator from '../components/SavingsCalculator';
         <div class="fade-up fade-up-delay-3">
           <a 
             href="/not-ready"
-            class="text-ro-text-dim hover:text-ro-gold transition-colors text-sm"
+            class="text-ro-text-dim hover:text-ro-gold transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold"
           >
             Not ready yet? That's okay →
           </a>
@@ -136,4 +155,59 @@ import SavingsCalculator from '../components/SavingsCalculator';
     </section>
     
   </main>
+  
+  <script>
+    import { getStoredSession, isSessionExpired, clearSession } from '../lib/session';
+    
+    // Calendar embed: if data-calendar-url is set, replace fallback with iframe
+    const container = document.getElementById('calendar-container');
+    const fallback = document.getElementById('calendar-fallback');
+    const url = container?.getAttribute('data-calendar-url');
+    
+    if (url && url.trim() !== '') {
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.style.cssText = 'width:100%;height:500px;border:none;';
+      iframe.loading = 'lazy';
+      iframe.title = 'Schedule a call with Route One Advisory';
+      if (fallback) fallback.remove();
+      container?.appendChild(iframe);
+    }
+    
+    // Session expiry check
+    const session = getStoredSession();
+    if (session?.savedAt && isSessionExpired(session.savedAt)) {
+      clearSession();
+    }
+    
+    // WhatsApp CTA: pre-populate message from localStorage quiz data
+    const waLink = document.getElementById('whatsapp-cta') as HTMLAnchorElement | null;
+    if (waLink) {
+      try {
+        const stored = session;
+        const state = stored?.state;
+        let msgParts = ['I just went through the Route One diagnostic.'];
+        
+        if (state?.contact?.firstName) {
+          msgParts = [`Hi, I'm ${state.contact.firstName}. I just went through the Route One diagnostic.`];
+        }
+        
+        if (state?.answers) {
+          msgParts.push('(Diagnostic completed)');
+        }
+        
+        if (state?.contact?.company) {
+          msgParts.push(`Company: ${state.contact.company}`);
+        }
+        
+        msgParts.push("I'd like to talk.");
+        
+        const msg = encodeURIComponent(msgParts.join(' '));
+        waLink.href = `https://wa.me/?text=${msg}`;
+        // TODO: Add Route One WhatsApp number when provided (format: https://wa.me/1234567890?text=...)
+      } catch {
+        waLink.href = `https://wa.me/?text=${encodeURIComponent("I just went through the Route One diagnostic. I'd like to talk.")}`;
+      }
+    }
+  </script>
 </Layout>

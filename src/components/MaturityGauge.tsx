@@ -52,9 +52,9 @@ export default function MaturityGauge({ score, dimensions }: MaturityGaugeProps)
 
   return (
     <div className="flex flex-col items-center">
-      {/* Circular Gauge */}
-      <div className="relative w-48 h-48 mb-6">
-        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+      {/* Circular Gauge - responsive sizing */}
+      <div className="relative w-40 h-40 sm:w-48 sm:h-48 mb-6" role="img" aria-label={`Financial Operations Maturity Score: ${animatedScore} out of 100. ${getScoreLabel(animatedScore)}`}>
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
           {/* Background circle */}
           <circle
             cx="50"
@@ -81,12 +81,13 @@ export default function MaturityGauge({ score, dimensions }: MaturityGaugeProps)
         {/* Score in center */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span 
-            className="text-5xl font-bold transition-colors"
+            className="text-4xl sm:text-5xl font-bold transition-colors"
             style={{ color: getScoreColor(animatedScore) }}
+            aria-hidden="true"
           >
             {animatedScore}
           </span>
-          <span className="text-ro-text-dim text-sm">out of 100</span>
+          <span className="text-ro-text-dim text-xs sm:text-sm" aria-hidden="true">out of 100</span>
         </div>
       </div>
 

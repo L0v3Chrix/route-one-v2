@@ -85,19 +85,24 @@ export default function InactionCalculator({
         {/* Revenue Slider */}
         <div>
           <div className="flex justify-between mb-2">
-            <label className="text-ro-text-dim text-sm">Annual Revenue</label>
-            <span className="text-ro-text-bright font-mono">{formatCurrency(revenue)}</span>
+            <label htmlFor="revenue-slider" className="text-ro-text-dim text-sm">Annual Revenue</label>
+            <span className="text-ro-text-bright font-mono" aria-live="polite">{formatCurrency(revenue)}</span>
           </div>
           <input
+            id="revenue-slider"
             type="range"
             min={1000000}
             max={50000000}
             step={500000}
             value={revenue}
             onChange={(e) => setRevenue(Number(e.target.value))}
-            className="w-full h-2 bg-ro-darker rounded-lg appearance-none cursor-pointer accent-ro-green"
+            aria-label={`Annual Revenue: ${formatCurrency(revenue)}`}
+            aria-valuemin={1000000}
+            aria-valuemax={50000000}
+            aria-valuenow={revenue}
+            className="w-full h-2 bg-ro-darker rounded-lg cursor-pointer"
           />
-          <div className="flex justify-between text-xs text-ro-text-dim mt-1">
+          <div className="flex justify-between text-xs text-ro-text-dim mt-1" aria-hidden="true">
             <span>$1M</span>
             <span>$50M</span>
           </div>
@@ -106,37 +111,47 @@ export default function InactionCalculator({
         {/* Days Behind Slider */}
         <div>
           <div className="flex justify-between mb-2">
-            <label className="text-ro-text-dim text-sm">Days Behind on Books</label>
-            <span className="text-ro-text-bright font-mono">{daysBehind} days</span>
+            <label htmlFor="days-slider" className="text-ro-text-dim text-sm">Days Behind on Books</label>
+            <span className="text-ro-text-bright font-mono" aria-live="polite">{daysBehind} days</span>
           </div>
           <input
+            id="days-slider"
             type="range"
             min={0}
             max={365}
             step={15}
             value={daysBehind}
             onChange={(e) => setDaysBehind(Number(e.target.value))}
-            className="w-full h-2 bg-ro-darker rounded-lg appearance-none cursor-pointer accent-ro-green"
+            aria-label={`Days Behind on Books: ${daysBehind} days`}
+            aria-valuemin={0}
+            aria-valuemax={365}
+            aria-valuenow={daysBehind}
+            className="w-full h-2 bg-ro-darker rounded-lg cursor-pointer"
           />
-          <div className="flex justify-between text-xs text-ro-text-dim mt-1">
+          <div className="flex justify-between text-xs text-ro-text-dim mt-1" aria-hidden="true">
             <span>Current</span>
             <span>1 year+</span>
           </div>
         </div>
 
         {/* Financing Denial Toggle */}
-        <div className="flex items-center justify-between">
-          <label className="text-ro-text-dim text-sm">Ever denied financing due to financials?</label>
+        <div className="flex items-center justify-between gap-4">
+          <label htmlFor="financing-toggle" className="text-ro-text-dim text-sm flex-1">Ever denied financing due to financials?</label>
           <button
+            id="financing-toggle"
+            role="switch"
+            aria-checked={deniedFinancing}
+            aria-label={`Denied financing: ${deniedFinancing ? 'Yes' : 'No'}`}
             onClick={() => setDeniedFinancing(!deniedFinancing)}
-            className={`relative w-12 h-6 rounded-full transition-colors ${
+            className={`relative w-12 h-7 min-w-[48px] min-h-[28px] rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ro-dark ${
               deniedFinancing ? 'bg-ro-gold' : 'bg-ro-darker'
             }`}
           >
             <span
-              className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                deniedFinancing ? 'translate-x-7' : 'translate-x-1'
+              className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform ${
+                deniedFinancing ? 'translate-x-6' : 'translate-x-1'
               }`}
+              aria-hidden="true"
             />
           </button>
         </div>

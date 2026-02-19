@@ -1,10 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Quiz from '../components/Quiz';
+import QuizReturnCheck from '../components/QuizReturnCheck';
 ---
 
-<Layout title="Financial Operations Diagnostic — Route One Advisory">
-  <Quiz client:load />
+<Layout 
+  title="Financial Operations Diagnostic — Route One Advisory"
+  description="Answer 6 quick questions to discover where money is entering, exiting, and getting lost in your business."
+>
+  <QuizReturnCheck client:load />
 </Layout>
 
 <style>

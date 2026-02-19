@@ -1,21 +1,40 @@
 @import "tailwindcss";
 
+/* TODO: Add Graphik Trial font files to /public/fonts/ */
+/* Files needed: Graphik-Regular.woff2, Graphik-Medium.woff2 */
+@font-face {
+  font-family: 'Graphik';
+  src: url('/fonts/Graphik-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Graphik';
+  src: url('/fonts/Graphik-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  /* Route One Brand Colors */
-  --color-ro-green: #2D5A3D;
-  --color-ro-green-light: #3D7A53;
-  --color-ro-dark: #0F172A;
-  --color-ro-darker: #0A0F1C;
+  /* Route One Brand Colors — V2 Rebrand */
+  --color-ro-green: #0F383C;
+  --color-ro-green-light: #1A4F54;
+  --color-ro-dark: #0A0F0F;
+  --color-ro-darker: #060B0B;
   --color-ro-gold: #C9985A;
   --color-ro-gold-light: #D9B07A;
-  --color-ro-text: #E5E7EB;
-  --color-ro-text-bright: #F9FAFB;
-  --color-ro-text-dim: #9CA3AF;
-  --color-ro-card: #1E293B;
-  --color-ro-card-border: #334155;
+  --color-ro-text: #E5EBE8;
+  --color-ro-text-bright: #F5F9F7;
+  --color-ro-text-dim: #8A9B93;
+  --color-ro-card: #132828;
+  --color-ro-card-border: #1F3F3F;
+  --color-ro-secondary: #A7BCB2;
+  --color-ro-secondary-light: #BFD0C7;
 
-  /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  /* Typography — Graphik with Inter fallback */
+  --font-sans: 'Graphik', 'Inter', system-ui, -apple-system, sans-serif;
 
   /* Animations */
   --animate-fade-in: fadeIn 0.5s ease forwards;
@@ -40,8 +59,8 @@
 
 @layer base {
   :root {
-    --ro-green: #2D5A3D;
-    --ro-dark: #0F172A;
+    --ro-green: #0F383C;
+    --ro-dark: #0A0F0F;
     --ro-gold: #C9985A;
   }
 
@@ -49,6 +68,8 @@
     background-color: var(--ro-dark);
     color: var(--color-ro-text);
     scroll-behavior: smooth;
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
   }
 
   body {
@@ -56,12 +77,84 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100dvh;
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
   }
 
-  /* Focus states for accessibility */
+  /* Focus states for accessibility - WCAG 2.1 AA compliant */
   :focus-visible {
     outline: 2px solid var(--ro-gold);
     outline-offset: 2px;
+  }
+
+  /* Ensure focus ring is visible on dark backgrounds */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--ro-gold);
+    outline-offset: 2px;
+  }
+
+  /* Range slider styling for accessibility (min 44px touch target) */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  /* Thumb styling - Webkit (Chrome, Safari, Edge) */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--ro-gold);
+    cursor: pointer;
+    margin-top: -10px;
+    /* Touch target area (invisible but tappable) */
+    box-shadow: 0 0 0 10px transparent;
+  }
+
+  /* Hover state for thumb */
+  input[type="range"]:hover::-webkit-slider-thumb {
+    background: var(--color-ro-gold-light);
+    transform: scale(1.1);
+  }
+
+  /* Focus state for thumb */
+  input[type="range"]:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--ro-gold);
+    outline-offset: 4px;
+  }
+
+  /* Track styling - Webkit */
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    background: var(--color-ro-darker);
+    border-radius: 4px;
+  }
+
+  /* Thumb styling - Firefox */
+  input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--ro-gold);
+    cursor: pointer;
+    border: none;
+  }
+
+  /* Track styling - Firefox */
+  input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: var(--color-ro-darker);
+    border-radius: 4px;
   }
 
   /* Progressive enhancement animations */
@@ -89,6 +182,17 @@
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Mobile optimization layer */
+@layer utilities {
+  /* Ensure minimum touch targets (48px) on mobile */
+  @media (max-width: 640px) {
+    .min-touch-target {
+      min-height: 48px;
+      min-width: 48px;
     }
   }
 }

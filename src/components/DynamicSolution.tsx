@@ -1,14 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getIndustryContent, type IndustryContent } from '../lib/industryContent';
+import SectionBridge from './SectionBridge';
 
 interface DynamicSolutionProps {
   industry: string;
 }
 
+// Check if IntersectionObserver is available (progressive enhancement)
+const hasIntersectionObserver = typeof window !== 'undefined' && 'IntersectionObserver' in window;
+
 export default function DynamicSolution({ industry: initialIndustry }: DynamicSolutionProps) {
   const [content, setContent] = useState<IndustryContent | null>(null);
-  const [visibleMetrics, setVisibleMetrics] = useState<number[]>([]);
+  // Default to all visible for no-JS/WhatsApp safety
+  const [visibleMetrics, setVisibleMetrics] = useState<number[]>(!hasIntersectionObserver ? [0, 1, 2, 3] : []);
+  const [showQuote, setShowQuote] = useState(!hasIntersectionObserver);
+  const [showOutcome, setShowOutcome] = useState(!hasIntersectionObserver);
   const [industry, setIndustry] = useState(initialIndustry);
+  const [hasAnimated, setHasAnimated] = useState(!hasIntersectionObserver);
+  
+  // Ref for IntersectionObserver
+  const metricsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Check localStorage for industry if we got 'other' from URL
@@ -32,19 +43,62 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
 
   useEffect(() => {
     setContent(getIndustryContent(industry));
-    setVisibleMetrics([]); // Reset metrics when industry changes
+    // Only reset for animation if IntersectionObserver exists
+    if (hasIntersectionObserver) {
+      setVisibleMetrics([]);
+      setShowQuote(false);
+      setShowOutcome(false);
+      setHasAnimated(false);
+    }
   }, [industry]);
 
+  // IntersectionObserver to trigger stagger animation when metrics section is in view
   useEffect(() => {
-    // Stagger metric reveals
-    if (content) {
-      content.caseStudy.metrics.forEach((_, i) => {
-        setTimeout(() => {
-          setVisibleMetrics(prev => [...prev, i]);
-        }, 500 + i * 300);
-      });
+    if (!hasIntersectionObserver || !content || hasAnimated) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasAnimated) {
+            setHasAnimated(true);
+            // Stagger metric reveals
+            content.caseStudy.metrics.forEach((_, i) => {
+              setTimeout(() => {
+                setVisibleMetrics(prev => [...prev, i]);
+              }, 300 + i * 250);
+            });
+            
+            // Show quote after all metrics
+            const totalMetricTime = 300 + content.caseStudy.metrics.length * 250;
+            setTimeout(() => setShowQuote(true), totalMetricTime + 400);
+            
+            // Show outcome after quote
+            setTimeout(() => setShowOutcome(true), totalMetricTime + 800);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (metricsRef.current) {
+      observer.observe(metricsRef.current);
     }
-  }, [content]);
+
+    return () => observer.disconnect();
+  }, [content, hasAnimated]);
+
+  // Bridge 2 configuration
+  const bridgeOptions = [
+    { label: 'Exactly this', value: 'exactly-this' },
+    { label: 'Something similar', value: 'something-similar' },
+    { label: 'Need to think about it', value: 'need-to-think' },
+  ];
+
+  const bridgeFollowUp: Record<string, string> = {
+    'exactly-this': "Then let's talk about how fast we can get you there.",
+    'something-similar': "Every engagement is custom. We'll show you what yours looks like.",
+    'need-to-think': "Take your time. The math doesn't change.",
+  };
 
   if (!content) return null;
 
@@ -103,11 +157,11 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
               The Route One Model
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-4">
-              We don't rent you employees.<br />
-              We run your finance department.
+              What if you could replace your entire accounting headcount<br />
+              with a managed department — for less?
             </h2>
             <p className="text-lg text-ro-text-dim max-w-2xl mx-auto">
-              One team. Full coverage. Guaranteed results.
+              That's not a pitch. It's the math. Here's how it works.
             </p>
           </div>
           
@@ -184,13 +238,20 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
             </p>
           </div>
           
-          {/* Metrics Grid */}
-          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+          {/* What changed label */}
+          <p className="text-ro-text-dim text-sm text-center mb-6">What changed:</p>
+          
+          {/* Metrics Grid - with IntersectionObserver trigger */}
+          <div ref={metricsRef} className="grid sm:grid-cols-2 gap-4 mb-8">
             {content.caseStudy.metrics.map((metric, i) => (
               <div 
                 key={metric.label}
                 className={`bg-ro-card border border-ro-card-border rounded-xl p-6 transition-all duration-500 ${
-                  visibleMetrics.includes(i) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  visibleMetrics.includes(i) 
+                    ? 'opacity-100 translate-y-0' 
+                    : hasIntersectionObserver 
+                      ? 'opacity-0 translate-y-4' 
+                      : ''
                 }`}
               >
                 <p className="text-ro-text-dim text-sm mb-3">{metric.label}</p>
@@ -209,8 +270,14 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
             ))}
           </div>
           
-          {/* Quote */}
-          <div className="bg-ro-darker rounded-xl p-8 text-center">
+          {/* Quote - stagger reveal after metrics */}
+          <div className={`bg-ro-darker rounded-xl p-8 text-center transition-all duration-500 ${
+            showQuote 
+              ? 'opacity-100 translate-y-0' 
+              : hasIntersectionObserver 
+                ? 'opacity-0 translate-y-4' 
+                : ''
+          }`}>
             <blockquote className="text-xl sm:text-2xl text-ro-text-bright italic mb-4">
               "{content.caseStudy.quote}"
             </blockquote>
@@ -219,10 +286,28 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
             </p>
           </div>
           
-          {/* Outcome */}
-          <p className="text-ro-text text-center mt-8 max-w-2xl mx-auto">
+          {/* Outcome - revealed after quote */}
+          <p className={`text-ro-text text-center mt-8 max-w-2xl mx-auto transition-all duration-500 ${
+            showOutcome 
+              ? 'opacity-100' 
+              : hasIntersectionObserver 
+                ? 'opacity-0' 
+                : ''
+          }`}>
             {content.caseStudy.outcome}
           </p>
+        </div>
+      </section>
+
+      {/* Bridge 2: Solution */}
+      <section className="px-6">
+        <div className="max-w-4xl mx-auto">
+          <SectionBridge
+            prompt="Is this the kind of outcome you're looking for?"
+            options={bridgeOptions}
+            followUp={bridgeFollowUp}
+            storageKey="solution"
+          />
         </div>
       </section>
 
@@ -276,20 +361,20 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA with Enhanced Transition Copy */}
       <section className="px-6 py-16 md:py-24">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-ro-text-bright mb-4">
-            Ready to meet the team?
-          </h2>
-          <p className="text-ro-text-dim mb-8">
-            Big Four rigor. Startup energy. No assholes.
+          <p className="text-lg text-ro-text mb-2">
+            The model works. The proof is above.
+          </p>
+          <p className="text-lg text-ro-text-bright font-medium mb-8">
+            The only question is who's behind it.
           </p>
           <a 
             href="/talk"
             className="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
           >
-            Meet the Team
+            Meet the Team Behind It
             <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

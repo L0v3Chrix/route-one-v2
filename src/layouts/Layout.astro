@@ -2,12 +2,18 @@
 interface Props {
   title?: string;
   description?: string;
+  canonical?: string;
 }
 
 const { 
   title = "Route One Advisory — See What's Hiding in Your Numbers",
-  description = "Take the 90-second financial operations diagnostic. Discover where money is entering, exiting, and getting lost in your business."
+  description = "Take the 90-second financial operations diagnostic. Discover where money is entering, exiting, and getting lost in your business.",
+  canonical
 } = Astro.props;
+
+// Build canonical URL if not provided
+const siteUrl = Astro.site || new URL('https://routeoneadvisory.com');
+const canonicalUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
 ---
 
 <!doctype html>
@@ -17,25 +23,38 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+    
     <!-- Open Graph / Social -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:image" content={new URL('/og-image.jpg', siteUrl).href} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL('/og-image.jpg', siteUrl).href} />
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Fonts: Graphik loaded via @font-face in global.css, falls back to Inter/system -->
+    
+    <!-- Additional head content slot -->
+    <slot name="head" />
     
     <title>{title}</title>
   </head>
   <body class="bg-ro-dark text-ro-text antialiased">
     <slot />
+    
+    <!-- UTM & Click ID Capture -->
+    <script>
+      import { captureUtmParams } from '../lib/utm';
+      captureUtmParams();
+    </script>
   </body>
 </html>
 

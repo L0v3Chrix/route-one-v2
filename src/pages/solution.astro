@@ -7,32 +7,38 @@ const url = new URL(Astro.request.url);
 const industry = url.searchParams.get('industry') || 'other';
 ---
 
-<Layout title="The Route One Model — Route One Advisory">
+<Layout 
+  title="The Route One Model — Route One Advisory"
+  description="See how companies in your industry solved their financial operations challenges with a managed finance department."
+>
   <main>
-    <DynamicSolution client:load industry={industry} />
+    <DynamicSolution client:visible industry={industry} />
   </main>
 </Layout>
 
 <script>
+  import { getStoredSession, isSessionExpired, clearSession } from '../lib/session';
+  
   // On page load, check localStorage for industry if not in URL
   const urlParams = new URLSearchParams(window.location.search);
+  
   if (!urlParams.has('industry')) {
-    try {
-      const stored = localStorage.getItem('ro_quiz_v2');
-      if (stored) {
-        const data = JSON.parse(stored);
-        const industry = data?.state?.answers?.industry;
-        if (industry && industry !== 'other') {
-          // Redirect with industry param for consistent experience
-          const newUrl = new URL(window.location.href);
-          newUrl.searchParams.set('industry', industry);
-          window.history.replaceState({}, '', newUrl.toString());
-          // Trigger a re-render by dispatching a custom event
-          window.dispatchEvent(new CustomEvent('industryLoaded', { detail: industry }));
-        }
+    const session = getStoredSession();
+    
+    // Check for expired session
+    if (session?.savedAt && isSessionExpired(session.savedAt)) {
+      clearSession();
+      // No redirect needed, just show generic content
+    } else if (session?.state?.answers?.industry) {
+      const industry = session.state.answers.industry;
+      if (industry && industry !== 'other') {
+        // Redirect with industry param for consistent experience
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('industry', industry);
+        window.history.replaceState({}, '', newUrl.toString());
+        // Trigger a re-render by dispatching a custom event
+        window.dispatchEvent(new CustomEvent('industryLoaded', { detail: industry }));
       }
-    } catch (e) {
-      // Ignore localStorage errors
     }
   }
 </script>
