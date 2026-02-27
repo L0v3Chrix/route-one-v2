@@ -40,6 +40,19 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     
+    <!-- Enhancement #33: Preload Critical Assets -->
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Preload critical fonts (if Graphik files exist) -->
+    <link rel="preload" href="/fonts/Graphik-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Graphik-Medium.woff2" as="font" type="font/woff2" crossorigin />
+    
+    <!-- DNS prefetch for potential external services -->
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://sheets.googleapis.com" />
+    
     <!-- Fonts: Graphik loaded via @font-face in global.css, falls back to Inter/system -->
     
     <!-- Additional head content slot -->
