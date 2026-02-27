@@ -170,7 +170,7 @@ export default function InactionCalculator({
         {/* Breakdown */}
         <div className="mt-6 pt-6 border-t border-ro-card-border text-left space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-ro-text-dim">Visibility blindspots</span>
+            <span className="text-ro-text-dim">Visibility blind spots</span>
             <span className="text-ro-text">{formatCurrency(revenue * 0.02)}</span>
           </div>
           <div className="flex justify-between text-sm">

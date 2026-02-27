@@ -138,12 +138,7 @@ export default function DiagnosticFindings({
   return (
     <div className="space-y-6">
       {/* Primary Finding */}
-      <div
-        
-        
-        transition={{ delay: 0.2 }}
-        className="bg-red-500/10 border border-red-500/30 rounded-lg p-5"
-      >
+      <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-5">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
             <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,12 +153,7 @@ export default function DiagnosticFindings({
       </div>
 
       {/* Books Timing Impact */}
-      <div
-        
-        
-        transition={{ delay: 0.4 }}
-        className="bg-ro-card border border-ro-card-border rounded-lg p-5"
-      >
+      <div className="bg-ro-card border border-ro-card-border rounded-lg p-5">
         <div className="flex justify-between items-start mb-3">
           <p className="text-ro-gold font-medium">Data Currency</p>
           <p className="text-ro-text-dim text-sm">{booksData.delay} behind</p>
@@ -177,23 +167,13 @@ export default function DiagnosticFindings({
       </div>
 
       {/* Entity Complexity */}
-      <div
-        
-        
-        transition={{ delay: 0.6 }}
-        className="bg-ro-card border border-ro-card-border rounded-lg p-5"
-      >
+      <div className="bg-ro-card border border-ro-card-border rounded-lg p-5">
         <p className="text-ro-gold font-medium mb-2">Structural Complexity</p>
         <p className="text-ro-text text-sm">{entityData}</p>
       </div>
 
       {/* Case Study Teaser */}
-      <div
-        
-        
-        transition={{ delay: 0.8 }}
-        className="bg-gradient-to-br from-ro-green/10 to-ro-gold/5 border border-ro-green/30 rounded-lg p-5"
-      >
+      <div className="bg-gradient-to-br from-ro-green/10 to-ro-gold/5 border border-ro-green/30 rounded-lg p-5">
         <p className="text-ro-text-dim text-xs uppercase tracking-wider mb-2">From Our Files</p>
         <p className="text-ro-text text-sm mb-3">
           <span className="text-ro-text-bright font-medium">{caseStudy.company}</span> {caseStudy.situation}.
@@ -208,12 +188,7 @@ export default function DiagnosticFindings({
 
       {/* Opportunity Cost */}
       {opportunity === 'yes' && (
-        <div
-          
-          
-          transition={{ delay: 1.0 }}
-          className="bg-red-500/5 border border-red-500/20 rounded-lg p-5"
-        >
+        <div className="bg-red-500/5 border border-red-500/20 rounded-lg p-5">
           <p className="text-red-400 font-medium">You've already lost money to this.</p>
           <p className="text-ro-text-dim text-sm mt-1">
             The denied financing, the missed deal, the delayed opportunity — that's gone. The question is how much more you'll lose waiting.
@@ -222,12 +197,7 @@ export default function DiagnosticFindings({
       )}
 
       {/* Bottom Line */}
-      <div
-        
-        
-        transition={{ delay: 1.2 }}
-        className="text-center pt-4 border-t border-ro-card-border"
-      >
+      <div className="text-center pt-4 border-t border-ro-card-border">
         <p className="text-ro-text-dim text-sm mb-1">Based on your profile, companies like yours typically recover</p>
         <p className="text-ro-gold text-2xl font-bold">{estimatedImpact}</p>
         <p className="text-ro-text-dim text-sm">in annual margin once they get visibility</p>
