@@ -530,7 +530,7 @@ export default function DynamicResults({
           showPattern ? 'opacity-100 translate-y-0' : hasIntersectionObserver ? 'opacity-0 translate-y-4' : ''
         }`}
       >
-        <div className="max-w-xl mx-auto mb-8">
+        <div className="max-w-xl mx-auto mb-6">
           <p className="text-lg text-ro-text mb-2">
             Now you've seen the problem.
           </p>
@@ -538,6 +538,14 @@ export default function DynamicResults({
             Here's what other {industryLabel} companies did about it.
           </p>
         </div>
+        
+        {/* Proof-Near-CTA - Enhancement #12 */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          <span className="px-3 py-1.5 bg-ro-green/10 border border-ro-green/30 rounded-full text-xs text-ro-text-dim">
+            Companies in your position typically see results in <span className="text-ro-green font-medium">60 days</span>
+          </span>
+        </div>
+        
         <a
           href={`/solution?industry=${industry}`}
           className="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"

@@ -367,9 +367,20 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
           <p className="text-lg text-ro-text mb-2">
             The model works. You've seen the proof.
           </p>
-          <p className="text-lg text-ro-text-bright font-medium mb-8">
+          <p className="text-lg text-ro-text-bright font-medium mb-6">
             The only question is who's behind it.
           </p>
+          
+          {/* Proof-Near-CTA - Enhancement #12 */}
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            <span className="px-3 py-1.5 bg-ro-green/10 border border-ro-green/30 rounded-full text-xs text-ro-text-dim">
+              <span className="text-ro-green font-medium">$300M+</span> exits advised
+            </span>
+            <span className="px-3 py-1.5 bg-ro-green/10 border border-ro-green/30 rounded-full text-xs text-ro-text-dim">
+              <span className="text-ro-green font-medium">100%</span> retention
+            </span>
+          </div>
+          
           <a 
             href="/talk"
             className="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
