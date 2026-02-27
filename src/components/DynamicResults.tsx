@@ -3,6 +3,7 @@ import MaturityGauge from './MaturityGauge';
 import InactionCalculator from './InactionCalculator';
 import SectionBridge from './SectionBridge';
 import DiagnosticFindings from './DiagnosticFindings';
+import StickyCTA from './StickyCTA';
 import { getStoredSession, isSessionExpired, clearSession } from '../lib/session';
 
 interface DynamicResultsProps {
@@ -559,6 +560,13 @@ export default function DynamicResults({
           3 minutes. Real stories from {industryInsights[industry] ? 'your industry' : 'companies like yours'}.
         </p>
       </section>
+
+      {/* Enhancement #17: Sticky Bottom CTA Bar */}
+      <StickyCTA 
+        text="Ready to see how companies like yours solved this?"
+        buttonText="See Solutions"
+        href={`/solution?industry=${industry}`}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { getIndustryContent, type IndustryContent } from '../lib/industryContent';
 import SectionBridge from './SectionBridge';
+import StickyCTA from './StickyCTA';
 
 interface DynamicSolutionProps {
   industry: string;
@@ -392,6 +393,13 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
           </a>
         </div>
       </section>
+
+      {/* Enhancement #17: Sticky Bottom CTA Bar */}
+      <StickyCTA 
+        text="Ready to meet the team?"
+        buttonText="Book a Call"
+        href="/talk"
+      />
     </div>
   );
 }
