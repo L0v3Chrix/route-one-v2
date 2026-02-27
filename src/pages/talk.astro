@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import SectionBridge from '../components/SectionBridge';
+import AnimatedNumber from '../components/AnimatedNumber';
 ---
 
 <Layout 
@@ -66,16 +67,16 @@ import SectionBridge from '../components/SectionBridge';
           
         </div>
         
-        <!-- Credential Badges -->
+        <!-- Credential Badges - Enhancement #3: Animated Numbers -->
         <div class="flex flex-wrap justify-center gap-4 mb-16 fade-up fade-up-delay-4">
-          <div class="px-4 py-2 bg-ro-card border border-ro-card-border rounded-full text-sm text-ro-text-dim">
-            <span class="text-ro-gold font-semibold">$300M+</span> in exits advised
+          <div class="px-4 py-2 bg-ro-card border border-ro-card-border rounded-full text-sm text-ro-text-dim metric-glow">
+            <AnimatedNumber client:visible value={300} prefix="$" suffix="M+" className="text-ro-gold font-semibold" /> in exits advised
           </div>
-          <div class="px-4 py-2 bg-ro-card border border-ro-card-border rounded-full text-sm text-ro-text-dim">
-            <span class="text-ro-gold font-semibold">$400M+</span> budgets managed
+          <div class="px-4 py-2 bg-ro-card border border-ro-card-border rounded-full text-sm text-ro-text-dim metric-glow">
+            <AnimatedNumber client:visible value={400} prefix="$" suffix="M+" className="text-ro-gold font-semibold" /> budgets managed
           </div>
-          <div class="px-4 py-2 bg-ro-card border border-ro-card-border rounded-full text-sm text-ro-text-dim">
-            <span class="text-ro-gold font-semibold">$175M+</span> capital raised
+          <div class="px-4 py-2 bg-ro-card border border-ro-card-border rounded-full text-sm text-ro-text-dim metric-glow">
+            <AnimatedNumber client:visible value={175} prefix="$" suffix="M+" className="text-ro-gold font-semibold" /> capital raised
           </div>
         </div>
       </div>

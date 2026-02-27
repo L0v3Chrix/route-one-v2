@@ -107,10 +107,10 @@ function NewVisitorHero() {
           Route One Advisory
         </p>
         
-        {/* Headline */}
+        {/* Headline - Enhancement #4: Kinetic typography on key phrase */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-ro-text-bright leading-tight mb-6 fade-up fade-up-delay-1">
           Most companies don't have a profit problem.<br />
-          <span className="text-ro-gold">They have a visibility problem.</span>
+          <span className="text-ro-gold pulse-gold">They have a visibility problem.</span>
         </h1>
         
         {/* Subhead with NEPQ pull-back */}

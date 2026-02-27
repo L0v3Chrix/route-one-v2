@@ -70,6 +70,45 @@
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
   }
+
+  /* Enhancement #4: Kinetic Typography */
+  @keyframes pulseGoldText {
+    0%, 100% { 
+      color: var(--color-ro-gold);
+      text-shadow: 0 0 0 transparent;
+    }
+    50% { 
+      color: var(--color-ro-gold-light);
+      text-shadow: 0 0 20px rgba(201, 152, 90, 0.4);
+    }
+  }
+
+  @keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  @keyframes blinkCursor {
+    0%, 100% { border-color: var(--color-ro-gold); }
+    50% { border-color: transparent; }
+  }
+
+  /* Enhancement #3: Number counter shimmer */
+  @keyframes numberReveal {
+    from { 
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes metricGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201, 152, 90, 0); }
+    50% { box-shadow: 0 0 20px 2px rgba(201, 152, 90, 0.15); }
+  }
 }
 
 @layer base {
@@ -215,6 +254,29 @@
       );
       background-size: 200% 100%;
       animation: shimmer 2s infinite;
+    }
+
+    /* Enhancement #4: Kinetic typography classes */
+    .pulse-gold {
+      animation: pulseGoldText 3s ease-in-out infinite;
+    }
+
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--color-ro-gold);
+      animation: 
+        typewriter 2s steps(40) forwards,
+        blinkCursor 0.75s step-end infinite;
+    }
+
+    /* Enhancement #3: Number counter animation */
+    .number-reveal {
+      animation: numberReveal 0.6s ease-out forwards;
+    }
+
+    .metric-glow {
+      animation: metricGlow 2s ease-in-out;
     }
   }
 
