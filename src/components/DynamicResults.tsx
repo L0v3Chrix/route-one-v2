@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import MaturityGauge from './MaturityGauge';
 import InactionCalculator from './InactionCalculator';
 import SectionBridge from './SectionBridge';
+import DiagnosticFindings from './DiagnosticFindings';
 import { getStoredSession, isSessionExpired, clearSession } from '../lib/session';
 
 interface DynamicResultsProps {
@@ -329,16 +330,17 @@ export default function DynamicResults({
             Here's what we found, {firstName}.
           </h1>
 
-          {/* Personalized Narrative */}
-          <div className="bg-ro-card border border-ro-card-border rounded-xl p-6 md:p-8 mb-8">
-            <p className="text-lg text-ro-text leading-relaxed mb-4">
-              {mainNarrative}
-            </p>
-            {consequenceNarrative && (
-              <p className="text-ro-gold font-medium">
-                {consequenceNarrative}
-              </p>
-            )}
+          {/* Enhanced Diagnostic Findings */}
+          <div className="bg-ro-card border border-ro-card-border rounded-xl p-6 md:p-8 mb-8 text-left">
+            <DiagnosticFindings
+              firstName={firstName}
+              industry={industry}
+              books={books}
+              entities={entities}
+              frustration={frustration}
+              opportunity={opportunity}
+              score={score}
+            />
           </div>
 
           {/* Animated Score Display */}
