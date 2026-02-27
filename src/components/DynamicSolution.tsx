@@ -166,6 +166,20 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
             </p>
           </div>
           
+          {/* Enhancement #14: Industry-Specific Trust Badges */}
+          {content.trustBadges && content.trustBadges.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-3 mb-10">
+              {content.trustBadges.map((badge, i) => (
+                <span 
+                  key={i}
+                  className="px-4 py-2 bg-ro-gold/10 border border-ro-gold/30 rounded-full text-sm text-ro-gold"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          )}
+          
           {/* Three Pillars */}
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             <div className="bg-ro-card border border-ro-card-border rounded-xl p-6">

@@ -9,6 +9,9 @@ export interface IndustryContent {
   hiddenCostHeadline: string;
   hiddenCostDetail: string;
   
+  // Enhancement #14: Industry-specific trust badges
+  trustBadges: string[];
+  
   // Misdiagnosis
   misdiagnosis: {
     thinkHeadline: string;
@@ -41,6 +44,13 @@ export const INDUSTRY_CONTENT: Record<string, IndustryContent> = {
   entertainment: {
     label: 'Entertainment & Media',
     tagline: 'Production companies, studios, VFX houses, talent management',
+    
+    // Enhancement #14: Industry-specific trust badges
+    trustBadges: [
+      'Production-Specific Chart of Accounts',
+      'Multi-Project Tracking',
+      'Union Payroll Compliant',
+    ],
     
     insights: [
       "Production companies often see 15-25% EBITDA compression that's actually recoverable margin, not lost revenue.",
@@ -90,6 +100,13 @@ They didn't need a turnaround. They needed **visibility**.`,
     label: 'Professional Services',
     tagline: 'Law firms, consulting, accounting practices, agencies',
     
+    // Enhancement #14: Industry-specific trust badges
+    trustBadges: [
+      'Multi-Entity Consolidation',
+      'CPA Firm Integration',
+      'White-Label Backend',
+    ],
+    
     insights: [
       "Professional services firms typically leave 15-20% on the table through unbilled time and poor utilization tracking.",
       "Your utilization rates are telling a story your current reports don't show.",
@@ -135,6 +152,13 @@ We took over execution across **20+ entities and 100+ accounts** as a white-labe
   ecommerce: {
     label: 'E-commerce & DTC',
     tagline: 'Shopify, Amazon, DTC brands, multi-channel retail',
+    
+    // Enhancement #14: Industry-specific trust badges
+    trustBadges: [
+      'Shopify/Amazon Integration',
+      'Inventory Costing Specialists',
+      'Multi-Channel Consolidation',
+    ],
     
     insights: [
       "E-commerce cash flow runs 3-6 months ahead of your P&L — most accounting setups completely miss this.",
@@ -184,6 +208,13 @@ They didn't have a profitability problem. They had a **visibility problem** that
     label: 'Multi-Entity Operations',
     tagline: 'Holding companies, portfolio operators, serial entrepreneurs',
     
+    // Enhancement #14: Industry-specific trust badges
+    trustBadges: [
+      'Consolidated Reporting',
+      'Intercompany Tracking',
+      'Investor-Ready Financials',
+    ],
+    
     insights: [
       "Multi-entity operators almost always have consolidation gaps hiding real performance across the portfolio.",
       "You're probably making investment decisions on incomplete data — each entity's books don't tell the whole story.",
@@ -231,6 +262,13 @@ They didn't need to sell anything. They needed to **see everything in one place*
   other: {
     label: 'Growth Companies',
     tagline: 'Scaling businesses across industries',
+    
+    // Enhancement #14: Industry-specific trust badges
+    trustBadges: [
+      'Big Four Pedigree',
+      '100% US-Based Team',
+      'SLA-Backed Delivery',
+    ],
     
     insights: [
       "Companies at your stage typically find 3-5 margin leaks when they finally get visibility.",
