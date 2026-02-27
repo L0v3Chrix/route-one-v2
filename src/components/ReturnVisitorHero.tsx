@@ -113,9 +113,12 @@ function NewVisitorHero() {
           <span className="text-ro-gold">They have a visibility problem.</span>
         </h1>
         
-        {/* Subhead */}
-        <p className="text-lg sm:text-xl text-ro-text-dim max-w-xl mx-auto mb-10 fade-up fade-up-delay-2">
-          Take the 90-second diagnostic. See what your current setup isn't showing you.
+        {/* Subhead with NEPQ pull-back */}
+        <p className="text-lg sm:text-xl text-ro-text-dim max-w-xl mx-auto mb-6 fade-up fade-up-delay-2">
+          We built a 90-second diagnostic that shows you where money is entering, exiting, and getting lost in your business.
+        </p>
+        <p className="text-base text-ro-text-dim/80 max-w-lg mx-auto mb-10 fade-up fade-up-delay-2">
+          It's not for everyone. If your books are current and your margins are clean, you probably don't need it. But if you're not sure... that's exactly who it's for.
         </p>
         
         {/* CTA */}
@@ -131,9 +134,9 @@ function NewVisitorHero() {
           </a>
         </div>
         
-        {/* Trust signal */}
+        {/* Trust signal - Pull-back */}
         <p className="text-ro-text-dim text-sm mt-6 fade-up fade-up-delay-4">
-          No pitch. No pressure. Just clarity.
+          90 seconds. No pitch. Just clarity on what you might be missing.
         </p>
       </div>
       
