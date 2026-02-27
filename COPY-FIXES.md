@@ -382,4 +382,109 @@
 
 ---
 
-*Audit completed for Route One V2 — 33 items identified, 9 high/medium priority*
+## Sales Intelligence: Language That Closes vs. Language That Kills
+
+> **Source:** 44 Route One sales conversation transcripts analyzed in Sales Intelligence Review
+
+### Phrases to ADD to the funnel (proven closers):
+
+| Phrase | Where to Use | Why It Works |
+|--------|--------------|--------------|
+| "We handle it all" | Solution page, CTA | Completeness — removes mental load |
+| "Full department, not a single hire" | Savings calculator, team section | Reframes cost comparison entirely |
+| "We'll get you current" | Timeline section, results page | Addresses #1 pain point directly |
+| "You shouldn't be doing that" | Quiz micro-copy for founder-time answer | Gives permission to let go |
+| "Not a staffing company" | How It Works section | Distances from commoditized competitors |
+| "Big Four rigor without the Big Four attitude" | Team section | Perfect positioning balance |
+| "Your numbers are telling a story you're not reading" | Results page intro | Creates curiosity + urgency |
+| "We fire clients too" | Partner page, selectivity signal | Scarcity + mutual respect |
+
+### Words to REMOVE or REPLACE (proven deal-killers):
+
+| Avoid | Current Usage | Replace With | Why |
+|-------|---------------|--------------|-----|
+| "Outsourcing" | Not currently used ✓ | N/A | Triggers commodity association |
+| "Offshore" (alone) | Not currently used ✓ | Always pair with "managed" | Sounds like body shopping |
+| "Package" or "plan" | Not currently used ✓ | "Engagement" or "model" | Feels rigid, contradicts flexibility |
+| "Onboarding" (alone) | Used in DynamicSolution.tsx | "Rapid Onboarding" | Sounds long without speed context |
+| Leading with price | SavingsCalculator leads with cost | Lead with value, show savings after | Every conversation that started with pricing stalled |
+
+### Additional Copy Improvements from Sales DNA:
+
+**The Absorption Pattern:**
+> "Route One listens for 20-30 minutes, asks questions, lets the prospect talk — then says 'Yeah, we do that.'"
+
+**Funnel Application:** The quiz and pain amplification should feel like the prospect is being heard, not sold to. Current copy occasionally jumps to solutions too fast.
+
+**Location to fix:** `DynamicResults.tsx` — Pain Amplification section
+**Current:** Jumps quickly to "The pattern we see..."
+**Fix:** Add more reflection before pivoting to Route One: "That's not unusual. In fact, it's the exact situation we see in 80% of the companies we work with."
+
+**The "No Assholes" Filter:**
+> "Multiple conversations reference this explicitly. Route One fires bad clients. They choose who they work with."
+
+**Funnel Application:** A subtle "We're selective" signal.
+**Location to add:** Hero subtext or CTA section
+**Copy to add:** "We're selective about who we work with. Fit matters more than fees."
+
+---
+
+## Updated Priority Matrix (Post-Sales Intelligence)
+
+### CRITICAL (Add These Phrases):
+
+| # | Location | Current | Change To |
+|---|----------|---------|-----------|
+| 1 | DynamicSolution.tsx - TheModel | Generic intro | "What if you could replace your entire accounting headcount with a managed department — for less?" (Already exists ✓) |
+| 2 | DynamicResults.tsx - CTA | "See How Companies Like Yours Solved This" | Add: "Your numbers are telling a story. Let's read it together." as subtext |
+| 3 | talk.astro - Team intro | "Big Four rigor. Startup energy. No assholes." | Keep this — it's the proven "no assholes filter" |
+| 4 | Quiz micro-copy | Various | Add "You shouldn't be doing that" to founder-time answer |
+
+### HIGH (Remove/Replace):
+
+| # | Location | Current | Change To |
+|---|----------|---------|-----------|
+| 1 | ReturnVisitorHero.tsx | "No email list" | "No pressure" |
+| 2 | DynamicResults.tsx | "This isn't a sales pitch" | Remove entirely — defensive |
+| 3 | Multiple | "Usually" hedging | Remove qualifier |
+
+### MEDIUM (Enhance):
+
+| # | Location | Current | Change To |
+|---|----------|---------|-----------|
+| 1 | InactionCalculator.tsx | Weak disclaimer | "Based on 44 client engagements. Your numbers will be different — let's find out how." |
+| 2 | DynamicSolution.tsx | "Rapid Onboarding" label alone | "Rapid Onboarding (most clients current within 60 days)" |
+| 3 | Partner page | Generic partner pitch | Add "We fire clients too — which means we protect our partners' reputations" |
+
+---
+
+## Final Implementation Checklist
+
+```markdown
+## Phase 1: Critical (Do Immediately)
+- [ ] ReturnVisitorHero.tsx: "No email list" → "No pressure"
+- [ ] DynamicResults.tsx: Remove "This isn't a sales pitch" opener
+- [ ] Quiz micro-copy: Add "You shouldn't be doing that" to time:excessive answer
+- [ ] DynamicResults.tsx CTA: Add "Your numbers are telling a story" subtext
+
+## Phase 2: High Priority
+- [ ] DynamicResults.tsx: Vary greeting ("Your diagnostic results, {firstName}")
+- [ ] All files: Remove "Usually" hedging language
+- [ ] talk.astro: Add "Fit matters more than fees" to selectivity statement
+
+## Phase 3: Medium Priority
+- [ ] InactionCalculator.tsx: Strengthen closing copy
+- [ ] DynamicSolution.tsx: Add timeline specifics to phase labels
+- [ ] Partner page: Add "We fire clients" trust signal
+- [ ] Global: Update percentage ranges to en-dashes
+
+## Phase 4: Polish
+- [ ] Review all copy for "outsourcing" language (should be none)
+- [ ] Ensure "onboarding" always paired with speed context
+- [ ] Add proven phrases where natural fit exists
+```
+
+---
+
+*Audit completed for Route One V2 — 33 items + 15 language intelligence enhancements*
+*Source: Code review + 44 sales conversation analysis + NEPQ framework + Apex VFX/CPA case studies*

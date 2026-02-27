@@ -40,7 +40,7 @@ export default function ReturnVisitorHero() {
 
   // Return visitor view
   return (
-    <main className="min-h-dvh flex flex-col items-center justify-center px-6 py-12">
+    <main className="min-h-dvh flex flex-col items-center justify-center px-6 py-16 md:py-24 pb-24">
       <div className="max-w-2xl mx-auto text-center">
         {/* Logo / Brand */}
         <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-8 fade-up">
@@ -84,8 +84,8 @@ export default function ReturnVisitorHero() {
         </p>
       </div>
       
-      {/* Partner path (subtle) */}
-      <div className="absolute bottom-8 left-0 right-0 text-center fade-up fade-up-delay-4">
+      {/* Partner path (subtle) - moved inside content flow to prevent overlap */}
+      <div className="mt-16 text-center fade-up fade-up-delay-4">
         <a 
           href="/partner" 
           className="text-ro-text-dim text-sm hover:text-ro-gold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold"
@@ -100,7 +100,7 @@ export default function ReturnVisitorHero() {
 // New Visitor Hero (standard landing page)
 function NewVisitorHero() {
   return (
-    <main className="min-h-dvh flex flex-col items-center justify-center px-6 py-12">
+    <main className="min-h-dvh flex flex-col items-center justify-center px-6 py-12 pb-24">
       <div className="max-w-2xl mx-auto text-center">
         {/* Logo / Brand */}
         <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-8 fade-up">
@@ -138,16 +138,16 @@ function NewVisitorHero() {
         <p className="text-ro-text-dim text-sm mt-6 fade-up fade-up-delay-4">
           90 seconds. No pitch. Just clarity on what you might be missing.
         </p>
-      </div>
       
-      {/* Partner path (subtle) */}
-      <div className="absolute bottom-8 left-0 right-0 text-center fade-up fade-up-delay-4">
-        <a 
-          href="/partner" 
-          className="text-ro-text-dim text-sm hover:text-ro-gold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold"
-        >
-          I'm a potential referral partner →
-        </a>
+        {/* Partner path (subtle) */}
+        <div className="mt-16 fade-up fade-up-delay-4">
+          <a 
+            href="/partner" 
+            className="text-ro-text-dim text-sm hover:text-ro-gold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold"
+          >
+            I'm a potential referral partner →
+          </a>
+        </div>
       </div>
     </main>
   );
