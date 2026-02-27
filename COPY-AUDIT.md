@@ -129,4 +129,24 @@
 
 ---
 
+## Known Build Warnings (Non-blocking)
+
+**Font Files:** Graphik-Regular.woff2 and Graphik-Medium.woff2 not present in `/public/fonts/`. This is expected — font falls back to Inter. To resolve, client needs to provide licensed Graphik Trial font files.
+
+---
+
+## Funnel Flow Validation
+
+| Step | Page | Status |
+|------|------|--------|
+| 1 | `/` (Hero) | ✅ New visitor + Return visitor paths work |
+| 2 | `/quiz` | ✅ 6 questions + email gate |
+| 3 | `/results` | ✅ QuizTransition → Dashboard flow |
+| 4 | `/solution` | ✅ Misdiagnosis → Model → Case Study |
+| 5 | `/talk` | ✅ Team → Bridge → CTA → Calendar/WhatsApp |
+| 6 | `/not-ready` | ✅ Exit path with lead magnet |
+
+---
+
 *Audit complete. All copy verified for grammar, uniformity, and brand alignment.*
+*Build passes. Pushed to Vercel.*
