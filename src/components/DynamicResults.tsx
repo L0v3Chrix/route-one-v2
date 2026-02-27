@@ -278,31 +278,31 @@ export default function DynamicResults({
     ],
   };
 
-  // Pain-specific messaging
+  // Pain-specific messaging - Enhancement #24: Route One-specific stats
   const painMessages: Record<string, { headline: string; detail: string }> = {
     trust: {
       headline: "You don't trust your numbers.",
-      detail: "That's not paranoia — that's your instincts telling you something is wrong. Decisions made on bad data compound. Every month you operate without confidence is a month of accumulated risk.",
+      detail: "That's not paranoia — that's your instincts telling you something is wrong. The last 3 clients who came to us with trust issues found an average of $180K in misclassified expenses within 60 days. Decisions made on bad data compound.",
     },
     reports: {
       headline: "You can't get visibility when you need it.",
-      detail: "You're making decisions in the dark. The lag between what's happening and what you can see is where money disappears. By the time you see the problem, it's already cost you.",
+      detail: "You're making decisions in the dark. Our clients typically close month-end in 5 business days. The lag between what's happening and what you can see is where money disappears.",
     },
     cost: {
       headline: "You're paying too much for too little.",
-      detail: "Domestic rates for basic output. No strategic insight. No one telling you what the numbers mean. You're paying for a service that's not actually serving you.",
+      detail: "Domestic rates for basic output. Most companies we work with cut their accounting costs by 40-60% while getting controller-level oversight they never had before. You're paying for a service that's not serving you.",
     },
     systems: {
       headline: "Your systems don't talk to each other.",
-      detail: "Every disconnection is a place where data gets lost, duplicated, or corrupted. You're running multiple sources of truth — which means you have no source of truth.",
+      detail: "Every disconnection is a place where data gets lost. We've cleaned up integrations in 44 client engagements — the intercompany cleanup alone often recovers $50K+ in errors.",
     },
     myself: {
       headline: "You're doing work you shouldn't be doing.",
-      detail: `At your level, every hour on bookkeeping is an hour not spent on growth. ${time === 'second-job' ? "You said it yourself — it's basically a second job." : "Those hours add up to weeks per year."} You're paying yourself bookkeeper wages.`,
+      detail: `At your level, every hour on bookkeeping is an hour not spent on growth. The average founder we work with was spending 8 hours a week on financial admin. Within 30 days, that dropped to under 1.`,
     },
     start: {
       headline: "You don't know where to start.",
-      detail: "That overwhelm isn't weakness — it's a sign the problem has grown larger than one person can solve. The longer you wait to address it, the more tangled it gets.",
+      detail: "That overwhelm isn't weakness — it's a sign the problem has grown larger than one person can solve. Most of our clients are current within 8 weeks. The first step is just having a conversation.",
     },
   };
 
