@@ -145,9 +145,40 @@
   button:focus-visible,
   a:focus-visible,
   input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
   [role="button"]:focus-visible {
     outline: 2px solid var(--ro-gold);
     outline-offset: 2px;
+  }
+  
+  /* Enhanced button base transitions */
+  button,
+  [role="button"],
+  a.inline-flex {
+    transition: all 0.2s ease-out;
+  }
+  
+  /* Subtle lift on primary buttons */
+  .bg-ro-green:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 56, 60, 0.4);
+  }
+  
+  .bg-ro-green:active {
+    transform: translateY(0);
+  }
+  
+  /* Card hover states */
+  .bg-ro-card {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  /* Interactive cards get subtle lift on hover */
+  button.bg-ro-card:hover,
+  a.bg-ro-card:hover {
+    border-color: var(--color-ro-green);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   /* Range slider styling for accessibility (min 44px touch target) */
@@ -298,5 +329,53 @@
       min-height: 48px;
       min-width: 48px;
     }
+  }
+}
+
+/* Design System: Consistent spacing, shadows, and transitions */
+@layer components {
+  /* Section spacing utility */
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+  
+  /* Card styles - consistent across components */
+  .card {
+    @apply bg-ro-card border border-ro-card-border rounded-xl;
+  }
+  
+  .card-elevated {
+    @apply bg-ro-card border border-ro-card-border rounded-xl shadow-lg shadow-black/20;
+  }
+  
+  /* Button base styles for consistency */
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white font-semibold rounded-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ro-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ro-dark min-h-[48px];
+  }
+  
+  .btn-primary:hover {
+    @apply transform scale-[1.02];
+  }
+  
+  .btn-primary:active {
+    @apply transform scale-[0.98];
+  }
+  
+  /* Consistent transition for interactive elements */
+  .interactive {
+    @apply transition-all duration-200 ease-out;
+  }
+  
+  /* Badge styles */
+  .badge {
+    @apply px-3 py-1.5 rounded-full text-xs font-medium;
+  }
+  
+  .badge-green {
+    @apply bg-ro-green/10 border border-ro-green/30 text-ro-text-dim;
+  }
+  
+  .badge-gold {
+    @apply bg-ro-gold/10 border border-ro-gold/30 text-ro-gold;
   }
 }

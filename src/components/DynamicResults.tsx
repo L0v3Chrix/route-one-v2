@@ -327,7 +327,7 @@ export default function DynamicResults({
   // ============================================
   if (showTransition) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-16">
+      <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-16 md:py-24">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-6">
             Your Diagnostic Results
@@ -404,7 +404,7 @@ export default function DynamicResults({
   // FULL DASHBOARD
   // ============================================
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 pb-20">
       {/* Section 1: Score & Dimensions - Always visible */}
       <section className="text-center fade-up">
         <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-4">

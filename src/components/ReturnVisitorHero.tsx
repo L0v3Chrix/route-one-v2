@@ -100,7 +100,7 @@ export default function ReturnVisitorHero() {
 // New Visitor Hero (standard landing page)
 function NewVisitorHero() {
   return (
-    <main className="min-h-dvh flex flex-col items-center justify-center px-6 py-12 pb-24">
+    <main className="min-h-dvh flex flex-col items-center justify-center px-6 py-16 md:py-24 pb-24">
       <div className="max-w-2xl mx-auto text-center">
         {/* Logo / Brand */}
         <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-8 fade-up">

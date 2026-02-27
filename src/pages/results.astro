@@ -28,7 +28,7 @@ const canonicalUrl = new URL('/results', Astro.site || 'https://routeoneadvisory
 >
   <link slot="head" rel="canonical" href={canonicalUrl} />
   
-  <main class="min-h-dvh px-6 py-12">
+  <main class="min-h-dvh px-6 py-16 md:py-24 pb-24">
     <div class="max-w-3xl mx-auto">
       <DynamicResults 
         client:load

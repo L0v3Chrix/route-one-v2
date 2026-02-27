@@ -104,7 +104,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
   if (!content) return null;
 
   return (
-    <div className="space-y-0">
+    <div className="space-y-0 pb-20">
       {/* Industry Badge */}
       {industry !== 'other' && (
         <div className="bg-ro-green/10 border-b border-ro-green/20 px-6 py-3">
@@ -122,11 +122,9 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
           <p className="text-ro-green text-sm font-medium tracking-widest uppercase mb-4">
             The Misdiagnosis
           </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-ro-text-bright leading-tight mb-2">
-            {content.misdiagnosis.thinkHeadline}
-          </h2>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-ro-gold leading-tight mb-8">
-            {content.misdiagnosis.actuallyHeadline}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-8">
+            <span className="text-ro-text-bright block mb-2">{content.misdiagnosis.thinkHeadline}</span>
+            <span className="text-ro-gold block">{content.misdiagnosis.actuallyHeadline}</span>
           </h2>
           
           <div className="prose prose-invert max-w-none">

@@ -320,7 +320,7 @@ export default function Quiz() {
   };
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-dvh flex flex-col items-center justify-center px-6 py-16 md:py-24">
       <div className="w-full max-w-xl">
         {renderProgress()}
         {isOnQuestions ? renderQuestion() : renderEmailGate()}
