@@ -66,6 +66,7 @@ export default function DynamicResults({
 }: DynamicResultsProps) {
   const [showTransition, setShowTransition] = useState(true);
   const [animatedScore, setAnimatedScore] = useState(0);
+  const [isBuilding, setIsBuilding] = useState(false); // Enhancement #26: Loading state
   
   // Progressive reveal states - default to true (visible) for no-JS/WhatsApp safety
   const [showPain, setShowPain] = useState(!hasIntersectionObserver);
@@ -101,11 +102,16 @@ export default function DynamicResults({
     }
   }, [showTransition, score]);
 
-  // Handle "Show Me" click - start the progressive reveal cascade
+  // Handle "Show Me" click - Enhancement #26: Add loading state for perceived value
   const handleShowMe = useCallback(() => {
-    setShowTransition(false);
-    // Immediately show pain section when transition ends
-    setShowPain(true);
+    setIsBuilding(true);
+    // Show "Building..." state for 1.5s to create perceived personalization value
+    setTimeout(() => {
+      setIsBuilding(false);
+      setShowTransition(false);
+      // Immediately show pain section when transition ends
+      setShowPain(true);
+    }, 1500);
   }, []);
 
   // IntersectionObserver for scroll-triggered reveals (progressive enhancement)
@@ -357,20 +363,37 @@ export default function DynamicResults({
           </div>
 
           {/* Mini Gauge Preview */}
-          <div className="bg-ro-darker rounded-xl p-6 mb-10">
+          <div className="bg-ro-darker rounded-xl p-6 mb-8">
             <MaturityGauge score={score} dimensions={dimensions} />
           </div>
 
-          {/* Reveal Button */}
-          <button
-            onClick={handleShowMe}
-            className="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
-          >
-            Show Me What This Means
-            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+          {/* Deeper Reflection - Enhancement #26 */}
+          <p className="text-ro-text text-base mb-10 max-w-lg mx-auto">
+            That combination — {entityNarrative[entities]?.toLowerCase() || 'your entity structure'} with books that {booksNarrative[books]?.replace(/^your books /, '') || 'need attention'} — puts you in a specific category. The companies below were in exactly that position. What they found surprised them.
+          </p>
+
+          {/* Reveal Button - with loading state */}
+          {isBuilding ? (
+            <div className="text-center">
+              <div className="inline-flex items-center gap-3 text-ro-gold">
+                <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span className="text-lg font-medium">Building your personalized analysis...</span>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={handleShowMe}
+              className="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
+            >
+              Show Me What This Means
+              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
     );

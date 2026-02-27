@@ -121,6 +121,51 @@
 
 ---
 
+## Source Data Enhancement (Phase 2)
+
+**Source:** `~/clawd/clients/route-one/` — original consultation data, sales conversations, case studies
+
+### Files Mined:
+- `CONSULTATIVE-REVIEW-V4.md` — 50KB of competitive analysis and enhancement recommendations
+- `TIER-1-CONSULTANT-REVIEW.md` — 44 sales conversation transcripts analyzed
+- `assets/EXTRACTED-doc2-project-apex-vfx.md` — Apex VFX full case study
+- `assets/EXTRACTED-doc7-cpa-case-study.md` — CPA practice backend case study
+- `Route-One-Sales-Intelligence-Review.html` — Sales intelligence findings
+
+### Enhancements Applied:
+
+**industryContent.ts — All 5 industry variants enhanced:**
+
+| Industry | Enhancement |
+|----------|-------------|
+| Entertainment | Real Apex VFX numbers: $0.6M reported → $4.0M actual, $789K pricing leakage, -9% productivity across 84 FTEs, $9M → $36M valuation path |
+| Professional | CPA practice case study: 20+ entities, 100+ accounts, 70-80% time reduction, AI-assisted GL coding, white-label model |
+| E-commerce | Multi-channel reality: Shopify + Amazon + TikTok + Walmart, 6-month China lead times, 8x scale story |
+| Multi-Entity | Real operator language: 5 entities, suspected fraud, $2.1M hidden margin, Series B close in 6 weeks |
+| Other | $70M production company: drowning controller, founder bookkeeping at midnight, -5% → +8% EBITDA |
+
+**DiagnosticFindings.tsx — Updated with authentic language:**
+- Case study teasers now include real metrics from source data
+- Frustration findings use actual language from sales conversations
+- "Your numbers are telling a story you're not reading" — direct from sales intel
+- "You shouldn't be doing bookkeeping at midnight" — from consultant review
+
+### Language That Landed (From 44 Sales Conversations):
+- "We handle it all"
+- "Full department, not a single hire"
+- "We'll get you current"
+- "You shouldn't be doing that"
+- "Big Four rigor without the Big Four attitude"
+- "Your numbers are telling a story you're not reading"
+
+### Language Avoided:
+- "Outsourcing" (triggers commodity association)
+- "Offshore" without "managed"
+- Leading with price
+- "No pressure" (client explicitly rejected)
+
+---
+
 ## Recommendations for Future Iterations
 
 1. Consider adding "44 client engagements" context earlier in funnel

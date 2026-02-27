@@ -236,7 +236,7 @@ They didn't need to sell anything. They needed to **see everything in one place*
       "Companies at your stage typically find 3-5 margin leaks when they finally get visibility.",
       "The problem usually isn't the business — it's that your financial infrastructure hasn't kept up with growth.",
       "Most founders underestimate how much their own time costs the business (usually $200-500/hr in opportunity cost).",
-      "The gap between 'good enough' accounting and 'growth-ready' accounting is where money disappears.",
+      "You shouldn't be doing bookkeeping at midnight. That's not a badge of honor — it's a sign something's broken.",
     ],
     hiddenCostHeadline: "Your accounting grew up, but your infrastructure didn't.",
     hiddenCostDetail: "You started with QuickBooks and a part-time bookkeeper. Now you're a real company, but you're still running on startup infrastructure. The gap is where money, time, and opportunity disappear.",
@@ -244,28 +244,28 @@ They didn't need to sell anything. They needed to **see everything in one place*
     misdiagnosis: {
       thinkHeadline: "You think you need to hire a controller.",
       actuallyHeadline: "Actually, you need a full department — for less than what you'd pay that controller.",
-      story: `A $70M production company was spending $15K/month on a controller who was drowning. Balls were dropping. Reports were late. The founder was back to doing bookkeeping at midnight.
+      story: `A $70M production company was spending $15K/month on a controller who was drowning. Balls were dropping. Reports were late. The founder was back to doing bookkeeping at midnight — paying themselves bookkeeper wages.
 
-We replaced the solo controller with a full team: controller, accounting manager, senior accountant, staff accountant, and clerk. All managed. All guaranteed.
+We replaced the solo controller with a full team: controller, accounting manager, senior accountant, staff accountant, and clerk. All managed. All guaranteed. SLA-backed.
 
-The cost? Less than they were paying before. The coverage? Five people instead of one overwhelmed hire.`,
+The cost? **Less than they were paying before.** The coverage? Five people instead of one overwhelmed hire who couldn't take a vacation.`,
       keyInsight: "They went from -5% EBITDA to +8% EBITDA. $12M in liability reduction. And the founder stopped doing bookkeeping.",
     },
     
     caseStudy: {
       company: "Production Company",
-      industry: "Media Production",
-      challenge: "$70M company with controller drowning, founder doing bookkeeping",
+      industry: "Media Production (~$70M revenue)",
+      challenge: "Controller drowning, founder doing bookkeeping at midnight, reports always late",
       metrics: [
         { label: "EBITDA", before: "-5%", after: "+8%" },
-        { label: "Liabilities Reduced", before: "Baseline", after: "$12M reduction" },
-        { label: "Founder Time on Finance", before: "10+ hrs/week", after: "0 hrs/week" },
-        { label: "Team Coverage", before: "1 controller", after: "Full 5-person department" },
+        { label: "Liabilities", before: "Baseline", after: "$12M reduction" },
+        { label: "Founder Finance Time", before: "10+ hrs/week", after: "0 hrs/week" },
+        { label: "Team Coverage", before: "1 drowning controller", after: "Full 5-person department" },
       ],
       quote: "I got my nights back. And my margins.",
       quoteName: "CEO",
       quoteRole: "Production Company",
-      outcome: "Company went from near-crisis to healthy growth. The founder focused on deals instead of books.",
+      outcome: "Company went from near-crisis to healthy growth. The founder focused on deals instead of books. No more midnight reconciliations.",
     },
     
     speedContext: "We move fast because we've done this before. A lot.",

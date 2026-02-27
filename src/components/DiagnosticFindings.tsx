@@ -8,7 +8,7 @@ interface DiagnosticFindingsProps {
   score: number;
 }
 
-// Industry-specific case study data
+// Industry-specific case study data (from real Route One engagements)
 const industryCaseStudies: Record<string, {
   company: string;
   situation: string;
@@ -16,34 +16,34 @@ const industryCaseStudies: Record<string, {
   result: string;
 }> = {
   entertainment: {
-    company: "a VFX studio",
-    situation: "came to us ready to lay off half their team",
-    finding: "Reported EBITDA was $0.6M. Actual EBITDA was $4.0M.",
-    result: "They didn't need a turnaround. They needed visibility.",
+    company: "a ~$15M VFX studio",
+    situation: "came to us ready to lay off half their team — EBITDA had compressed from 22% to 4%",
+    finding: "Reported EBITDA was $0.6M. Actual EBITDA was $4.0M. The gap was pricing erosion and strategic investments coded as expenses.",
+    result: "They didn't need a turnaround. They needed visibility. Path to $36M valuation identified.",
   },
   professional: {
-    company: "a consulting firm",
-    situation: "thought they were breaking even",
-    finding: "15% of their billable time was going untracked",
-    result: "Same work, same clients — $180K more revenue recognized.",
+    company: "a high-volume CPA practice",
+    situation: "was drowning in reconciliation backlogs across 20+ entities",
+    finding: "Bookkeeping was consuming 70-80% of the practitioner's time. The bottleneck wasn't expertise — it was execution.",
+    result: "We took over backend operations. Same clients, fraction of the time. Created capacity for advisory expansion.",
   },
   ecommerce: {
-    company: "a DTC brand",
-    situation: "was about to cut their ad spend",
-    finding: "Their inventory timing was masking 3 months of profitability",
-    result: "They doubled down instead. 40% growth in 6 months.",
+    company: "a multi-channel apparel brand",
+    situation: "was about to cut ad spend — thought they were bleeding cash while scaling from $6M to $50M",
+    finding: "Their 6-month China lead times were masking profitability. They were actually more profitable during growth phases.",
+    result: "They doubled down instead of cutting. 8x scale in three years.",
   },
   multi: {
-    company: "a multi-entity operator",
-    situation: "couldn't explain their cash position to investors",
-    finding: "Intercompany transfers were hiding $2.1M in actual margin",
-    result: "They closed their Series B 6 weeks later.",
+    company: "a 5-entity portfolio operator",
+    situation: "couldn't explain their cash position to investors — suspected fraud in a recent acquisition",
+    finding: "Intercompany transfers were hiding $2.1M in actual margin. Entities were subsidizing each other invisibly.",
+    result: "They closed their Series B six weeks after getting consolidated visibility.",
   },
   other: {
-    company: "a growing company",
-    situation: "was making decisions on 90-day-old data",
-    finding: "Three margin leaks were compounding monthly",
-    result: "Same revenue, $340K more to the bottom line.",
+    company: "a $70M production company",
+    situation: "had a controller who was drowning — the founder was back to doing bookkeeping at midnight",
+    finding: "One overwhelmed hire can't be a department. They needed five people for less than they were paying one.",
+    result: "EBITDA went from -5% to +8%. $12M in liability reduction. Founder got their nights back.",
   },
 };
 
@@ -84,27 +84,27 @@ const entityImpact: Record<string, string> = {
   '7+': "7+ entities means consolidation alone could free up a full-time analyst's worth of value.",
 };
 
-// Frustration-based primary finding
+// Frustration-based primary finding (language from real Route One sales conversations)
 const frustrationFindings: Record<string, { headline: string; detail: string }> = {
   reports: {
     headline: "Visibility Gap Detected",
-    detail: "You can't get reports when you need them because your systems weren't built for real-time visibility. The lag between reality and reports is where money disappears.",
+    detail: "You can't get reports when you need them because your systems weren't built for real-time visibility. Your numbers are telling a story you're not reading.",
   },
   cost: {
     headline: "ROI Mismatch Identified",
-    detail: "You're paying domestic rates for basic output. No strategic insight. No proactive recommendations. That's not a service — it's a transaction.",
+    detail: "You're paying domestic rates for bookkeeper-level output. No strategic insight. No one telling you what the numbers mean. That's not a service — it's a transaction.",
   },
   trust: {
     headline: "Confidence Gap Identified",
-    detail: "You don't trust your numbers because your instincts are correct. Something is wrong. Decisions made on bad data compound into bigger problems.",
+    detail: "You don't trust your numbers because your instincts are correct. Something is wrong. We've seen companies burned by previous accountants who were incompetent or dishonest. The emotional charge around this is real.",
   },
   systems: {
     headline: "Integration Failure Detected",
-    detail: "Disconnected systems create data gaps. Every disconnection is a place where information gets lost, duplicated, or corrupted. You're running multiple sources of truth.",
+    detail: "Disconnected systems create data gaps. Every disconnection is a place where information gets lost, duplicated, or corrupted. You're running multiple sources of truth — which means you have no source of truth.",
   },
   myself: {
     headline: "Time Leakage Identified",
-    detail: "Every hour you spend on financial operations is an hour not spent on growth. At your level, you're paying yourself bookkeeper wages.",
+    detail: "Every hour you spend on financial operations is an hour not spent on growth. You shouldn't be doing bookkeeping at midnight. At your level, you're paying yourself bookkeeper wages.",
   },
   start: {
     headline: "Complexity Overwhelm Detected",
