@@ -416,7 +416,7 @@ export default function DynamicResults({
             {currentPain.detail}
           </p>
           <p className="text-ro-text-dim text-sm italic mt-4">
-            This isn't a sales pitch. It's a pattern we see in 80% of the companies we work with.
+            80% of companies we work with show this exact pattern.
           </p>
 
           {/* Consequence callout */}

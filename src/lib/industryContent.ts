@@ -54,30 +54,30 @@ export const INDUSTRY_CONTENT: Record<string, IndustryContent> = {
     misdiagnosis: {
       thinkHeadline: "You think you need to downscale.",
       actuallyHeadline: "Actually, you have a leakage problem.",
-      story: `A VFX studio came to us ready to lay off half their team. Their EBITDA had compressed from 22% to 4%. They were convinced the business was dying.
+      story: `A ~$15M VFX studio came to us ready to lay off half their team. Their EBITDA had compressed from 22% to 4%. They were convinced the business was dying.
 
-We spent three weeks in their data. What we found: **Reported EBITDA was $0.6M. Actual EBITDA was $4.0M.**
+We spent three weeks in their QuickBooks, Harvest time-tracking, and Salesforce data. What we found: **Reported EBITDA was $0.6M. Actual EBITDA was $4.0M.**
 
-The $3.4M gap? Strategic investments coded as expenses. Pricing discipline erosion nobody was tracking. Productivity leaks across 84 FTEs. One-time costs mixed into operating expenses.
+The $3.4M gap? Strategic investments coded as expenses. Pricing discipline erosion — discount rates widening from 47% to 49%. Productivity leaks across 84 FTEs showing a -9% decline. One-time costs mixed into operating expenses.
 
 They didn't need a turnaround. They needed **visibility**.`,
-      keyInsight: "Every 1% discount they gave was costing them $300K annually. They were throwing around 5% discounts like it was nothing.",
+      keyInsight: "That 2-point erosion in discount rates? It was costing them $789K annually. They were throwing around 5% discounts like it was nothing.",
     },
     
     caseStudy: {
-      company: "Project Apex VFX",
-      industry: "Visual Effects Studio",
-      challenge: "EBITDA compressed from 22% to 4%, leadership considering major layoffs",
+      company: "Apex VFX",
+      industry: "Visual Effects Studio (~$15M revenue)",
+      challenge: "EBITDA compressed from 22% to 4%, leadership considering major layoffs across 84 FTEs",
       metrics: [
-        { label: "Reported EBITDA", before: "$0.6M", after: "$4.0M (adjusted)" },
-        { label: "Valuation", before: "$9M (status quo)", after: "$36M (optimized)" },
-        { label: "Hidden Margin", before: "Unknown", after: "$3.4M identified" },
-        { label: "Pricing Leakage", before: "49% discount rate", after: "Identified $789K annual impact" },
+        { label: "Reported EBITDA", before: "$0.6M", after: "$4.0M (normalized)" },
+        { label: "Enterprise Value", before: "$9M (status quo)", after: "$36M (optimized)" },
+        { label: "Pricing Leakage", before: "49% discount rate", after: "$789K/yr identified" },
+        { label: "Productivity Gap", before: "-9% across 84 FTEs", after: "$1.1M/yr recoverable" },
       ],
       quote: "We thought we needed to cut. They showed us we needed to see.",
       quoteName: "Studio Principal",
       quoteRole: "VFX Studio",
-      outcome: "Company pivoted from planning layoffs to planning expansion. The only thing that changed was what they could see.",
+      outcome: "Company pivoted from planning layoffs to planning expansion. Path to $50M+ valuation identified. The only thing that changed was what they could see.",
     },
     
     speedContext: "Production schedules wait for no one. We know how to move fast without disrupting active projects.",
@@ -94,36 +94,36 @@ They didn't need a turnaround. They needed **visibility**.`,
       "Professional services firms typically leave 15-20% on the table through unbilled time and poor utilization tracking.",
       "Your utilization rates are telling a story your current reports don't show.",
       "Partner distributions and compensation structures often mask true profitability by practice area.",
-      "Multi-partner practices have hidden cash flow timing issues that surface during growth or transition.",
+      "Most solo CPAs and small firms don't struggle with tax expertise — they struggle with time.",
     ],
     hiddenCostHeadline: "You're billing for hours but missing the margins.",
     hiddenCostDetail: "Professional services profitability lives in the details: utilization rates, realization rates, practice area margins, partner allocations. Most firms track revenue but not the profitability drivers underneath.",
     
     misdiagnosis: {
-      thinkHeadline: "You think you need more clients.",
-      actuallyHeadline: "Actually, you need better visibility into the clients you have.",
-      story: `A CPA practice with 20+ entities and 100+ accounts was drowning in work but couldn't explain why profits weren't keeping pace with revenue.
+      thinkHeadline: "You think you need more staff.",
+      actuallyHeadline: "Actually, you need a backend that handles execution while you keep control.",
+      story: `A sole practitioner CPA with 10+ years in practice had a growing tax business — but no backend support. As client volume increased, bookkeeping execution became the constraint on everything.
 
-We found the problem wasn't volume — it was margin erosion. Low-value clients consuming high-value staff time. Realization rates varying wildly across practice areas. Partner time leaking into administrative work.
+Time-intensive reconciliations. Inconsistent QBO and QBD files. Significant uncategorized transactions. Peak-season bottlenecks during tax deadlines. The practitioner was trapped doing $15/hour work instead of advisory.
 
-Within 90 days, we helped them identify which clients were profitable and which were destroying value. They didn't need more work. They needed to **see which work mattered**.`,
-      keyInsight: "They reduced hands-on bookkeeping time by 70-80% while actually improving accuracy.",
+We took over execution across **20+ entities and 100+ accounts** as a white-label backend partner. AI-assisted GL coding with human review. Standardized intake SOPs. The CPA stayed in control while we handled the work.`,
+      keyInsight: "Backend bookkeeping shifted from a bottleneck to a scalable support function. Same clients, 70-80% less of the practitioner's time.",
     },
     
     caseStudy: {
-      company: "Regional CPA Practice",
-      industry: "Accounting & Advisory",
-      challenge: "Managing 20+ entities and 100+ accounts with no consolidated view",
+      company: "High-Volume CPA Practice",
+      industry: "Tax & Advisory (10+ year practitioner)",
+      challenge: "Bookkeeping bottleneck limiting capacity and creating peak-season pressure",
       metrics: [
-        { label: "Hands-on Time", before: "100%", after: "20-30% (70-80% reduction)" },
-        { label: "Entities Managed", before: "20+", after: "20+ (same, but visible)" },
-        { label: "Accounts Reconciled", before: "100+", after: "100+ (automated)" },
-        { label: "Partner Admin Time", before: "15+ hrs/week", after: "2-3 hrs/week" },
+        { label: "CPA Time Spent", before: "100%", after: "20-30% (70-80% reduction)" },
+        { label: "Entities Managed", before: "Overwhelmed", after: "20+ (stabilized)" },
+        { label: "Accounts Reconciled", before: "Backlogged", after: "100+ (current)" },
+        { label: "Onboarding", before: "Ad-hoc", after: "Standardized SOPs" },
       ],
-      quote: "We finally know which clients make us money and which ones cost us.",
-      quoteName: "Managing Partner",
+      quote: "I finally stepped out of day-to-day bookkeeping while keeping oversight of everything.",
+      quoteName: "Sole Practitioner",
       quoteRole: "CPA Practice",
-      outcome: "Partners reclaimed strategic time. The practice grew 30% the following year by focusing on profitable work.",
+      outcome: "Created capacity for additional clients, payroll services, and advisory expansion. The practice scales without the practitioner working more hours.",
     },
     
     speedContext: "We understand billable hours. We won't waste yours.",
@@ -139,7 +139,7 @@ Within 90 days, we helped them identify which clients were profitable and which 
     insights: [
       "E-commerce cash flow runs 3-6 months ahead of your P&L — most accounting setups completely miss this.",
       "Inventory timing creates blind spots that compound during growth spurts and seasonal peaks.",
-      "Multi-channel selling (Shopify + Amazon + TikTok + Walmart) fragments your financial picture.",
+      "Multi-channel selling (Shopify + Amazon + TikTok + Walmart) fragments your financial picture into four different realities.",
       "We've seen brands discover they're profitable when they thought they were losing money — and vice versa.",
     ],
     hiddenCostHeadline: "Your P&L is lying to you.",
@@ -148,28 +148,30 @@ Within 90 days, we helped them identify which clients were profitable and which 
     misdiagnosis: {
       thinkHeadline: "You think you have a cash flow problem.",
       actuallyHeadline: "Actually, you have a timing visibility problem.",
-      story: `An apparel brand scaling from $6M to $50M thought they were bleeding cash. Every growth push felt like a crisis. They were considering slowing down.
+      story: `An apparel brand scaling from $6M to $50M+ thought they were bleeding cash. They were selling across Shopify, Amazon, TikTok Shop, and Walmart — four channels, four different data sources, no unified picture.
 
-We rebuilt their financial picture around cash flow timing, not GAAP accounting. What we found: they were actually **more profitable** during growth phases, but the cash lag from 6-month China lead times made it invisible.
+Every growth push felt like a crisis. The 6-month lead times from China meant cash was always behind inventory. They were considering slowing down — cutting ad spend, delaying expansion.
+
+We rebuilt their financial picture around cash flow timing, not GAAP accounting. What we found: they were actually **more profitable** during growth phases, but the cash lag made it invisible.
 
 They didn't have a profitability problem. They had a **visibility problem** that was making them afraid of their own success.`,
       keyInsight: "They cut financial operations cost by 50% while scaling 8x. The constraint was never money — it was sight.",
     },
     
     caseStudy: {
-      company: "DTC Apparel Brand",
-      industry: "E-commerce / Consumer Goods",
-      challenge: "Scaling from $6M to $50M+ with no visibility into true profitability",
+      company: "Multi-Channel Apparel Brand",
+      industry: "E-commerce / DTC (Shopify + Amazon + TikTok + Walmart)",
+      challenge: "Scaling from $6M to $50M+ across 4 channels with 6-month inventory lead times",
       metrics: [
         { label: "Revenue", before: "$6M", after: "$50M+" },
         { label: "Finance Ops Cost", before: "100%", after: "50% (half the cost)" },
         { label: "Cash Flow Visibility", before: "30 days", after: "180 days forward" },
-        { label: "Decision Confidence", before: "Guessing", after: "Data-driven" },
+        { label: "Channel Consolidation", before: "4 silos", after: "1 unified picture" },
       ],
       quote: "We were afraid to grow because we couldn't see where the money was going. Now we can see everything.",
       quoteName: "Founder",
       quoteRole: "DTC Brand",
-      outcome: "Brand scaled 8x in three years. Every growth decision backed by real-time financial intelligence.",
+      outcome: "Brand scaled 8x in three years. Every growth decision backed by real-time financial intelligence. Doubled down on ad spend instead of cutting it.",
     },
     
     speedContext: "Peak season waits for no one. We can be live before your next inventory buy.",
@@ -194,31 +196,33 @@ They didn't have a profitability problem. They had a **visibility problem** that
     misdiagnosis: {
       thinkHeadline: "You think Entity C is your problem.",
       actuallyHeadline: "Actually, Entity A has been hiding losses in intercompany transactions.",
-      story: `A multi-business operator with 5 entities — restaurants, production, real estate, a grip company, and retail — couldn't figure out why cash was always tight despite "profitable" businesses.
+      story: `A multi-business operator with 5 entities — restaurants, production company, real estate, a grip company, and an impact AV business ($4-6.5M in market assets) — couldn't explain their cash position to investors.
 
-We consolidated everything. What we found: the restaurant had been subsidizing the production company through informal intercompany loans that never got tracked. The "profitable" production company was actually burning cash. The real estate entity was throwing off cash that disappeared into operational entities.
+They suspected fraud in a recent restaurant acquisition. Multiple previous bookkeepers had been incompetent or dishonest. Nobody could see the consolidated picture.
 
-They didn't need to sell anything. They needed to **see everything in one place** and stop the invisible bleeding.`,
-      keyInsight: "Hidden intercompany subsidies were masking a $400K annual loss in what they thought was their strongest business.",
+We consolidated everything. What we found: intercompany transfers were hiding **$2.1M in actual margin**. The "profitable" production company was being subsidized by real estate cash flows. Informal loans between entities never got tracked.
+
+They didn't need to sell anything. They needed to **see everything in one place**.`,
+      keyInsight: "Hidden intercompany subsidies were masking true performance. Once visible, they closed their Series B six weeks later.",
     },
     
     caseStudy: {
-      company: "Multi-Business Portfolio",
-      industry: "Diversified Holdings",
-      challenge: "5+ entities with no consolidated financial picture",
+      company: "Diversified Holdings Portfolio",
+      industry: "Multi-Entity Operator (5+ businesses)",
+      challenge: "Couldn't explain cash position to investors, suspected fraud in acquisitions",
       metrics: [
         { label: "Entities", before: "5+ (siloed)", after: "5+ (consolidated)" },
-        { label: "Intercompany Visibility", before: "None", after: "Real-time" },
-        { label: "Hidden Subsidies Found", before: "Unknown", after: "$400K+ annually" },
-        { label: "Decision Quality", before: "Entity-by-entity", after: "Portfolio-wide" },
+        { label: "Hidden Margin Found", before: "Unknown", after: "$2.1M identified" },
+        { label: "Intercompany Visibility", before: "None", after: "Real-time tracking" },
+        { label: "Investor Readiness", before: "Couldn't explain", after: "Series B closed" },
       ],
       quote: "I thought I knew my businesses. I was wrong.",
       quoteName: "Portfolio Operator",
       quoteRole: "Multi-Entity Holdings",
-      outcome: "Restructured the portfolio based on actual performance. Profitable entities got investment. Unprofitable ones got fixed or sold.",
+      outcome: "Closed Series B financing six weeks after getting consolidated visibility. Restructured portfolio based on actual performance.",
     },
     
-    speedContext: "We've consolidated messier portfolios than yours. Usually faster than you'd expect.",
+    speedContext: "We've consolidated messier portfolios than yours. Faster than you'd expect.",
     
     ctaHeadline: "Let's see what your entities are hiding from each other.",
     ctaSubtext: "15 minutes. We'll show you the consolidated picture.",

@@ -188,7 +188,7 @@ export default function InactionCalculator({
 
       {/* Context */}
       <p className="text-ro-text-dim text-xs text-center mt-4">
-        Based on patterns from 44 client engagements. Your actual situation may vary.
+        Based on 44 client engagements. Your numbers will be different — let's find out how.
       </p>
     </div>
   );

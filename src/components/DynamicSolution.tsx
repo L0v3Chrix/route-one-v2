@@ -365,7 +365,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
       <section className="px-6 py-16 md:py-24">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-lg text-ro-text mb-2">
-            The model works. The proof is above.
+            The model works. You've seen the proof.
           </p>
           <p className="text-lg text-ro-text-bright font-medium mb-8">
             The only question is who's behind it.

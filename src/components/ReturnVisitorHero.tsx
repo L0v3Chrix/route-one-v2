@@ -133,7 +133,7 @@ function NewVisitorHero() {
         
         {/* Trust signal */}
         <p className="text-ro-text-dim text-sm mt-6 fade-up fade-up-delay-4">
-          No pitch. No email list. Just clarity.
+          No pitch. No pressure. Just clarity.
         </p>
       </div>
       
