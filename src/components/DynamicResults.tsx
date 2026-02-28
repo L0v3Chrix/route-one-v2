@@ -520,7 +520,7 @@ export default function DynamicResults({
             "Companies don't have visibility problems because they're doing something wrong. They have visibility problems because their systems weren't built to show them the truth."
           </blockquote>
           <p className="text-ro-text-dim">
-            The good news: this is fixable. Usually faster than you'd expect.
+            The good news: this is fixable. Faster than you'd expect.
           </p>
         </div>
       </section>
