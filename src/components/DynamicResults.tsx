@@ -54,20 +54,72 @@ const opportunityNarrative: Record<string, string> = {
 };
 
 export default function DynamicResults({
-  firstName,
-  score,
-  industry,
-  books,
-  frustration,
-  opportunity,
-  time,
-  entities,
-  painLevel,
-  industryLabel = 'your industry',
+  firstName: initialFirstName,
+  score: initialScore,
+  industry: initialIndustry,
+  books: initialBooks,
+  frustration: initialFrustration,
+  opportunity: initialOpportunity,
+  time: initialTime,
+  entities: initialEntities,
+  painLevel: initialPainLevel,
+  industryLabel: initialIndustryLabel = 'your industry',
 }: DynamicResultsProps) {
+  // Client-side state that can override server defaults
+  const [firstName, setFirstName] = useState(initialFirstName);
+  const [score, setScore] = useState(initialScore);
+  const [industry, setIndustry] = useState(initialIndustry);
+  const [books, setBooks] = useState(initialBooks);
+  const [frustration, setFrustration] = useState(initialFrustration);
+  const [opportunity, setOpportunity] = useState(initialOpportunity);
+  const [time, setTime] = useState(initialTime);
+  const [entities, setEntities] = useState(initialEntities);
+  const [painLevel, setPainLevel] = useState(initialPainLevel);
+  const [industryLabel, setIndustryLabel] = useState(initialIndustryLabel);
+
   const [showTransition, setShowTransition] = useState(true);
   const [animatedScore, setAnimatedScore] = useState(0);
   const [isBuilding, setIsBuilding] = useState(false); // Enhancement #26: Loading state
+  
+  // Read URL params on client-side mount (fixes static build issue)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const params = new URLSearchParams(window.location.search);
+    
+    // Override with URL params if present
+    const urlFirstName = params.get('firstName');
+    const urlScore = params.get('score');
+    const urlIndustry = params.get('industry');
+    const urlBooks = params.get('books');
+    const urlFrustration = params.get('frustration');
+    const urlOpportunity = params.get('opportunity');
+    const urlTime = params.get('time');
+    const urlEntities = params.get('entities');
+    const urlPain = params.get('pain');
+    
+    if (urlFirstName && urlFirstName !== 'there') setFirstName(urlFirstName);
+    if (urlScore) setScore(parseInt(urlScore, 10) || initialScore);
+    if (urlIndustry) setIndustry(urlIndustry);
+    if (urlBooks) setBooks(urlBooks);
+    if (urlFrustration) setFrustration(urlFrustration);
+    if (urlOpportunity) setOpportunity(urlOpportunity);
+    if (urlTime) setTime(urlTime);
+    if (urlEntities) setEntities(urlEntities);
+    if (urlPain) setPainLevel(urlPain);
+    
+    // Industry label mapping
+    const industryLabels: Record<string, string> = {
+      entertainment: 'entertainment & media',
+      professional: 'professional services',
+      ecommerce: 'e-commerce',
+      multi: 'multi-entity operations',
+      other: 'your industry',
+    };
+    if (urlIndustry && industryLabels[urlIndustry]) {
+      setIndustryLabel(industryLabels[urlIndustry]);
+    }
+  }, [initialScore]);
   
   // Progressive reveal states - default to true (visible) for no-JS/WhatsApp safety
   const [showPain, setShowPain] = useState(!hasIntersectionObserver);
