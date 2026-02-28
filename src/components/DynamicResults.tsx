@@ -594,7 +594,7 @@ export default function DynamicResults({
               Your diagnostic is complete.
             </h3>
             <p className="text-ro-text-dim">
-              A copy of these results has been sent to your email. Our team will be in touch shortly to discuss what this means for your business.
+              Ready to see what Route One can do for your business? Book a call or reach out when you're ready.
             </p>
           </div>
         </div>
