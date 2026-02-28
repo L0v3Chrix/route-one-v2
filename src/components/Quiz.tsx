@@ -4,6 +4,7 @@ import { buildRoutingProfile, buildQueryString } from '../lib/quizRouting';
 import { submitToSheets } from '../lib/sheets';
 import { getUtm, getClickIds } from '../lib/utm';
 import { trackEvent } from '../lib/analytics';
+import { clearSession } from '../lib/session';
 
 const STORAGE_KEY = 'ro_quiz_v2';
 
@@ -164,6 +165,9 @@ export default function Quiz() {
       industry: state.answers.industry, 
       score: profile.maturityScore 
     });
+    
+    // Clear session so next visit is fresh (no return visitor detection)
+    clearSession();
     
     // Redirect to results
     window.location.href = `/results?${queryString}`;
