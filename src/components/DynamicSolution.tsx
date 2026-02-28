@@ -104,7 +104,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
   if (!content) return null;
 
   return (
-    <div className="space-y-0 pb-20">
+    <div className="space-y-0 pb-12">
       {/* Industry Badge */}
       {industry !== 'other' && (
         <div className="bg-ro-green/10 border-b border-ro-green/20 px-6 py-3">
@@ -117,7 +117,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
       )}
 
       {/* Section: The Misdiagnosis */}
-      <section className="px-6 py-16 md:py-24">
+      <section className="px-6 py-8 md:py-12">
         <div className="max-w-3xl mx-auto">
           <p className="text-ro-green text-sm font-medium tracking-widest uppercase mb-4">
             The Misdiagnosis
@@ -149,9 +149,9 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
       </section>
 
       {/* Section: The Model */}
-      <section className="px-6 py-16 md:py-24 bg-ro-darker">
+      <section className="px-6 py-8 md:py-12 bg-ro-darker">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-6">
             <p className="text-ro-green text-sm font-medium tracking-widest uppercase mb-4">
               The Route One Model
             </p>
@@ -166,7 +166,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
           
           {/* Enhancement #14: Industry-Specific Trust Badges */}
           {content.trustBadges && content.trustBadges.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-3 mb-10">
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
               {content.trustBadges.map((badge, i) => (
                 <span 
                   key={i}
@@ -179,7 +179,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
           )}
           
           {/* Three Pillars */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-3 gap-6 mb-6">
             <div className="bg-ro-card border border-ro-card-border rounded-xl p-6">
               <div className="w-12 h-12 bg-ro-green/20 rounded-lg flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-ro-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -237,9 +237,9 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
       </section>
 
       {/* Section: Case Study */}
-      <section className="px-6 py-16 md:py-24">
+      <section className="px-6 py-8 md:py-12">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-6">
             <p className="text-ro-green text-sm font-medium tracking-widest uppercase mb-4">
               Companies Like Yours
             </p>
@@ -325,9 +325,9 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
       </section>
 
       {/* Section: Speed */}
-      <section className="px-6 py-16 md:py-24 bg-ro-darker">
+      <section className="px-6 py-8 md:py-12 bg-ro-darker">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-6">
             <p className="text-ro-green text-sm font-medium tracking-widest uppercase mb-4">
               How Fast We Move
             </p>
@@ -375,7 +375,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
       </section>
 
       {/* CTA with Enhanced Transition Copy */}
-      <section className="px-6 py-16 md:py-24">
+      <section className="px-6 py-8 md:py-12">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-lg text-ro-text mb-2">
             The model works. You've seen the proof.

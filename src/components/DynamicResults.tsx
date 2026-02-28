@@ -327,7 +327,7 @@ export default function DynamicResults({
   // ============================================
   if (showTransition) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-16 md:py-24">
+      <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-8 md:py-12">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-6">
             Your Diagnostic Results
@@ -351,7 +351,7 @@ export default function DynamicResults({
           </div>
 
           {/* Animated Score Display */}
-          <div className="mb-10">
+          <div className="mb-6">
             <div className="text-6xl sm:text-7xl font-bold text-ro-gold mb-2">
               {animatedScore}
             </div>
@@ -369,7 +369,7 @@ export default function DynamicResults({
           </div>
 
           {/* Deeper Reflection - Enhancement #26 */}
-          <p className="text-ro-text text-base mb-10 max-w-lg mx-auto">
+          <p className="text-ro-text text-base mb-6 max-w-lg mx-auto">
             That combination — {entityNarrative[entities]?.toLowerCase() || 'your entity structure'} with books that {booksNarrative[books]?.replace(/^your books /, '') || 'need attention'} — puts you in a specific category. The companies below were in exactly that position. What they found surprised them.
           </p>
 
@@ -404,7 +404,7 @@ export default function DynamicResults({
   // FULL DASHBOARD
   // ============================================
   return (
-    <div className="space-y-12 pb-20">
+    <div className="space-y-6 pb-12">
       {/* Section 1: Score & Dimensions - Always visible */}
       <section className="text-center fade-up">
         <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-4">
