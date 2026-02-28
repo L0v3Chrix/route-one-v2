@@ -85,7 +85,7 @@ export default function QuizReturnCheck() {
               </svg>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl font-bold text-ro-text-bright mb-3">
+            <h2 className="text-2xl sm:text-3xl font-medium text-ro-text-bright mb-3">
               You've already completed this, {firstName}.
             </h2>
             

@@ -48,7 +48,7 @@ export default function ReturnVisitorHero() {
         </p>
         
         {/* Welcome Back */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-ro-text-bright leading-tight mb-6 fade-up fade-up-delay-1">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium text-ro-text-bright leading-tight mb-6 fade-up fade-up-delay-1">
           Welcome back, <span className="text-ro-gold">{firstName}</span>.
         </h1>
         
@@ -108,7 +108,7 @@ function NewVisitorHero() {
         </p>
         
         {/* Headline - Enhancement #4: Kinetic typography on key phrase */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-ro-text-bright leading-tight mb-6 fade-up fade-up-delay-1">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium text-ro-text-bright leading-tight mb-6 fade-up fade-up-delay-1">
           Most companies don't have a profit problem.<br />
           <span className="text-ro-gold pulse-gold">They have a visibility problem.</span>
         </h1>

@@ -122,7 +122,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
           <p className="text-ro-green text-sm font-medium tracking-widest uppercase mb-4">
             The Misdiagnosis
           </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium leading-tight mb-8">
             <span className="text-ro-text-bright block mb-2">{content.misdiagnosis.thinkHeadline}</span>
             <span className="text-ro-gold block">{content.misdiagnosis.actuallyHeadline}</span>
           </h2>
@@ -155,7 +155,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
             <p className="text-ro-green text-sm font-medium tracking-widest uppercase mb-4">
               The Route One Model
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-4">
+            <h2 className="text-3xl sm:text-4xl font-medium text-ro-text-bright mb-4">
               What if you could replace your entire accounting headcount<br />
               with a managed department — for less?
             </h2>
@@ -243,7 +243,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
             <p className="text-ro-green text-sm font-medium tracking-widest uppercase mb-4">
               Companies Like Yours
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-4">
+            <h2 className="text-3xl sm:text-4xl font-medium text-ro-text-bright mb-4">
               {content.caseStudy.company}
             </h2>
             <p className="text-lg text-ro-text-dim">
@@ -331,7 +331,7 @@ export default function DynamicSolution({ industry: initialIndustry }: DynamicSo
             <p className="text-ro-green text-sm font-medium tracking-widest uppercase mb-4">
               How Fast We Move
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-4">
+            <h2 className="text-3xl sm:text-4xl font-medium text-ro-text-bright mb-4">
               Most clients are current within weeks, not months.
             </h2>
             <p className="text-ro-text-dim">{content.speedContext}</p>

@@ -333,7 +333,7 @@ export default function DynamicResults({
             Your Diagnostic Results
           </p>
           
-          <h1 className="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-8">
+          <h1 className="text-3xl sm:text-4xl font-medium text-ro-text-bright mb-8">
             Here's what we found, {firstName}.
           </h1>
 
@@ -410,7 +410,7 @@ export default function DynamicResults({
         <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-4">
           Your Financial Operations Diagnostic
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold text-ro-text-bright mb-2">
+        <h1 className="text-3xl sm:text-4xl font-medium text-ro-text-bright mb-2">
           Here's what we found, {firstName}.
         </h1>
         <p className="text-ro-text-dim mb-8">
@@ -433,7 +433,7 @@ export default function DynamicResults({
           <p className="text-red-400 text-sm font-medium tracking-widest uppercase mb-4">
             What This Means
           </p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-ro-text-bright mb-4">
+          <h2 className="text-2xl sm:text-3xl font-medium text-ro-text-bright mb-4">
             {currentPain.headline}
           </h2>
           <p className="text-ro-text text-lg mb-4">
@@ -495,7 +495,7 @@ export default function DynamicResults({
           <p className="text-ro-gold text-sm font-medium tracking-widest uppercase mb-2">
             The Math
           </p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-ro-text-bright">
+          <h2 className="text-2xl sm:text-3xl font-medium text-ro-text-bright">
             What is this actually costing you?
           </h2>
         </div>

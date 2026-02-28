@@ -203,7 +203,7 @@ export default function Quiz() {
 
     return (
       <div className="animate-fade-in">
-        <h2 className="text-2xl sm:text-3xl font-bold text-ro-text-bright text-center mb-3">
+        <h2 className="text-2xl sm:text-3xl font-medium text-ro-text-bright text-center mb-3">
           {currentQuestion.question}
         </h2>
         {currentQuestion.subtext && (
@@ -253,7 +253,7 @@ export default function Quiz() {
     
     return (
       <div className="animate-fade-in">
-        <h2 className="text-2xl sm:text-3xl font-bold text-ro-text-bright text-center mb-3">
+        <h2 className="text-2xl sm:text-3xl font-medium text-ro-text-bright text-center mb-3">
           Let's see what this means.
         </h2>
         <p className="text-ro-text-dim text-center mb-8">
