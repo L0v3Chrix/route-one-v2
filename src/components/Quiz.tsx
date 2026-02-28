@@ -8,6 +8,15 @@ import { clearSession } from '../lib/session';
 
 const STORAGE_KEY = 'ro_quiz_v2';
 
+// Email validation regex - RFC 5322 compliant
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+
+function isValidEmail(email: string): boolean {
+  if (!email) return false;
+  if (email.length > 254) return false; // Max email length per RFC
+  return EMAIL_REGEX.test(email);
+}
+
 function saveState(state: QuizState) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ state, savedAt: Date.now() }));
@@ -21,6 +30,8 @@ export default function Quiz() {
   const [showMicroCopy, setShowMicroCopy] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasTrackedStart, setHasTrackedStart] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [emailTouched, setEmailTouched] = useState(false);
 
   const totalQuestions = QUIZ_QUESTIONS.length;
   const isOnQuestions = state.currentStep < totalQuestions;
@@ -108,11 +119,43 @@ export default function Quiz() {
       ...prev,
       contact: { ...prev.contact, [field]: value },
     }));
-  }, []);
+    
+    // Validate email on change if already touched
+    if (field === 'email' && emailTouched) {
+      if (!value) {
+        setEmailError('Email is required');
+      } else if (!isValidEmail(value)) {
+        setEmailError('Please enter a valid email address');
+      } else {
+        setEmailError(null);
+      }
+    }
+  }, [emailTouched]);
+
+  // Handle email blur for validation
+  const handleEmailBlur = useCallback(() => {
+    setEmailTouched(true);
+    const email = state.contact.email;
+    if (!email) {
+      setEmailError('Email is required');
+    } else if (!isValidEmail(email)) {
+      setEmailError('Please enter a valid email address');
+    } else {
+      setEmailError(null);
+    }
+  }, [state.contact.email]);
 
   // Handle form submission
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate email before submission
+    if (!isValidEmail(state.contact.email)) {
+      setEmailTouched(true);
+      setEmailError('Please enter a valid email address');
+      return;
+    }
+    
     setIsSubmitting(true);
     
     const profile = buildRoutingProfile(state);
@@ -286,8 +329,20 @@ export default function Quiz() {
               required
               value={state.contact.email}
               onChange={(e) => handleContactChange('email', e.target.value)}
-              className="w-full px-4 py-3 bg-ro-card border border-ro-card-border rounded-lg text-ro-text-bright placeholder:text-ro-text-dim focus:outline-none focus:ring-2 focus:ring-ro-gold focus:border-transparent"
+              onBlur={handleEmailBlur}
+              aria-invalid={emailError ? 'true' : 'false'}
+              aria-describedby={emailError ? 'email-error' : undefined}
+              className={`w-full px-4 py-3 bg-ro-card border rounded-lg text-ro-text-bright placeholder:text-ro-text-dim focus:outline-none focus:ring-2 focus:border-transparent transition-colors ${
+                emailError 
+                  ? 'border-red-500 focus:ring-red-500' 
+                  : 'border-ro-card-border focus:ring-ro-gold'
+              }`}
             />
+            {emailError && (
+              <p id="email-error" className="mt-2 text-sm text-red-400" role="alert">
+                {emailError}
+              </p>
+            )}
           </div>
           <div>
             <label htmlFor="company" className="sr-only">Company name</label>
