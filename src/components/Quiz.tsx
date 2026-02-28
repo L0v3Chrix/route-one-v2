@@ -14,10 +14,54 @@ const STORAGE_KEY = 'ro_quiz_v2';
 // - TLD of 2+ characters (no single-letter TLDs)
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
 
+// Disposable/temporary email domains to block
+const DISPOSABLE_DOMAINS = new Set([
+  'mailinator.com', 'tempmail.com', 'tempmail.net', 'guerrillamail.com', 'guerrillamail.org',
+  '10minutemail.com', 'throwaway.email', 'fakeinbox.com', 'trashmail.com', 'trashmail.net',
+  'mailnesia.com', 'mailcatch.com', 'yopmail.com', 'yopmail.fr', 'sharklasers.com',
+  'dispostable.com', 'mintemail.com', 'temp-mail.org', 'temp-mail.io', 'tempinbox.com',
+  'mohmal.com', 'getnada.com', 'emailondeck.com', 'fakemailgenerator.com', 'throwawaymail.com',
+  'maildrop.cc', 'mailsac.com', 'harakirimail.com', 'discard.email', 'spamgourmet.com',
+  'mytemp.email', 'tempr.email', 'dropmail.me', 'inboxkitten.com', 'mailnull.com',
+  'spamex.com', 'spam4.me', 'binkmail.com', 'safetymail.info', 'anonymbox.net',
+  'jetable.org', 'spamfree24.org', 'spam.la', 'mytrashmail.com', 'mt2009.com',
+  'thankyou2010.com', 'trash2009.com', 'mt2014.com', 'tempail.com', 'tempomail.fr',
+  'temporarymail.net', 'tempsky.com', 'thrma.com', 'tmpmail.net', 'tmpmail.org'
+]);
+
+// Common email typos and their corrections
+const EMAIL_TYPO_CORRECTIONS: Record<string, string> = {
+  'gmial.com': 'gmail.com', 'gmal.com': 'gmail.com', 'gamil.com': 'gmail.com', 
+  'gnail.com': 'gmail.com', 'gmail.co': 'gmail.com', 'gmaill.com': 'gmail.com',
+  'gmailcom': 'gmail.com', 'gmail.cm': 'gmail.com', 'gmai.com': 'gmail.com',
+  'yaho.com': 'yahoo.com', 'yahooo.com': 'yahoo.com', 'yhaoo.com': 'yahoo.com',
+  'yahoo.co': 'yahoo.com', 'yahoocom': 'yahoo.com', 'yhoo.com': 'yahoo.com',
+  'hotmal.com': 'hotmail.com', 'hotmai.com': 'hotmail.com', 'hotmial.com': 'hotmail.com',
+  'hotmail.co': 'hotmail.com', 'hotmailcom': 'hotmail.com', 'hotnail.com': 'hotmail.com',
+  'outlok.com': 'outlook.com', 'outloo.com': 'outlook.com', 'outlook.co': 'outlook.com',
+  'outlookcom': 'outlook.com', 'outllook.com': 'outlook.com',
+  'icloud.co': 'icloud.com', 'icloudcom': 'icloud.com', 'icould.com': 'icloud.com',
+  'aol.co': 'aol.com', 'aolcom': 'aol.com',
+};
+
 function isValidEmail(email: string): boolean {
   if (!email) return false;
   if (email.length > 254) return false; // Max email length per RFC
   return EMAIL_REGEX.test(email);
+}
+
+function isDisposableEmail(email: string): boolean {
+  const domain = email.toLowerCase().split('@')[1];
+  return domain ? DISPOSABLE_DOMAINS.has(domain) : false;
+}
+
+function getEmailTypoSuggestion(email: string): string | null {
+  const domain = email.toLowerCase().split('@')[1];
+  if (domain && EMAIL_TYPO_CORRECTIONS[domain]) {
+    const localPart = email.split('@')[0];
+    return `${localPart}@${EMAIL_TYPO_CORRECTIONS[domain]}`;
+  }
+  return null;
 }
 
 function saveState(state: QuizState) {
@@ -35,6 +79,9 @@ export default function Quiz() {
   const [hasTrackedStart, setHasTrackedStart] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [emailTouched, setEmailTouched] = useState(false);
+  const [emailSuggestion, setEmailSuggestion] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState('');
 
   const totalQuestions = QUIZ_QUESTIONS.length;
   const isOnQuestions = state.currentStep < totalQuestions;
@@ -116,6 +163,14 @@ export default function Quiz() {
     });
   }, [state.currentStep]);
 
+  // Validate email with all checks
+  const validateEmail = useCallback((email: string): string | null => {
+    if (!email) return 'Email is required';
+    if (!isValidEmail(email)) return 'Please enter a valid email address';
+    if (isDisposableEmail(email)) return 'Please use a permanent email address';
+    return null;
+  }, []);
+
   // Handle contact form changes
   const handleContactChange = useCallback((field: keyof QuizState['contact'], value: string) => {
     setState(prev => ({
@@ -125,47 +180,89 @@ export default function Quiz() {
     
     // Validate email on change if already touched
     if (field === 'email' && emailTouched) {
-      if (!value) {
-        setEmailError('Email is required');
-      } else if (!isValidEmail(value)) {
-        setEmailError('Please enter a valid email address');
+      const error = validateEmail(value);
+      setEmailError(error);
+      
+      // Check for typo suggestion
+      if (!error) {
+        const suggestion = getEmailTypoSuggestion(value);
+        setEmailSuggestion(suggestion);
       } else {
-        setEmailError(null);
+        setEmailSuggestion(null);
       }
     }
-  }, [emailTouched]);
+  }, [emailTouched, validateEmail]);
 
   // Handle email blur for validation
   const handleEmailBlur = useCallback(() => {
     setEmailTouched(true);
     const email = state.contact.email;
-    if (!email) {
-      setEmailError('Email is required');
-    } else if (!isValidEmail(email)) {
-      setEmailError('Please enter a valid email address');
+    const error = validateEmail(email);
+    setEmailError(error);
+    
+    // Check for typo suggestion
+    if (!error) {
+      const suggestion = getEmailTypoSuggestion(email);
+      setEmailSuggestion(suggestion);
     } else {
-      setEmailError(null);
+      setEmailSuggestion(null);
     }
-  }, [state.contact.email]);
+  }, [state.contact.email, validateEmail]);
+
+  // Apply email suggestion
+  const applySuggestion = useCallback(() => {
+    if (emailSuggestion) {
+      setState(prev => ({
+        ...prev,
+        contact: { ...prev.contact, email: emailSuggestion },
+      }));
+      setEmailSuggestion(null);
+    }
+  }, [emailSuggestion]);
 
   // Handle form submission
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError(null);
+    
+    // Honeypot check - if filled, silently reject (bot detected)
+    if (honeypot) {
+      // Fake success for bots
+      await new Promise(r => setTimeout(r, 1500));
+      window.location.href = '/results?bot=true';
+      return;
+    }
+    
+    // Trim all inputs
+    const trimmedFirstName = state.contact.firstName.trim();
+    const trimmedEmail = state.contact.email.trim().toLowerCase();
+    const trimmedCompany = state.contact.company.trim();
     
     // Validate email before submission
-    if (!isValidEmail(state.contact.email)) {
+    const emailValidationError = validateEmail(trimmedEmail);
+    if (emailValidationError) {
       setEmailTouched(true);
-      setEmailError('Please enter a valid email address');
+      setEmailError(emailValidationError);
       return;
     }
     
     setIsSubmitting(true);
     
-    const profile = buildRoutingProfile(state);
-    const queryString = buildQueryString(state, profile);
+    // Update state with trimmed/normalized values
+    const normalizedState = {
+      ...state,
+      contact: {
+        firstName: trimmedFirstName,
+        email: trimmedEmail,
+        company: trimmedCompany,
+      },
+    };
+    
+    const profile = buildRoutingProfile(normalizedState);
+    const queryString = buildQueryString(normalizedState, profile);
     
     // Save final state
-    saveState(state);
+    saveState(normalizedState);
     
     // Get UTM and click ID attribution
     const utm = getUtm();
@@ -179,45 +276,51 @@ export default function Quiz() {
       // localStorage may be unavailable or invalid
     }
     
-    // Submit to Google Sheets
-    await submitToSheets({
-      submissionType: 'quiz_complete',
-      firstName: state.contact.firstName,
-      email: state.contact.email,
-      company: state.contact.company,
-      industry: state.answers.industry,
-      entityCount: state.answers.entityCount,
-      booksStatus: state.answers.booksStatus,
-      frustration: state.answers.frustration,
-      opportunity: state.answers.opportunity,
-      personalTime: state.answers.personalTime,
-      tier: profile.tier,
-      painLevel: profile.painLevel,
-      urgency: profile.urgency,
-      maturityScore: profile.maturityScore,
-      caseStudyRoute: profile.caseStudyRoute,
-      industryLabel: INDUSTRY_LABELS[state.answers.industry] || 'your industry',
-      bridgeResponses,
-      utmSource: utm.utm_source,
-      utmMedium: utm.utm_medium,
-      utmCampaign: utm.utm_campaign,
-      utmContent: utm.utm_content,
-      gclid: clicks.gclid,
-      fbclid: clicks.fbclid,
-    });
-    
-    // Track completion
-    trackEvent('quiz_complete', { 
-      industry: state.answers.industry, 
-      score: profile.maturityScore 
-    });
-    
-    // Clear session so next visit is fresh (no return visitor detection)
-    clearSession();
-    
-    // Redirect to results
-    window.location.href = `/results?${queryString}`;
-  }, [state]);
+    // Submit to Google Sheets with error handling
+    try {
+      await submitToSheets({
+        submissionType: 'quiz_complete',
+        firstName: trimmedFirstName,
+        email: trimmedEmail,
+        company: trimmedCompany,
+        industry: normalizedState.answers.industry,
+        entityCount: normalizedState.answers.entityCount,
+        booksStatus: normalizedState.answers.booksStatus,
+        frustration: normalizedState.answers.frustration,
+        opportunity: normalizedState.answers.opportunity,
+        personalTime: normalizedState.answers.personalTime,
+        tier: profile.tier,
+        painLevel: profile.painLevel,
+        urgency: profile.urgency,
+        maturityScore: profile.maturityScore,
+        caseStudyRoute: profile.caseStudyRoute,
+        industryLabel: INDUSTRY_LABELS[normalizedState.answers.industry] || 'your industry',
+        bridgeResponses,
+        utmSource: utm.utm_source,
+        utmMedium: utm.utm_medium,
+        utmCampaign: utm.utm_campaign,
+        utmContent: utm.utm_content,
+        gclid: clicks.gclid,
+        fbclid: clicks.fbclid,
+      });
+      
+      // Track completion
+      trackEvent('quiz_complete', { 
+        industry: normalizedState.answers.industry, 
+        score: profile.maturityScore 
+      });
+      
+      // Clear session so next visit is fresh (no return visitor detection)
+      clearSession();
+      
+      // Redirect to results
+      window.location.href = `/results?${queryString}`;
+    } catch (error) {
+      setIsSubmitting(false);
+      setSubmitError('Something went wrong. Please try again.');
+      trackEvent('quiz_submit_error');
+    }
+  }, [state, honeypot, validateEmail]);
 
   // Progress dots
   const renderProgress = () => (
@@ -334,7 +437,7 @@ export default function Quiz() {
               onChange={(e) => handleContactChange('email', e.target.value)}
               onBlur={handleEmailBlur}
               aria-invalid={emailError ? 'true' : 'false'}
-              aria-describedby={emailError ? 'email-error' : undefined}
+              aria-describedby={emailError ? 'email-error' : emailSuggestion ? 'email-suggestion' : undefined}
               className={`w-full px-4 py-3 bg-ro-card border rounded-lg text-ro-text-bright placeholder:text-ro-text-dim focus:outline-none focus:ring-2 focus:border-transparent transition-colors ${
                 emailError 
                   ? 'border-red-500 focus:ring-red-500' 
@@ -346,6 +449,33 @@ export default function Quiz() {
                 {emailError}
               </p>
             )}
+            {emailSuggestion && !emailError && (
+              <p id="email-suggestion" className="mt-2 text-sm text-ro-gold">
+                Did you mean{' '}
+                <button
+                  type="button"
+                  onClick={applySuggestion}
+                  className="underline hover:text-ro-text-bright focus:outline-none focus:ring-1 focus:ring-ro-gold"
+                >
+                  {emailSuggestion}
+                </button>
+                ?
+              </p>
+            )}
+          </div>
+          
+          {/* Honeypot field - hidden from humans, catches bots */}
+          <div className="absolute -left-[9999px]" aria-hidden="true">
+            <label htmlFor="website">Website</label>
+            <input
+              type="text"
+              id="website"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
           </div>
           <div>
             <label htmlFor="company" className="sr-only">Company name</label>
@@ -360,12 +490,18 @@ export default function Quiz() {
             />
           </div>
           
+          {submitError && (
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg" role="alert">
+              <p className="text-sm text-red-400">{submitError}</p>
+            </div>
+          )}
+          
           <button
             type="submit"
             disabled={isSubmitting}
             className="w-full bg-ro-green hover:bg-ro-green-light text-white font-semibold py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark disabled:opacity-50"
           >
-            {isSubmitting ? 'Loading...' : 'Show My Results →'}
+            {isSubmitting ? 'Loading...' : submitError ? 'Try Again →' : 'Show My Results →'}
           </button>
         </form>
 
