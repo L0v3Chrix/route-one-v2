@@ -8,8 +8,11 @@ import { clearSession } from '../lib/session';
 
 const STORAGE_KEY = 'ro_quiz_v2';
 
-// Email validation regex - RFC 5322 compliant
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+// Email validation regex - stricter than RFC, requires:
+// - Valid local part (before @)
+// - Domain with at least one dot
+// - TLD of 2+ characters (no single-letter TLDs)
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
 
 function isValidEmail(email: string): boolean {
   if (!email) return false;
