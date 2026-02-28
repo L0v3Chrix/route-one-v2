@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Diagnostic Quiz — Ready to Use</title>
+  <title>Route One — What We Built Together</title>
   <style>
     :root {
       --ro-dark: #0a1214;
@@ -20,17 +20,16 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--ro-dark);
       color: var(--ro-text);
-      line-height: 1.7;
+      line-height: 1.8;
     }
     
     .container {
-      max-width: 800px;
+      max-width: 720px;
       margin: 0 auto;
       padding: 3rem 2rem;
     }
     
     header {
-      text-align: center;
       margin-bottom: 3rem;
     }
     
@@ -58,8 +57,10 @@
     
     p {
       margin-bottom: 1rem;
-      color: var(--ro-text-dim);
+      color: var(--ro-text);
     }
+    
+    .dim { color: var(--ro-text-dim); }
     
     .live-link {
       display: inline-block;
@@ -74,36 +75,25 @@
     
     .live-link:hover { opacity: 0.9; }
     
-    ul, ol {
+    ul {
       margin-left: 1.5rem;
-      margin-bottom: 1rem;
-      color: var(--ro-text-dim);
+      margin-bottom: 1.5rem;
     }
     
-    li { margin-bottom: 0.75rem; }
-    
-    .box {
-      background: var(--ro-card);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin: 1.5rem 0;
-    }
-    
-    .action-item {
-      background: rgba(212, 165, 116, 0.1);
-      border-left: 3px solid var(--ro-gold);
-      padding: 1rem 1.5rem;
-      margin: 1rem 0;
-      border-radius: 0 8px 8px 0;
-    }
-    
-    .action-item strong {
+    li { 
+      margin-bottom: 0.75rem; 
       color: var(--ro-text);
     }
     
+    .highlight {
+      background: rgba(212, 165, 116, 0.1);
+      border-left: 3px solid var(--ro-gold);
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
     footer {
-      text-align: center;
       padding-top: 2rem;
       border-top: 1px solid rgba(255,255,255,0.1);
       color: var(--ro-text-dim);
@@ -114,70 +104,56 @@
 <body>
   <div class="container">
     <header>
-      <h1>Your Diagnostic Quiz is Ready</h1>
+      <h1>What We Built Together</h1>
       <p class="date">February 28, 2026</p>
     </header>
 
     <section>
-      <h2>The Link</h2>
+      <p>A.J. —</p>
+      <p>Here's your diagnostic funnel, live and working:</p>
       <a href="https://route-one-v2.vercel.app" class="live-link" target="_blank">
         route-one-v2.vercel.app →
       </a>
-      <p>This is a temporary link. Once you're ready to go live, we'll connect it to your real domain (like routeoneadvisory.com/quiz).</p>
+      <p class="dim" style="font-size: 0.875rem;">We'll move this to your real domain whenever you're ready.</p>
     </section>
 
     <section>
-      <h2>What This Does</h2>
-      <p style="color: var(--ro-text);">People land on the quiz, answer 6 questions about their financial operations, and get a personalized score. To see their full results, they enter their email. You get the lead.</p>
-      
-      <div class="box">
-        <p style="color: var(--ro-text); margin-bottom: 0.5rem;"><strong>The flow:</strong></p>
-        <ol>
-          <li>Visitor sees headline, clicks "Start Quiz"</li>
-          <li>6 quick questions (takes about 90 seconds)</li>
-          <li>They enter name, email, company to see results</li>
-          <li>They get a maturity score (5-95) with personalized insights</li>
-          <li>You get their info + answers in your Google Sheet + email notification</li>
-        </ol>
-      </div>
+      <h2>What It Does</h2>
+      <p>Someone lands on the page, takes a 90-second quiz about their financial operations, and gets a personalized score. To see their results, they give you their email.</p>
+      <p>You get their contact info, every answer they gave, and their score — automatically in your Google Sheet and in your inbox.</p>
+      <p>That's it. Simple by design.</p>
     </section>
 
     <section>
-      <h2>Where Your Leads Go</h2>
-      <p>Every time someone completes the quiz, two things happen:</p>
-      <ol>
-        <li><strong>Google Sheet</strong> — Their info, answers, and score get added automatically</li>
-        <li><strong>Email</strong> — You get a notification at dean@routeoneadvisory.com</li>
-      </ol>
-      <p>The sheet includes everything you need to follow up: name, email, company, what they answered, their score, and when they took it.</p>
+      <h2>But Here's the Real Thing</h2>
+      <p>This quiz isn't the point. It's a proof of concept.</p>
+      <p>What we actually built is a system. A way to turn your expertise into something that works while you sleep. Something that qualifies leads before you ever get on a call. Something that scales.</p>
+      <div class="highlight">
+        <p style="margin-bottom: 0;">This is one funnel. Imagine ten of them — each speaking to a different industry, a different pain point, a different entry point into Route One. All feeding the same pipeline. All running automatically.</p>
+      </div>
+      <p>That's the door this opens.</p>
     </section>
 
     <section>
-      <h2>What We Need From You</h2>
-      
-      <div class="action-item">
-        <strong>1. Custom domain access</strong><br>
-        When you're ready to go live, give us access to your DNS settings so we can connect this to your real URL.
-      </div>
-      
-      <div class="action-item">
-        <strong>2. Graphik font files (optional)</strong><br>
-        We're using a backup font that looks similar. If you have the actual Graphik font files, send them over for an exact match.
-      </div>
-      
-      <div class="action-item">
-        <strong>3. Calendar link (when ready)</strong><br>
-        If you want people to book a call directly from their results page, send us your Calendly or booking link.
-      </div>
+      <h2>What's Next (When You're Ready)</h2>
+      <ul>
+        <li><strong>Connect your domain</strong> — Move this to routeoneadvisory.com/quiz or wherever makes sense</li>
+        <li><strong>Add calendar booking</strong> — Let hot leads schedule directly from their results</li>
+        <li><strong>Build more funnels</strong> — Different industries, different angles, same system</li>
+        <li><strong>Automate follow-up</strong> — Emails that go out based on their score and answers</li>
+      </ul>
+      <p class="dim">None of this is required right now. Just showing you where the road goes.</p>
     </section>
 
     <section>
-      <h2>Questions?</h2>
-      <p>Reply to this or text anytime. Happy to walk through it on a call if that's easier.</p>
+      <h2>Thank You</h2>
+      <p>Matt showed me some things that changed how I think about building. This project let me put those ideas into practice. Getting to do that for someone connected to him — that means something.</p>
+      <p>I hope this serves you well. And I hope it's just the first thing we build together.</p>
+      <p style="color: var(--ro-gold); margin-top: 1.5rem;">— Chrix</p>
     </section>
 
     <footer>
-      <p>Built by Raize The Vibe for Route One Advisory</p>
+      <p>Questions? Just reply to whatever message brought you here.</p>
     </footer>
   </div>
 </body>
