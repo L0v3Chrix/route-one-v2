@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Route One V2 Diagnostic Funnel — Client Deliverable</title>
+  <style>
+    :root {
+      --ro-dark: #0a1214;
+      --ro-card: #111b1f;
+      --ro-green: #0F383C;
+      --ro-gold: #d4a574;
+      --ro-text: #E5EBE8;
+      --ro-text-dim: #8a9a94;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--ro-dark);
+      color: var(--ro-text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 4rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+    }
+    
+    .brand {
+      color: var(--ro-gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      color: var(--ro-text-dim);
+      font-size: 1.1rem;
+    }
+    
+    .date {
+      color: var(--ro-text-dim);
+      font-size: 0.875rem;
+      margin-top: 1rem;
+    }
+    
+    section {
+      margin-bottom: 3rem;
+    }
+    
+    h2 {
+      color: var(--ro-gold);
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(212, 165, 116, 0.15);
+    }
+    
+    h3 {
+      color: var(--ro-text);
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      margin-bottom: 1rem;
+      color: var(--ro-text-dim);
+    }
+    
+    .card {
+      background: var(--ro-card);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-title {
+      color: var(--ro-gold);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .live-link {
+      display: inline-block;
+      background: var(--ro-green);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 1rem 0;
+      transition: opacity 0.2s;
+    }
+    
+    .live-link:hover {
+      opacity: 0.9;
+    }
+    
+    ul, ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--ro-text-dim);
+    }
+    
+    li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .check {
+      color: #22c55e;
+      margin-right: 0.5rem;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    th {
+      color: var(--ro-gold);
+      font-weight: 500;
+    }
+    
+    td {
+      color: var(--ro-text-dim);
+    }
+    
+    .highlight {
+      background: rgba(212, 165, 116, 0.1);
+      border-left: 3px solid var(--ro-gold);
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .origin-story {
+      font-style: italic;
+      color: var(--ro-text);
+    }
+    
+    .score-example {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .score-card {
+      background: var(--ro-card);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    
+    .score-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .score-label {
+      font-size: 0.75rem;
+      color: var(--ro-text-dim);
+    }
+    
+    .green { color: #22c55e; }
+    .yellow { color: #eab308; }
+    .orange { color: #f97316; }
+    .red { color: #ef4444; }
+    
+    footer {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(212, 165, 116, 0.2);
+      color: var(--ro-text-dim);
+      font-size: 0.875rem;
+    }
+    
+    .signature {
+      margin-top: 2rem;
+      color: var(--ro-gold);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p class="brand">Raize The Vibe × Route One Advisory</p>
+      <h1>Financial Operations Diagnostic Funnel</h1>
+      <p class="subtitle">Client Deliverable & Technical Walkthrough</p>
+      <p class="date">February 28, 2026</p>
+    </header>
+
+    <section>
+      <h2>🔗 Live Link</h2>
+      <p>The diagnostic funnel is live and ready for deployment to your production domain:</p>
+      <a href="https://route-one-v2.vercel.app" class="live-link" target="_blank">
+        https://route-one-v2.vercel.app →
+      </a>
+      <p style="font-size: 0.875rem; margin-top: 0.5rem;">
+        Currently deployed on Vercel. Ready for custom domain connection when you provide DNS access.
+      </p>
+    </section>
+
+    <section>
+      <h2>🎯 What We Built</h2>
+      <p>A 90-second diagnostic quiz that captures high-quality leads by delivering immediate, personalized value before asking for contact information.</p>
+      
+      <div class="card">
+        <p class="card-title">The Flow</p>
+        <ol>
+          <li><strong>Landing Page</strong> — Pattern-interrupt headline that qualifies the right visitor</li>
+          <li><strong>6-Question Quiz</strong> — Strategic questions that reveal pain while building engagement</li>
+          <li><strong>Email Gate</strong> — Captures contact info with value-forward framing</li>
+          <li><strong>Results Page</strong> — Personalized diagnostic with dynamic scoring and industry-specific insights</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>✨ Key Features</h2>
+      
+      <div class="card">
+        <p class="card-title">Dynamic Maturity Scoring (5-95)</p>
+        <p>Each lead receives a unique Financial Operations Maturity Score based on their quiz answers. The scoring adapts to:</p>
+        <ul>
+          <li>Books status (current → never closed)</li>
+          <li>Entity complexity (single → 7+)</li>
+          <li>Pain signals (visibility, trust, founder time)</li>
+          <li>Opportunity cost (direct loss → none)</li>
+          <li>Time investment (delegated → second job)</li>
+        </ul>
+        
+        <div class="score-example">
+          <div class="score-card">
+            <div class="score-value green">85+</div>
+            <div class="score-label">Solid Foundation</div>
+          </div>
+          <div class="score-card">
+            <div class="score-value yellow">50-69</div>
+            <div class="score-label">Room for Improvement</div>
+          </div>
+          <div class="score-card">
+            <div class="score-value orange">30-49</div>
+            <div class="score-label">Significant Gaps</div>
+          </div>
+          <div class="score-card">
+            <div class="score-value red">&lt;30</div>
+            <div class="score-label">Urgent Attention Needed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Industry-Specific Content</p>
+        <p>Results adapt based on selected industry:</p>
+        <ul>
+          <li>Entertainment / Media / Production</li>
+          <li>Professional Services</li>
+          <li>E-commerce / DTC</li>
+          <li>Multi-business Operator</li>
+        </ul>
+        <p>Each path shows relevant case studies and dollar-impact estimates.</p>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Cost of Inaction Calculator</p>
+        <p>Interactive calculator that shows prospects their estimated annual margin leakage based on:</p>
+        <ul>
+          <li>Annual revenue</li>
+          <li>Days behind on books</li>
+          <li>Financing denial history</li>
+        </ul>
+        <p>Creates urgency by quantifying the cost of waiting.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>🛡️ Professional Polish</h2>
+      <table>
+        <tr>
+          <th>Feature</th>
+          <th>What It Does</th>
+        </tr>
+        <tr>
+          <td><span class="check">✓</span> Email Validation</td>
+          <td>Format check with 2+ character TLD requirement</td>
+        </tr>
+        <tr>
+          <td><span class="check">✓</span> Disposable Email Blocker</td>
+          <td>Blocks 50+ throwaway domains (mailinator, tempmail, etc.)</td>
+        </tr>
+        <tr>
+          <td><span class="check">✓</span> Typo Suggester</td>
+          <td>"Did you mean gmail.com?" for common typos</td>
+        </tr>
+        <tr>
+          <td><span class="check">✓</span> Honeypot Field</td>
+          <td>Hidden field that catches bots</td>
+        </tr>
+        <tr>
+          <td><span class="check">✓</span> Rate Limiting</td>
+          <td>Prevents spam submissions (max 2/minute)</td>
+        </tr>
+        <tr>
+          <td><span class="check">✓</span> Input Trimming</td>
+          <td>Strips extra spaces from all fields</td>
+        </tr>
+        <tr>
+          <td><span class="check">✓</span> Error Handling</td>
+          <td>Graceful failures with retry option</td>
+        </tr>
+        <tr>
+          <td><span class="check">✓</span> SEO/OG Meta Tags</td>
+          <td>Social preview cards when link is shared</td>
+        </tr>
+        <tr>
+          <td><span class="check">✓</span> Mobile Optimized</td>
+          <td>48px touch targets, no horizontal scroll</td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>📊 Data Collection</h2>
+      <p>All quiz completions are automatically logged to your Google Sheet with:</p>
+      <ul>
+        <li>Contact info (name, email, company)</li>
+        <li>All quiz answers</li>
+        <li>Calculated maturity score</li>
+        <li>Tier classification (A/B/C)</li>
+        <li>Pain level and urgency indicators</li>
+        <li>UTM parameters for campaign tracking</li>
+        <li>Timestamp</li>
+      </ul>
+      <p>Email notifications are sent to dean@routeoneadvisory.com for each completion.</p>
+    </section>
+
+    <section>
+      <h2>💡 Suggestions: Additional Quiz Questions</h2>
+      <p>Based on the diagnostic framework and typical Route One client needs, here are recommended questions to consider for future iterations:</p>
+      
+      <div class="highlight">
+        <p><strong>Revenue Tier Question</strong></p>
+        <p>
+          "What's your approximate annual revenue?"<br>
+          <em>Options: &lt;$1M, $1-5M, $5-20M, $20-50M, $50M+</em><br>
+          <strong>Value:</strong> Enables tier-based pricing and service recommendations. Higher revenue = higher impact messaging.
+        </p>
+      </div>
+
+      <div class="highlight">
+        <p><strong>Current Solution Question</strong></p>
+        <p>
+          "How are your financials currently handled?"<br>
+          <em>Options: In-house bookkeeper, External accountant, Outsourced firm, DIY/Founder, Hybrid</em><br>
+          <strong>Value:</strong> Positions Route One against current solution and tailors the case study shown.
+        </p>
+      </div>
+
+      <div class="highlight">
+        <p><strong>Decision Timeline Question</strong></p>
+        <p>
+          "When are you looking to improve your financial operations?"<br>
+          <em>Options: Immediately, This quarter, This year, Just exploring</em><br>
+          <strong>Value:</strong> Prioritizes hot leads for immediate outreach vs. nurture sequences.
+        </p>
+      </div>
+
+      <div class="highlight">
+        <p><strong>Team Size / Growth Stage</strong></p>
+        <p>
+          "What best describes your company right now?"<br>
+          <em>Options: Solo founder, Small team (2-10), Growth stage (11-50), Scaled (50+)</em><br>
+          <strong>Value:</strong> Adjusts complexity messaging and solution positioning.
+        </p>
+      </div>
+
+      <p style="color: var(--ro-text); margin-top: 1.5rem;">
+        <strong>Note:</strong> Each additional question adds ~15 seconds to completion time. Recommend testing with 1-2 new questions at a time to measure impact on completion rates.
+      </p>
+    </section>
+
+    <section>
+      <h2>🔧 Technical Details</h2>
+      <div class="card">
+        <p class="card-title">Stack</p>
+        <ul>
+          <li><strong>Framework:</strong> Astro + React</li>
+          <li><strong>Styling:</strong> Tailwind CSS</li>
+          <li><strong>Hosting:</strong> Vercel (edge deployment)</li>
+          <li><strong>Data:</strong> Google Sheets via Apps Script webhook</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <p class="card-title">Repository</p>
+        <p>GitHub: <code>L0v3Chrix/route-one-v2</code></p>
+        <p>All source code is version controlled and ready for future updates.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>📝 Next Steps</h2>
+      <ol>
+        <li><strong>Custom Domain</strong> — Provide DNS access to connect routeoneadvisory.com/quiz or preferred subdomain</li>
+        <li><strong>Graphik Fonts</strong> — Provide licensed font files for brand consistency (currently falls back to Inter)</li>
+        <li><strong>Calendar Integration</strong> — When ready to add booking, provide calendar embed URL</li>
+        <li><strong>Privacy Policy</strong> — Create and host privacy policy, then we'll add the footer link</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>🌟 The Story Behind This</h2>
+      <div class="highlight origin-story">
+        <p>This project came full circle in a meaningful way.</p>
+        <p style="margin-top: 1rem;">Justin referred this project, and A.J.'s friend Matt — an amazing full-stack developer — first showed me two websites that changed my life: V0 and Firecrawl. A few weeks later, Matt shared his personal site with an Easter egg that sparked the idea for more engaging funnels.</p>
+        <p style="margin-top: 1rem;">Building something of value with skills learned from Matt and that brief crossing feels like closing a loop. The goal was always to deliver a product that satisfies and wows.</p>
+        <p style="margin-top: 1rem; color: var(--ro-gold);">Mission accomplished. Revisions until it's right.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>Built with intention by Raize The Vibe</p>
+      <p class="signature">— Chrix</p>
+    </footer>
+  </div>
+</body>
+</html>
