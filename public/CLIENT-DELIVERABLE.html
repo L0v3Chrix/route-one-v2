@@ -147,10 +147,62 @@
     .orange { color: #f97316; }
     .red { color: #ef4444; }
     
-    .origin-story {
-      font-style: italic;
-      color: var(--ro-text);
+    .big-idea {
+      background: linear-gradient(135deg, rgba(15, 56, 60, 0.4) 0%, rgba(212, 165, 116, 0.1) 100%);
+      border: 1px solid rgba(212, 165, 116, 0.3);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
     }
+    
+    .big-idea h3 {
+      color: var(--ro-gold);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .hypothesis {
+      background: var(--ro-card);
+      border: 2px solid var(--ro-gold);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    
+    .hypothesis-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--ro-gold);
+      margin-bottom: 0.5rem;
+    }
+    
+    .vs-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .vs-card {
+      background: var(--ro-card);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    
+    .vs-card.old { border-top: 3px solid #ef4444; }
+    .vs-card.new { border-top: 3px solid #22c55e; }
+    
+    .vs-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+    
+    .vs-card.old .vs-label { color: #ef4444; }
+    .vs-card.new .vs-label { color: #22c55e; }
     
     footer {
       text-align: center;
@@ -161,6 +213,10 @@
     }
     
     .signature { margin-top: 2rem; color: var(--ro-gold); }
+    
+    @media (max-width: 600px) {
+      .vs-table { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -356,13 +412,92 @@
     </section>
 
     <section>
-      <h2>The Story Behind This</h2>
-      <div class="highlight origin-story">
-        <p>This project came full circle in a meaningful way.</p>
-        <p style="margin-top: 1rem;">Justin referred this project, and A.J.'s friend Matt — an amazing full-stack developer — first showed me two websites that changed my life: V0 and Firecrawl. A few weeks later, Matt shared his personal site with an Easter egg that sparked the idea for more engaging funnels.</p>
-        <p style="margin-top: 1rem;">Building something of value with skills learned from Matt and that brief crossing feels like closing a loop. The goal was always to deliver a product that satisfies and wows.</p>
-        <p style="margin-top: 1rem; color: var(--ro-gold);">Mission accomplished. Revisions until it's right.</p>
+      <h2>The Bigger Idea: Intent-Based Funnels</h2>
+      
+      <p style="color: var(--ro-text);">This quiz isn't just a lead capture tool. It's a proof of concept for something bigger.</p>
+      
+      <p>Here's the backstory: Justin referred this project, and your friend Matt — an amazing full-stack developer — first showed me two tools that changed everything for me: V0 (an AI code generator) and Firecrawl (a web scraping tool). A few weeks later, Matt shared his personal site. Hidden in it was an Easter egg — a small interactive element that made me stop and engage differently than I would with a normal page.</p>
+      
+      <p style="color: var(--ro-text);">That's when something clicked.</p>
+      
+      <p>The Easter egg didn't just show me information. It made me <em>reveal</em> my own intent through interaction. I wasn't passively reading — I was actively participating, and in doing so, I was telling the page exactly what I cared about.</p>
+
+      <div class="big-idea">
+        <h3>The Hypothesis</h3>
+        <p style="color: var(--ro-text);">You already know intent data. You use it every day to target ads — keywords, behaviors, lookalikes, signals that suggest someone is in-market.</p>
+        
+        <p style="color: var(--ro-text);">But here's the gap: <strong>intent data gets you the click. What happens after the click is usually static.</strong></p>
+        
+        <p>The landing page is the same for everyone. The messaging is generic. You're guessing at what they care about based on what ad they clicked — but you don't actually know until they convert (if they convert).</p>
+        
+        <div class="vs-table">
+          <div class="vs-card old">
+            <p class="vs-label">Traditional Funnel</p>
+            <ul style="margin-bottom: 0;">
+              <li>Intent data targets the ad</li>
+              <li>Static landing page</li>
+              <li>Same message for everyone</li>
+              <li>Hope they convert</li>
+              <li>Qualify after conversion</li>
+            </ul>
+          </div>
+          <div class="vs-card new">
+            <p class="vs-label">Intent-Based Funnel</p>
+            <ul style="margin-bottom: 0;">
+              <li>Intent data targets the ad</li>
+              <li>Interactive quiz captures intent</li>
+              <li>Results adapt to their answers</li>
+              <li>They see themselves in the output</li>
+              <li>Pre-qualified before conversion</li>
+            </ul>
+          </div>
+        </div>
+        
+        <p style="color: var(--ro-text);">When you match intent-targeted media buying with an intent-based funnel, something powerful happens:</p>
+        
+        <ul style="color: var(--ro-text);">
+          <li>The ad speaks to their problem (intent data)</li>
+          <li>The funnel makes them articulate their problem (intent capture)</li>
+          <li>The results prove you understand their specific situation (intent reflection)</li>
+        </ul>
+        
+        <p style="color: var(--ro-text);">Every step reinforces the last. The alignment compounds.</p>
+        
+        <div class="hypothesis">
+          <div class="hypothesis-number">5%</div>
+          <p style="color: var(--ro-text); margin-bottom: 0;"><strong>Hypothesized CTR when intent data meets intent-based funnels</strong></p>
+          <p style="font-size: 0.875rem; margin-bottom: 0;">vs. typical 1-2% on static landing pages</p>
+        </div>
+        
+        <p>This quiz is the first test of that hypothesis. It captures intent in real-time, adapts the output to what they told you, and delivers them pre-qualified to your pipeline.</p>
+        
+        <p style="color: var(--ro-gold); margin-bottom: 0;"><strong>If this works — and the data suggests it can — this becomes a template. Different industries, different pain points, different entry points. All feeding the same system. All running the same playbook.</strong></p>
       </div>
+    </section>
+
+    <section>
+      <h2>What This Opens Up</h2>
+      <p style="color: var(--ro-text);">This funnel isn't the end. It's the beginning.</p>
+      
+      <ul style="color: var(--ro-text);">
+        <li><strong>Vertical-specific funnels</strong> — One for entertainment, one for e-commerce, one for professional services. Same core engine, different messaging.</li>
+        <li><strong>Campaign-matched creative</strong> — Ad copy that mirrors quiz language. Seamless intent thread from impression to conversion.</li>
+        <li><strong>Automated follow-up based on answers</strong> — Not just "thanks for taking the quiz" — emails that reference exactly what they said.</li>
+        <li><strong>Retargeting with context</strong> — Know someone scored 28 with urgent pain? That's a different retargeting message than someone who scored 65 and is "just exploring."</li>
+      </ul>
+      
+      <p>The system learns. The system scales. The system remembers what each person told you.</p>
+    </section>
+
+    <section>
+      <h2>In Closing</h2>
+      <p style="color: var(--ro-text);">Matt showed me something that sparked an idea. Justin brought the project. You're the first to test it in the real world.</p>
+      
+      <p style="color: var(--ro-text);">The goal was always to deliver something that satisfies and wows. Something that doesn't just work — something that opens doors.</p>
+      
+      <p style="color: var(--ro-gold);">I hope this is that. And I hope it's just the first thing we build together.</p>
+      
+      <p style="color: var(--ro-gold); margin-top: 1.5rem;">Mission accomplished. Revisions until it's right.</p>
     </section>
 
     <footer>
