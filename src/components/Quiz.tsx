@@ -64,6 +64,46 @@ function getEmailTypoSuggestion(email: string): string | null {
   return null;
 }
 
+// Client-side rate limiting
+const RATE_LIMIT_KEY = 'ro_submit_timestamps';
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX_SUBMISSIONS = 2; // Max 2 submissions per minute
+
+function isRateLimited(): boolean {
+  if (typeof window === 'undefined') return false;
+  
+  try {
+    const now = Date.now();
+    const stored = localStorage.getItem(RATE_LIMIT_KEY);
+    const timestamps: number[] = stored ? JSON.parse(stored) : [];
+    
+    // Filter to only timestamps within the window
+    const recentTimestamps = timestamps.filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+    
+    return recentTimestamps.length >= RATE_LIMIT_MAX_SUBMISSIONS;
+  } catch {
+    return false;
+  }
+}
+
+function recordSubmission(): void {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    const now = Date.now();
+    const stored = localStorage.getItem(RATE_LIMIT_KEY);
+    const timestamps: number[] = stored ? JSON.parse(stored) : [];
+    
+    // Keep only recent timestamps + new one
+    const recentTimestamps = timestamps.filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+    recentTimestamps.push(now);
+    
+    localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify(recentTimestamps));
+  } catch {
+    // Ignore localStorage errors
+  }
+}
+
 function saveState(state: QuizState) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ state, savedAt: Date.now() }));
@@ -233,6 +273,12 @@ export default function Quiz() {
       return;
     }
     
+    // Rate limit check
+    if (isRateLimited()) {
+      setSubmitError('Please wait a moment before submitting again.');
+      return;
+    }
+    
     // Trim all inputs
     const trimmedFirstName = state.contact.firstName.trim();
     const trimmedEmail = state.contact.email.trim().toLowerCase();
@@ -309,6 +355,9 @@ export default function Quiz() {
         industry: normalizedState.answers.industry, 
         score: profile.maturityScore 
       });
+      
+      // Record submission for rate limiting
+      recordSubmission();
       
       // Clear session so next visit is fresh (no return visitor detection)
       clearSession();
