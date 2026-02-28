@@ -3,7 +3,7 @@ import MaturityGauge from './MaturityGauge';
 import InactionCalculator from './InactionCalculator';
 import SectionBridge from './SectionBridge';
 import DiagnosticFindings from './DiagnosticFindings';
-import StickyCTA from './StickyCTA';
+// StickyCTA removed - results page is now the final delivery
 import { getStoredSession, isSessionExpired, clearSession } from '../lib/session';
 
 interface DynamicResultsProps {
@@ -525,48 +525,28 @@ export default function DynamicResults({
         </div>
       </section>
 
-      {/* CTA with Enhanced Transition Copy - Appears with pattern */}
+      {/* Results Confirmation - No further CTA, this is the delivery */}
       <section 
         className={`text-center fade-up transition-all duration-700 ${
           showPattern ? 'opacity-100 translate-y-0' : hasIntersectionObserver ? 'opacity-0 translate-y-4' : ''
         }`}
       >
-        <div className="max-w-xl mx-auto mb-6">
-          <p className="text-lg text-ro-text mb-2">
-            Now you've seen the problem.
-          </p>
-          <p className="text-lg text-ro-text-bright font-medium">
-            Here's what other {industryLabel} companies did about it.
-          </p>
+        <div className="max-w-xl mx-auto">
+          <div className="bg-ro-card border border-ro-card-border rounded-xl p-6 md:p-8">
+            <div className="w-12 h-12 bg-ro-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-ro-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-medium text-ro-text-bright mb-2">
+              Your diagnostic is complete.
+            </h3>
+            <p className="text-ro-text-dim">
+              A copy of these results has been sent to your email. Our team will be in touch shortly to discuss what this means for your business.
+            </p>
+          </div>
         </div>
-        
-        {/* Proof-Near-CTA - Enhancement #12 */}
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
-          <span className="px-3 py-1.5 bg-ro-green/10 border border-ro-green/30 rounded-full text-xs text-ro-text-dim">
-            Companies in your position typically see results in <span className="text-ro-green font-medium">60 days</span>
-          </span>
-        </div>
-        
-        <a
-          href={`/solution?industry=${industry}`}
-          className="inline-flex items-center justify-center bg-ro-green hover:bg-ro-green-light text-white text-lg font-semibold px-8 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ro-gold focus:ring-offset-2 focus:ring-offset-ro-dark"
-        >
-          See How Companies Like Yours Solved This
-          <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </a>
-        <p className="text-ro-text-dim text-sm mt-4">
-          3 minutes. Real stories from {industryInsights[industry] ? 'your industry' : 'companies like yours'}.
-        </p>
       </section>
-
-      {/* Enhancement #17: Sticky Bottom CTA Bar */}
-      <StickyCTA 
-        text="Ready to see how companies like yours solved this?"
-        buttonText="See Solutions"
-        href={`/solution?industry=${industry}`}
-      />
     </div>
   );
 }

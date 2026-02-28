@@ -69,36 +69,41 @@ export function buildRoutingProfile(state: QuizState): RoutingProfile {
 function calculateMaturityScore(tags: string[]): number {
   let score = 50; // Start at midpoint
   
-  // Books status (major factor)
-  if (tags.includes('books:current')) score += 20;
-  else if (tags.includes('books:behind')) score -= 10;
-  else if (tags.includes('books:far-behind')) score -= 25;
-  else if (tags.includes('books:never')) score -= 35;
-  else if (tags.includes('books:unsure')) score -= 20;
+  // Books status (MAJOR factor - biggest swing)
+  if (tags.includes('books:current')) score += 30;
+  else if (tags.includes('books:behind')) score -= 15;
+  else if (tags.includes('books:far-behind')) score -= 30;
+  else if (tags.includes('books:never')) score -= 40;
+  else if (tags.includes('books:unsure')) score -= 25;
   
-  // Entity complexity
-  if (tags.includes('entities:single')) score += 10;
+  // Entity complexity (significant factor)
+  if (tags.includes('entities:single')) score += 15;
   else if (tags.includes('entities:few')) score += 5;
-  else if (tags.includes('entities:several')) score -= 10;
-  else if (tags.includes('entities:many')) score -= 20;
+  else if (tags.includes('entities:several')) score -= 15;
+  else if (tags.includes('entities:many')) score -= 25;
   
-  // Pain signals
-  if (tags.includes('pain:trust')) score -= 15;
-  if (tags.includes('pain:visibility')) score -= 10;
-  if (tags.includes('pain:founder-time')) score -= 10;
-  if (tags.includes('pain:overwhelm')) score -= 15;
+  // Pain signals (additive - multiple pains stack)
+  if (tags.includes('pain:trust')) score -= 20;
+  if (tags.includes('pain:visibility')) score -= 15;
+  if (tags.includes('pain:founder-time')) score -= 15;
+  if (tags.includes('pain:overwhelm')) score -= 20;
+  if (tags.includes('pain:cost')) score -= 5;
+  if (tags.includes('pain:systems')) score -= 10;
   
-  // Consequences
-  if (tags.includes('consequence:direct')) score -= 15;
-  else if (tags.includes('consequence:indirect')) score -= 5;
+  // Consequences (major impact)
+  if (tags.includes('consequence:direct')) score -= 20;
+  else if (tags.includes('consequence:indirect')) score -= 10;
+  else if (tags.includes('consequence:worried')) score -= 5;
+  else if (tags.includes('consequence:none')) score += 10;
   
-  // Time spent
-  if (tags.includes('time:delegated')) score += 10;
-  else if (tags.includes('time:significant')) score -= 10;
-  else if (tags.includes('time:excessive')) score -= 20;
+  // Time spent (reflects operational health)
+  if (tags.includes('time:delegated')) score += 20;
+  else if (tags.includes('time:some')) score -= 5;
+  else if (tags.includes('time:significant')) score -= 15;
+  else if (tags.includes('time:excessive')) score -= 25;
   
-  // Clamp to 0-100
-  return Math.max(0, Math.min(100, score));
+  // Clamp to 5-95 (never show perfect 0 or 100)
+  return Math.max(5, Math.min(95, score));
 }
 
 export function buildQueryString(state: QuizState, profile: RoutingProfile): string {
