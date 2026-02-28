@@ -67,7 +67,7 @@ export function buildRoutingProfile(state: QuizState): RoutingProfile {
 }
 
 function calculateMaturityScore(tags: string[]): number {
-  let score = 50; // Start at midpoint
+  let score = 60; // Start slightly above midpoint - assume baseline competence
   
   // Books status (MAJOR factor - biggest swing)
   if (tags.includes('books:current')) score += 30;
